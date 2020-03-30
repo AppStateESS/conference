@@ -1,0 +1,24 @@
+<?php if (empty($conferences)):?>
+<p>No conferences are available currently.</p>
+<?php return; endif;?>
+<h2>Available Conferences</h2>
+<?php foreach ($conferences as $conf):?>
+<div class="card pointer mb-4" onclick="window.location.href='./conference/User/Conference/<?=$conf['id'];?>'">
+  <div class="card-body">
+    <h4 class="card-title"><a href="./conference/User/Conference/<?=$conf['id']?>"><?=$conf['title']?></a></h4>
+    <div class="card-text">
+      <?=$conf['description']?>
+    </div>
+  </div>
+  <div class="card-footer">
+    <div class="card-text">
+      Location: <a href="conference/User/Location/<?=$conf['locationId']?>"><?=$conf['location']?></a>
+    </div>
+  </div>
+</div>
+<?php endforeach;?>
+<?php if ($select):?>
+<div class="mt-4">
+<?=$select?>
+</div>
+<?php endif;?>

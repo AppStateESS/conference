@@ -1,0 +1,15 @@
+<div>
+  <ul class="list-unstyled mb-0">
+    <li><strong>Registration cost:</strong> $<?=$registerCost?> <br /></li>
+    <?php if ($discountAmount !== '0.00'):?>
+    <li class="text-success"><strong>Discount:</strong>&nbsp;$<?=$discountAmount?> <?=$discountLabel?></li>
+    <?php endif;?>
+    <?php if ($guestCost):?>
+    <li><strong>Guest cost:</strong> $<?=$guestCost?></li>
+    <?php endif;?>
+    <?php if ($mealCost):?>
+    <li><strong><?=$extraMeal ? 'Extra meal' : 'Meal'?> ticket cost:</strong> $<?=$mealCost?></li>
+    <?php endif;?>
+  </ul>
+  <?=$mealIncludedMessage??null?>
+</div>

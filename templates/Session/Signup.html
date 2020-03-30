@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8">
+      <h2 class="mb-1"><?=$conferenceTitle?></h2>
+      <h3><?=$sessionTitle?></h3>
+      <h4>on <?=$sessionDate?></h4>
+      <h4>For student: <?=$studentName?></h4>
+    </div>
+    <div class="col-sm-4">
+      <div class="card border-primary">
+        <div class="card-body p-2">
+          <h4 class="card-title">Pricing</h4>
+          <div class="card-text"><?=$pricing?></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<hr />
+<?php if (isset($notTimeYet)):?>
+<div class="alert alert-warning"><?=$notTimeYet?></div>
+<?php endif;?>
+<div>
+  <?=$form??null?>
+</div>

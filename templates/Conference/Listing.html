@@ -1,0 +1,22 @@
+<h2>Available conferences</h2>
+<hr />
+<?php foreach ($listing as $row): ?>
+<div class="card mb-4">
+  <div class="card-header">
+    <h4 class="my-0"><?=$row['title']?></h4>
+  </div>
+  <div class="card-body">
+    <div class="card-text">
+      <?=$row['description']?>
+      <div class="text-center">
+        <?php if ($visitor):?>
+        <a href="./conference/Visitor/Conference/<?=$row['id']?>" class="btn btn-primary mt-3">
+          View sessions</a>
+        <?php else:?>
+        <?php endif;?>
+      </div>
+    </div>
+  </div>
+</div>
+<?php endforeach; ?>
+<?=$currentSessions?>

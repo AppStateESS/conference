@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <p><?=$visitor['firstName'], ' ', $visitor['lastName']?>,</p>
+  <p>We have issued a partial refund for your <?=$session['title']?> registration.</p>
+  <hr />
+  <p><strong>Guests removed:</strong> <?=$refund['guests']?></p>
+  <?php if ($refund['meals'] != 0): ?>
+  <p><strong>Meals removed:</strong> <?=$refund['meals']?></p>
+  <?php endif;?>
+  <p><strong>Amount refunded:</strong> $<?=$refund['amount']?></p>
+  <hr />
+  <?php if (!empty($contactEmail)):?>
+  <p>If you have any questions <a href="mailto:<?=$contactEmail?>">please contact us.</a></p>
+  <?php endif; ?>
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><?=$subject?></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <p>This message is a confirmation of your session change for the <strong><?=$conference['title']?></strong>.</p>
+    <p>Your new session is now on <strong><?=$session['eventDateFormat']?></strong>.</p>
+    <p>Please arrive at the <a href="<?=$locationUrl?>"><strong><?=$location['title']?></strong></a> on <strong><?=$session['eventDateFormat']?></strong> by <strong><?=$session['startTimeFormat']?></strong>.</p>
+    <p>We look forward to seeing you and your student soon!</p>
+    <p>Best regards,<br />
+      App State Parent & Family Services<br />
+      <a href="https://parents.appstate.edu">parents.appstate.edu</a></p>
+  </body>
+</html>

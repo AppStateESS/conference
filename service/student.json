@@ -1,0 +1,81 @@
+{
+  "response": {
+
+      "ID": "900000000",
+      "lastName": "Smith",
+      "firstName": "Fred",
+      "middleName": "Bob",
+      "firstNameProper": "Freddy",
+      "lastNameProper": "Smith",
+      "suffix": null,
+      "salutation": null,
+      "applicationYear": "2020",
+      "semester": "Spring",
+      "name": "Smith, Fred Bob",
+      "emailAddress": "fredbob@appstate.edu",
+      "earlyArrival": null,
+      "parentAttending": null,
+      "parentNumber": null,
+      "cost": 100,
+      "earlyArrivalCost": null,
+      "sessionDescription": "New Student Orientation: January 8, 2020",
+      "earlyArrivalDate": "07-JAN-2020",
+      "startDate": "08-JAN-2020",
+      "bannerUsername": "bobfred",
+      "aprxrefParents": [
+          {
+              "ID": "900000001",
+              "lastName": "Smith",
+              "firstName": "Freddy",
+              "middleName": "John",
+              "prefFirstName": "Fank",
+              "namePrefix": "Mr.",
+              "nameSuffix": "III",
+              "streetLine1": "655 Here Ln",
+              "streetLine2": null,
+              "streetLine3": null,
+              "city": "Boone",
+              "stateCode": "NC",
+              "zip": "28607-6823",
+              "phoneArea": null,
+              "phoneNumber": "2645555",
+              "phoneExtension": null,
+              "emailAddresses": [
+                  {
+                      "emailAddress": "freddysmith@gmail.com",
+                      "preferredIndicator": "Y"
+                  }
+              ],
+              "deceasedIndicator": "N"
+          }
+      ],
+      "sorfolkParents": [
+          {
+              "ID": null,
+              "lastName": "smith",
+              "firstName": "freddy",
+              "middleName": "john",
+              "prefFirstName": null,
+              "namePrefix": null,
+              "nameSuffix": null,
+              "streetLine1": "655 Here Ln",
+              "streetLine2": null,
+              "streetLine3": null,
+              "city": "Boone",
+              "stateCode": "NC",
+              "zip": "28607-6823",
+              "phoneArea": null,
+              "phoneNumber": "2645555",
+              "phoneExtension": null,
+              "emailAddresses": [
+                  {
+                      "emailAddress": "differentemail@gmail.com",
+                      "preferredIndicator": "N"
+                  }
+              ],
+              "deceasedIndicator": "N"
+          }
+      ]
+  },
+  "token": "someNewLongCrazyString"
+}

@@ -1,0 +1,8 @@
+<h2>Sync all <strong><?=$conference['title']?></strong> payments to <?=$accountTitle?></h2>
+<p>You are about to sync all payments <strong>without an associated account</strong> to this account:
+  <strong><?=$accountTitle?></strong>.</p>
+<form method="post" action="./conference/Admin/Payment/syncAccount">
+  <input type="hidden" name="conferenceId" value="<?=$conference['id']?>" />
+  <div class="text-center"><button class="btn btn-danger btn-lg" onClick={}>Sync all payments</button></div>
+</form>
+<div><a class="btn btn-outline-dark" href="conference/Admin/Conference">Go back to conferences</a></div>

@@ -1,0 +1,26 @@
+<div class="accordion" id="sessionList">
+  <?php $count = 0;
+  foreach ($titleSort as $header=>$sessions):
+  $count++;
+  ?>
+  <div class="card">
+    <div class="card-header" id="heading<?php echo $count?>">
+      <button class="btn btn-link btn-block lead" type="button" data-toggle="collapse" data-target="#collapse<?=$count?>" aria-expanded="true" aria-controls="collapse<?=$count?>">
+        <?=$header?>
+      </button>
+    </div>
+
+    <div id="collapse<?=$count?>" class="collapse <?=$count==1?'show':null?>" aria-labelledby="heading<?=$count?>" data-parent="#sessionList">
+      <div class="card-body">
+        <ul class="list-unstyled">
+          <?php foreach($sessions as $sess):?>
+          <li><strong><?=$sess['title']?></strong> <?= $sess['signupEnd'] < time() ? '<em class="text-danger">(Sign up expired)</em>' : null?> - <?=strftime('%a. %b %e, %Y', $sess['eventDate'])?>
+          </li>
+          <?php endforeach;?>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <?php endforeach;?>
+</div>
+

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <p><?=$visitor['firstName'], ' ', $visitor['lastName']?>,</p>
+    <p>We have issued a full refund for your <?=$session['title']?> registration.</p>
+    <hr />
+    <p><strong>Amount refunded:</strong> $<?=$refund['amount']?></p>
+    <hr />
+    <p>Your registration has been canceled.</p>
+    <p>If you have any questions please contact our office.
+    </p>
+    <p>
+    <p>Best regards,<br />
+      App State Parent & Family Services<br />
+      <a href="https://parents.appstate.edu">parents.appstate.edu</a>
+      <?php if (!empty($contactEmail)):?>
+      <br />
+      <a href="mailto:<?=$contactEmail?>"><?=$contactEmail?></a>
+      <?php endif; ?>
+    </p>
+  </body>
+</html>

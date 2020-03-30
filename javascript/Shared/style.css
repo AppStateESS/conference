@@ -1,0 +1,20 @@
+th.option {
+  width: 5%;
+}
+
+th.title {
+  width: 30%;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+}
+
+.pointer:hover {
+  cursor: pointer;
+}
+
+th.action {
+  width: 10%;
+}

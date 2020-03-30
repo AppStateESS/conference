@@ -1,0 +1,25 @@
+<h3>Current registrations</h3>
+<p class="alert alert-danger">
+  You currently have
+  <?=count($registrations)?>
+  unpaid registration<?=count($registrations) > 1 ? 's' : ''?>. Click the Continue button to update your registration.
+</p>
+
+<?php foreach($registrations as $reg): ?>
+<div class="alert alert-secondary d-flex justify-content-start align-items-center">
+  <div>
+    <a href="conference/Visitor/Session/<?=$reg['sessionId']?>/signup?studentId=<?=$reg['studentId']?>"
+      class="btn btn-primary text-white mr-3">Continue</a>
+  </div>
+  <div>
+    <div class="lead">
+      <a
+        href="conference/Visitor/Session/<?=$reg['sessionId']?>/signup/?studentId=<?=$reg['studentId']?>"><?=$reg['conferenceTitle']?></a>
+    </div>
+    <div>
+      <a
+        href="conference/Visitor/Session/<?=$reg['sessionId']?>/signup/?studentId=<?=$reg['studentId']?>"><?=$reg['sessionTitle']?></a>
+    </div>
+  </div>
+</div>
+<?php endforeach;?>

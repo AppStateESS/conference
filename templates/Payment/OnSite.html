@@ -1,0 +1,31 @@
+<div class="row d-flex justify-content-center">
+  <div class="col-sm-8">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="m-0"><?=$conferenceTitle?></h3>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title"><?=$sessionTitle?></h4>
+        <p class="card-text">
+          Your amount due comes to <strong>$<?=$amountDue?></strong>
+        </p>
+        <p class="card-text">
+          Your <strong>pre-registration</strong> is complete. Payment at the event on <?=$eventDateFormat?> will
+          complete your registration.
+        </p>
+        <p>You may return to update your registration until <?=$signupEndFormat?>.</p>
+        <div class="text-center mt-3">
+          <a href="conference/User/Conference/<?=$conferenceId?>" class="btn btn-primary btn-lg">
+            Back to conference information
+          </a>
+        </div>
+        <div class="text-center mt-3">
+          <a href="conference/Visitor/Session/<?=$sessionId?>/signup/?studentId=<?=$studentId?>"
+            class="btn btn-info btn-sm">
+            I need to change my registration
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

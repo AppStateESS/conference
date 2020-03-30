@@ -1,0 +1,71 @@
+<?php if ($buttons):?>
+<a class="float-right btn btn-primary" target="_blank" rel="noreferrer noopener" id="print-registration" href="./conference/Visitor/Registration/<?=$registration['id']?>/?print=true"><i class="fas fa-print"></i>&nbsp;Print</a>
+<?php else:?>
+<script>window.print()</script>
+<?php endif;?>
+<div id="registration-info">
+  <h2 class="mb-2"><?=$conference['title']?></h2>
+  <h3>Session: <?=$session['title']?></h3>
+  <h4>Student: <?=$student['firstName'], ' ', $student['lastName']?></h4>
+  <table class="table table-striped">
+    <tbody>
+      <tr>
+        <th style="width:25%">Date</th>
+        <td><?=$session['eventDateRange']?></td>
+      </tr>
+      <tr>
+        <th>Start time</th>
+        <td><?=$session['startTimeFormat']?></td>
+      </tr>
+      <tr>
+        <th>End time</th>
+        <td><?=$session['endTimeFormat']?></td>
+      </tr>
+      <tr>
+        <th>Location</th>
+        <td>
+          <h4><a href="<?=$location['url']?>"><?=$location['title']?></a></h4>
+          <?=$location['description']?>
+          <?=$location['directions']?>
+        </td>
+      </tr>
+      <tr>
+        <th>Guests</th>
+        <td>
+          <?php if (!empty($guests)):foreach ($guests as $g): extract($g);?>
+          <?=$firstName, ' ', $lastName, ' - ', $email?><br />
+          <?php endforeach; else:?>
+          <em>None</em>
+          <?php endif;?>
+        </td>
+      </tr>
+      <?php if ($registration['mealTickets'] > 0):?>
+      <tr>
+        <th>Extra meal tickets</th>
+        <td><?=$registration['mealTickets']?></td>
+      </tr>
+      <?php endif;?>
+      <?php if ($registration['veggieMeals'] > 0):?>
+      <tr>
+        <th>Vegetarian Meals</th>
+        <td><?=$registration['veggieMeals']?></td>
+      </tr>
+      <?php endif;?>
+    </tbody>
+  </table>
+<?php if ($buttons):?>
+  <?php if ($supplementAllowed): if($registration['completed']):?>
+  <div class="text-center">
+    <a class="btn btn-primary" href="conference/Visitor/Supplement/?registrationId=<?=$registrationId?>">Add a
+      guest<?php if ($session['mealService']): ?>, meal, <?php endif;?> or switch your session</a>
+  </div>
+  <?php elseif (!$registration['completed']):?>
+  <div class="text-center">
+    <a class="btn btn-primary"
+      href="conference/Visitor/Session/<?=$registration['sessionId']?>/signup?studentId=<?=$registration['studentId']?>">Complete
+      registration</a>
+  </div>
+  <?php endif;?>
+  <?php endif;?>
+  <?php endif;?>
+</div>

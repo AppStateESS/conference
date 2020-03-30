@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-md-9 mx-auto">
+    <div class="card mt-5">
+      <div class="card-header">
+        <h3>Your previous registrations</h3>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Session / Date</th>
+              <th>Paid</th>
+              <th>Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($registrations as $reg):extract($reg);?>
+            <tr>
+              <td><strong><?=$sessionTitle?></strong><br /><?=strftime('%b. %e, %Y', $eventDate)?></td>
+              <td>$<?=number_format($amountPaid,2, ".", "")?></td>
+              <td>
+                <?=$completed == 1 ? '<span class="text-success">Completed</span>' : '<span class="text-danger">Incomplete</span>' ?>
+              </td>
+              <td><?php if ($completed == 1): ?>
+                <a href="conference/Visitor/Registration/<?=$id?>" class="btn btn-sm btn-info">View</a>
+                <?php if (empty($supplement) && $allowSignup):?>
+                <a href="conference/Visitor/Supplement/?registrationId=<?=$id?>" class="btn btn-sm btn-primary">Add
+                  Guest/Meal</a>
+                <?php endif;?>
+                <?php else: ?>
+                <a class="btn btn-sm btn-outline-primary"
+                  href="conference/Visitor/Session/<?=$sessionId?>/signup">Finish</a>
+                <?php endif;?>
+              </td>
+            </tr>
+            <?php if (!empty($supplement)):?>
+            <tr>
+              <td colspan="4"><a href="conference/Visitor/Supplement/?registrationId=<?=$id?>"
+                  class="btn btn-block btn-info">Finish incomplete additions - $<?=$supplement['totalCost']?></a></td>
+            </tr>
+            <?php endif; ?>
+            <?php endforeach;?>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

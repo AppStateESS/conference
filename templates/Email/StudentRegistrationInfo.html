@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <p><?=$student['firstName']?>,</p>
+    <p>We wanted to let you know that <?=$visitor['firstName'], ' ', $visitor['lastName']?> has registered for the <strong><?=$session['title']?></strong> session of the <strong><a href="<?=$conferenceUrl?>"><?=$conference['title']?></a></strong>.</p>
+    <p>They will arrive at the <a href="<?=$locationUrl?>"><strong><?=$location['title']?></strong></a> on <strong><?=$session['eventDateFormat']?></strong>.</p>
+    <p>For questions about Student Orientation, please visit <a href="https://orientation.appstate.edu">orientation.appstate.edu</a>.</p>
+    <p>For questions about Parent & Family Orientation, please visit <a href="parentorientation.appstate.edu">parentorientation.appstate.edu</a>.</p>
+
+    <p>Welcome to Appalachian! We look forward to meeting you and your family soon.</p>
+    <p>App State Parent & Family Services
+    </p>
+  </body>
+</html>

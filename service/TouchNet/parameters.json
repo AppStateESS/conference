@@ -1,0 +1,36 @@
+{
+  "title": "TouchNet - uPay",
+  "paymentSiteUrl": "",
+  "send": {
+    "name": "BILL_NAME",
+    "email": "BILL_EMAIL_ADDRESS",
+    "address1": "BILL_STREET1",
+    "address2": "BILL_STREET2",
+    "city": "BILL_CITY",
+    "state": "BILL_STATE",
+    "zip": "BILL_POSTAL_CODE",
+    "country": "",
+    "transactionId": "EXT_TRANS_ID",
+    "transactionIdDesc": "EXT_TRANS_ID_LABEL",
+    "accountId": "UPAY_SITE_ID",
+    "amount": "AMT",
+    "validateSend": "VALIDATION_KEY",
+    "successUrl": "SUCCESS_LINK",
+    "successUrlText": "SUCCESS_LINK_TEXT",
+    "errorUrl": "ERROR_LINK",
+    "errorUrlText": "ERROR_LINK_TEXT",
+    "cancelUrl": "CANCEL_LINK",
+    "cancelUrlText": "CANCEL_LINK_TEXT"
+  },
+  "response": {
+    "validateResponse": "posting_key",
+    "responseId": "tpg_trans_id",
+    "paymentStatus": "pmt_status",
+    "paymentAmount": "pmt_amt",
+    "payerName": "name_on_acct",
+    "receiptId": "sys_tracking_id",
+    "cardType": "card_type",
+    "cardFinalFour": "",
+    "transactionId": "EXT_TRANS_ID"
+  }
+}

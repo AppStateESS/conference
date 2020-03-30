@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+
+  <body>
+    <p>
+      A new user request was made from the site
+      <strong><?=$hostName?></strong>. If you did not make this request, you can ignore this email.
+    </p>
+    <p>Click on this link to activate your account:<br/>
+      <?=$activateLink?>
+    </p>
+    <p>
+      The deadline to respond to this request is
+      <?=$deadline?>.
+    </p>
+  </body>
+</html>

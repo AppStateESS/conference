@@ -1,0 +1,26 @@
+<h2>Payment incomplete</h2>
+<p>Your payment is currently incomplete.</p>
+
+<table class="table">
+  <tr>
+    <th>Conference</th>
+    <td><?=$conferenceTitle?></td>
+  </tr>
+  <tr>
+    <th>Session</th>
+    <td><?=$sessionTitle?></td>
+  </tr>
+  <tr>
+    <th>Event date</th>
+    <td><?=$eventDateRange?></td>
+  </tr>
+  <tr>
+    <th>Amount</th>
+    <td>$<?=$amount?></td>
+  </tr>
+</table>
+<div class="text-center">
+  <a href="conference/Visitor/Session/<?=$sessionId?>/signup" class="btn btn-success">Click here to complete
+    your
+    registration</a>
+</div>

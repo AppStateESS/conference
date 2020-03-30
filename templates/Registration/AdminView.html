@@ -1,0 +1,36 @@
+<h2><?=$conference['title']?></h2>
+<h3><?=$session['title']?></h3>
+<table class="table table-striped">
+  <tbody>
+    <tr>
+      <th>Status</th>
+      <td><?=$registration['completed'] == 1 ? '<span class="alert alert-success">Completed</span>' : '<span class="alert alert-danger">Incomplete</span>'?></td>
+    </tr>
+    <tr>
+      <th>Visitor</th>
+      <td><?=$visitor['firstName'], ' ', $visitor['lastName']?> - <a href="mailto:<?=$visitor['email']?>"><?=$visitor['email']?></td>
+    </tr>
+    <tr>
+      <th>Guests</th>
+      <td>
+        <?php if (!empty($guests)):foreach ($guests as $g): extract($g);?>
+        <?=$firstName, ' ', $lastName?> - <a href="mailto:<?=$email?>"><?=$email?></a><br />
+        <?php endforeach; else:?>
+        <em>None</em>
+        <?php endif;?>
+      </td>
+    </tr>
+    <?php if ($registration['mealTickets'] > 0):?>
+    <tr>
+      <th>Extra meal tickets</th>
+      <td><?=$registration['mealTickets']?></td>
+    </tr>
+    <?php endif;?>
+    <?php if ($registration['veggieMeals'] > 0):?>
+    <tr>
+      <th>Vegetarian Meals</th>
+      <td><?=$registration['veggieMeals']?></td>
+    </tr>
+    <?php endif;?>
+  </tbody>
+</table>

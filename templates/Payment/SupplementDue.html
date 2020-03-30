@@ -1,0 +1,29 @@
+<div class="row d-flex justify-content-center">
+  <div class="col-sm-8">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="m-0"><?=$conferenceTitle?></h3>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title"><?=$sessionTitle?></h4>
+        <p class="card-text">
+          Your amount due comes to <strong>$<?=$totalCost?></strong>
+        </p>
+        <p class="card-text">
+          Please complete your registration by clicking on the payment button
+          below.
+        </p>
+        <div>
+          <form method="post" action="<?=$accountUrl?>">
+            <?=$paymentInputs?>
+            <div class="text-center">
+              <button class="btn btn-success btn-lg">
+                Pay for additions
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<h2>Payment complete</h2>
+<p>Your payment was accepted and your registration is complete.</p>
+<p>We have emailed your registration information. Your payment information will arrive in a separate email.</p>
+<p>Thank you and we look forward seeing you on <?=$eventDateFormat?>!</p>
+
+<table class="table">
+  <tr>
+    <th>Conference</th>
+    <td><?=$conferenceTitle?></td>
+  </tr>
+  <tr>
+    <th>Session</th>
+    <td><?=$sessionTitle?></td>
+  </tr>
+  <tr>
+    <th>Amount</th>
+    <td>$<?=$amount?></td>
+  </tr>
+  <tr>
+    <th>Paid by</th>
+    <td><?=$payerName?></td>
+  </tr>
+  <tr>
+    <th>Card type</th>
+    <td><?=$cardType?></td>
+  </tr>
+  <tr>
+    <th>Transaction</th>
+    <td><?=$transactionId?></td>
+  </tr>
+  <tr>
+    <th>Receipt</th>
+    <td><?=$receipt?></td>
+  </tr>
+</table>

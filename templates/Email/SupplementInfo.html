@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><?=$subject?></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <p>Thank you for updating your registration for the <strong><?=$session['title']?></strong> session of the <strong><?=$conference['title']?></strong>.</p>
+    <p>You added:</p>
+    <ul>
+      <?php if($supplement['newGuests'] > 0):?>
+      <li><?=$supplement['newGuests']?> new guest(s)</li>
+      <?php endif;?>
+      <?php if($supplement['newMeals'] > 0):?>
+      <li><?=$supplement['newMeals']?> new meal(s)</li>
+      <?php endif;?>
+      <?php if($supplement['newVeggie'] > 0):?>
+      <li><?=$supplement['newVeggie']?> new vegetarian meal request(s)</li>
+      <?php endif;?>
+    </ul>
+    <p>Please arrive at the <a href="<?=$locationUrl?>"><strong><?=$location['title']?></strong></a> on <strong><?=$session['eventDateFormat']?></strong> by <strong><?=$session['startTimeFormat']?></strong>.</p>
+  </body>
+</html>

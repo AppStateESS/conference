@@ -1,0 +1,23 @@
+<h2>Activity log for <a href="./conference/Admin/Registration/visitor?visitorId=<?=$id?>"><?=$firstName?> <?=$lastName?></a></h2>
+<?php if (empty($logList)):?>
+<p>No activity found for this visitor.</p>
+<?php else:?>
+<table class="table table-sm">
+  <tbody>
+    <tr>
+      <th>Timestamp</th>
+      <th>Message</th>
+      <th>Session</th>
+      <th>Session date</th>
+    </tr>
+    <?php foreach ($logList as $log):?>
+    <tr>
+      <td><?=strftime('%m-%d-%Y %k:%M', $log['stamp'])?></td>
+      <td><?=$log['message']?></td>
+      <td><?=$log['sessionTitle']?></td>
+      <td><?=$log['sessionDate'] ? strftime('%b %e, %Y', $log['sessionDate'])  : null?></td>
+    </tr>
+    <?php endforeach;?>
+  </tbody>
+</table>
+<?php endif;?>
