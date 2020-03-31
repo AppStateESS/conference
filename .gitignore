@@ -5,5 +5,5 @@
 **/assets.json
 /.tags
 /.sass-cache/
-**/dev/
-**/build/
+**/javascript/dev/
+**/javascript/build/
