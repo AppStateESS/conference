@@ -1,0 +1,9 @@
+*~
+/nbproject/
+**/node_modules/
+/config/defines.php
+**/assets.json
+/.tags
+/.sass-cache/
+**/dev/
+**/build/
