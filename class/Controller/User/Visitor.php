@@ -58,7 +58,8 @@ class Visitor extends SubController
             return $this->view->alreadyLoggedIn();
         } else {
             $email = $request->pullGetString('email', true);
-            return $this->view->scriptView('Login', ['emailFill' => $email]);
+            return $this->view->scriptView('Login',
+                            ['emailFill' => $email ?: '']);
         }
     }
 
