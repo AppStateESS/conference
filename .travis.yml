@@ -1,0 +1,23 @@
+sudo: false
+language: php
+php:
+  - 7
+install:
+  - npm install
+script:
+  - '.travis-build/phplint .'
+after_success:
+  - npm run build
+  - rm -rf node_modules
+  - tar -czf conference.tar.gz *
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: EHOWsXElTPSdIPpTyXwpYigZ/GV0PKk8kbCtpeigfXzkPLNK03bVd21fq5teu96POB9MKf/BHserqh2Ace3/rz4QL37HAmsWHI68ard/dJ4K9PWGV/8mk13mEY/nqiVqzMJAF06FOOv7w7M9IYCc4Cngzn1PhDaZdsvvSfQ/MTgCaOAlPRGAl07FcJ8pYLMp5k++scUZWs5wGy+NX5yVW7+IXbRzCy9sAlcaWtaS26FDKQ2mD3Eb1QfxRZbsSWd2eal4z1/a5jNDzH9oRuOY4Vdq+quA3Qbh40lAiKkDWq4MlBiLLPC6uuoABV7Y8Gbmdk5DNQUPVPQmwFBY5R67EphG8I8QIAlbwZJEe7hI/LalbtL3YcBm3Z8oH9EgAvg/dXpEWRo6FgR+eWVj7rP5J5xkZG/i4NYYnmaDLhIL5X0TQ2gL2yx+he285Th8zmdd/MY4hk7BI5Mr08/DqpXNfrRKRkd2I7hvFZd9KTKTqY30hM0FcoyuBJfi4kMs3+fY8BGu1aMOBqUUot8sdNvL4epQaPBBiWILmNoClr57s3S43Kau5rMa63oSM18HChfMECOw/QAFQo10UvCN+zimthWJ1LaoqEdP/InxCkkaVmR79UmIZm+opMdSBNOO9W8ld3NU02PM2rwshU1G9mdVEy513pyvbRP1MqnaR46Ob5o=
+  file: 'conference.tar.gz'
+  overwrite: true
+  on:
+    repo: AppStateESS/conference
+    branch: master
+    tags: true
