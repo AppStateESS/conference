@@ -64,6 +64,16 @@ class SessionFactory extends BaseFactory
             $db->joinResources($sessionTbl, $regTbl,
                     $cond3
                     , 'left');
+            $regTbl->addFieldConditional('completed', 1);
+            if (!empty($options['guestCount'])) {
+                $guestTbl = $db->addTable('conf_guest');
+                $count2 = new \phpws2\Database\Expression('count(' . $guestTbl->getField('id') . ')',
+                        'guestCount');
+                $guestTbl->addField($count2);
+                $gcond = $db->createConditional($regTbl->getField('id'),
+                        $guestTbl->getField('registrationId'));
+                $db->joinResources($regTbl, $guestTbl, $gcond, 'left');
+            }
             $db->setGroupBy($sessionTbl->getField('id'));
         }
 
@@ -129,7 +139,6 @@ class SessionFactory extends BaseFactory
         } else {
             $sessionTbl->addOrderBy($sortBy, $sortDir);
         }
-
         return $db->select();
     }
 

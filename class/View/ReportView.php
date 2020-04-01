@@ -112,6 +112,7 @@ class ReportView extends AbstractView
         $sessionFactory = new \conference\Factory\SessionFactory;
         $options['conferenceId'] = $conference->id;
         $options['registrationCount'] = true;
+        $options['guestCount'] = true;
 
         $listing = $sessionFactory->listing($options);
         if (empty($listing)) {
@@ -121,6 +122,7 @@ class ReportView extends AbstractView
         $csvheader[] = 'id';
         $csvheader[] = 'title';
         $csvheader[] = 'registration count';
+        $csvheader[] = 'guest count';
         $csvheader[] = 'event date';
         $csvheader[] = 'signup start';
         $csvheader[] = 'signup end';
@@ -142,6 +144,7 @@ class ReportView extends AbstractView
             $sub[] = $session['id'];
             $sub[] = $session['title'];
             $sub[] = $session['registrationCount'];
+            $sub[] = $session['guestCount'];
             $sub[] = strftime('%Y-%m-%d', $session['eventDate']);
             $sub[] = strftime('%c', $session['signupStart']);
             $sub[] = strftime('%c', $session['signupEnd']);
