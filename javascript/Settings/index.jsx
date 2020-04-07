@@ -4,9 +4,10 @@ import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import Contact from './Contact'
 import FrontPage from './FrontPage'
+import BannerStudent from './BannerStudent'
 import dayjs from 'dayjs'
 
-/* global $ */
+/* global $, bannerApiSetting */
 
 export default class Settings extends Component {
   constructor(props) {
@@ -210,6 +211,7 @@ export default class Settings extends Component {
         {this.getError()}
         <Contact />
         <FrontPage />
+        <BannerStudent bannerApiSetting={bannerApiSetting} />
         <div>
           <h3>Onsite registration</h3>
           <p>
