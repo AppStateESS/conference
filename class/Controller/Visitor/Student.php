@@ -55,10 +55,9 @@ class Student extends SubController
         try {
             $student = $this->factory->getBannerStudent($request->pullGetInteger('matchBannerId'),
                     $request->pullGetString('bannerUsername'));
-
             $reply = \conference\Factory\SettingsFactory::getEmailAddressOnly();
             if (!$student) {
-                $message = 'Student not found. Please check Banner user name and id number again.';
+                return ['message' => 'Student not found. Please check Banner user name and id number again.'];
             } else {
                 $sessionFactory = new SessionFactory;
                 $session = $sessionFactory->pullByEventDate($student->startDate,
@@ -71,6 +70,7 @@ class Student extends SubController
                 } else {
                     $sessionVars = $session->getStringVars();
                 }
+                return ['student' => $student->getStringVars(), 'session' => $sessionVars, 'message' => $message];
             }
         } catch (\Exception $e) {
             if (CONFERENCE_SYSTEM_SETTINGS['friendlyErrors']) {
@@ -80,7 +80,6 @@ class Student extends SubController
                 $message = $e->getMessage();
             }
         }
-        return ['student' => $student->getStringVars(), 'session' => $sessionVars, 'message' => $message];
     }
 
     protected function viewJson()
