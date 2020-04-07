@@ -216,6 +216,21 @@ class RegistrationFactory extends BaseFactory
         return $regAnswers;
     }
 
+    /**
+     * Completes a registration if it is determined to be in a free session.
+     *
+     * @param Resource $registration
+     */
+    public function completeFree(RegistrationResource $registration)
+    {
+        $session = $this->getSession($registration);
+        if ($session->registerCost == 0 && $registration->totalCost == 0) {
+            $registration->completed = 1;
+            $this->save($registration);
+            $this->emailDetails($registration);
+        }
+    }
+
     private function searchOnName(\phpws2\Database\DB $db,
             \phpws2\Database\Table $tbl, string $search)
     {
