@@ -171,7 +171,8 @@ class VisitorFactory extends BaseFactory
     public function login(string $email, string $password)
     {
         $visitor = $this->loadByEmail($email, true);
-        if ($visitor->id && password_verify($password, $visitor->password)) {
+        if ($visitor && $visitor->id && password_verify($password,
+                        $visitor->password)) {
             $this->setCurrent($visitor);
             LogFactory::log('Visitor logged in.', $visitor);
             return true;
