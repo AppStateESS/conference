@@ -16,6 +16,7 @@ use Canopy\Request;
 use Canopy\Server;
 use conference\Controller\SubController;
 use conference\Factory\VisitorFactory as Factory;
+use conference\Factory\SettingsFactory;
 use conference\View\VisitorView as View;
 
 class Visitor extends SubController
@@ -45,7 +46,7 @@ class Visitor extends SubController
     {
         $email = $request->pullGetString('email');
         $visitor = $this->factory->loadByEmail($email);
-        return ['found' => $visitor->id > 0];
+        return ['found' => !empty($visitor->id)];
     }
 
     /**
@@ -65,7 +66,8 @@ class Visitor extends SubController
 
     protected function signupHtml()
     {
-        return $this->view->scriptView('Signup');
+        return $this->view->scriptView('Signup',
+                        ['bannerApi' => SettingsFactory::getBannerApi()]);
     }
 
     protected function loginPost(Request $request)
