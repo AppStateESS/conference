@@ -41,6 +41,16 @@ class SettingsFactory
         Settings::set('conference', 'defaultConference', $conferenceId);
     }
 
+    public static function getBannerApi()
+    {
+        return Settings::get('conference', 'bannerApi');
+    }
+
+    public static function setBannerApi($api)
+    {
+        Settings::set('conference', 'bannerApi', (bool) $api);
+    }
+
     /**
      * Returns a SwiftMailer ready reply-to address
      * @param bool $onlyNoReply If true, return the no-reply version
