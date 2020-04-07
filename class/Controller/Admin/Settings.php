@@ -42,7 +42,8 @@ class Settings extends SubController
 
     protected function listHtml()
     {
-        return $this->view->scriptView('Settings');
+        return $this->view->scriptView('Settings',
+                        ['bannerApiSetting' => SettingsFactory::getBannerApi()]);
     }
 
     protected function contactJson()
@@ -56,6 +57,13 @@ class Settings extends SubController
         $contactEmail = $request->pullPostString('contactEmail');
 
         SettingsFactory::saveContact($contactName, $contactEmail);
+        return ['success' => true];
+    }
+
+    protected function bannerApiPost(Request $request)
+    {
+        $api = $request->pullPostBoolean('bannerApi');
+        SettingsFactory::setBannerApi($api);
         return ['success' => true];
     }
 
