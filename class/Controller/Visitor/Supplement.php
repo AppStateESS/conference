@@ -94,10 +94,22 @@ class Supplement extends SubController
             return $this->view->notFound();
         }
 
+
         if (!VisitorFactory::checkVisitor($supplement->visitorId)) {
             throw new VisitorIdMismatch;
         }
-        return $this->view->paymentDue($supplement);
+        if ($supplement->completed) {
+            return $this->view->completed($supplement);
+        }
+        if ($supplement->totalCost == 0) {
+            if ($this->factory->completeFree($supplement)) {
+                return $this->view->completed($supplement);
+            } else {
+                throw new \Exception('Supplement with cost could not be merged to registration');
+            }
+        } else {
+            return $this->view->paymentDue($supplement);
+        }
     }
 
     /**
