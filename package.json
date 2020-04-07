@@ -40,6 +40,7 @@
     "babel-loader": "^8.1.0",
     "browser-sync": "^2.26.7",
     "browser-sync-webpack-plugin": "^2.2.2",
+    "canopy-react-bigcheckbox": "^0.1.9",
     "css-loader": "^1.0.1",
     "dayjs": "^1.8.23",
     "es6-promise": "^4.2.8",
