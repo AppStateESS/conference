@@ -11,7 +11,7 @@ export default class Login extends Component {
       password: '',
       capWarning: '',
       emailError: false,
-      loginError: false
+      loginError: false,
     }
     this.post = this.post.bind(this)
     this.postOnEnter = this.postOnEnter.bind(this)
@@ -22,14 +22,16 @@ export default class Login extends Component {
   }
 
   post() {
+    const {email, password} = this.state
     $.ajax({
       url: './conference/User/Visitor/login',
       data: {
-        ...this.state
+        email,
+        password,
       },
       dataType: 'json',
       type: 'post',
-      success: data => {
+      success: (data) => {
         if (data.success) {
           location.href = location.href.replace(
             /conference\/User\/Visitor\/login$/,
@@ -39,7 +41,7 @@ export default class Login extends Component {
           this.setState({loginError: true})
         }
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -52,7 +54,7 @@ export default class Login extends Component {
   checkCaps(e) {
     if (e.getModifierState('CapsLock')) {
       this.setState({
-        capWarning: e.keyCode !== 20
+        capWarning: e.keyCode !== 20,
       })
     } else {
       this.setState({capWarning: false})
@@ -70,7 +72,7 @@ export default class Login extends Component {
   checkEmail() {
     const expression = /\S+@\S+/
     this.setState({
-      emailError: !expression.test(String(this.state.email).toLowerCase())
+      emailError: !expression.test(String(this.state.email).toLowerCase()),
     })
   }
 
@@ -144,7 +146,7 @@ export default class Login extends Component {
             className="form-control"
             value={this.state.password}
             onKeyPress={this.postOnEnter}
-            onChange={e => this.setState({password: e.target.value})}
+            onChange={(e) => this.setState({password: e.target.value})}
             onKeyUp={this.checkCaps}
           />
           <span>{capWarning}</span>
