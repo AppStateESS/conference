@@ -60,11 +60,13 @@ class SessionFactory extends BaseFactory
             $cond = $db->createConditional($sessionTbl->getField('id'),
                     $regTbl->getField('sessionId'));
             $cond2 = $db->createConditional($regTbl->getField('cancelled'), 0);
-            $cond3 = $db->createConditional($cond, $cond2);
+            $cond3 = $db->createConditional($regTbl->getField('completed'), 1);
+            $cond4 = $db->createConditional($cond2, $cond3);
+            $cond5 = $db->createConditional($cond, $cond4);
             $db->joinResources($sessionTbl, $regTbl,
-                    $cond3
+                    $cond5
                     , 'left');
-            $regTbl->addFieldConditional('completed', 1);
+            //$regTbl->addFieldConditional('completed', 1);
             if (!empty($options['guestCount'])) {
                 $guestTbl = $db->addTable('conf_guest');
                 $count2 = new \phpws2\Database\Expression('count(' . $guestTbl->getField('id') . ')',
