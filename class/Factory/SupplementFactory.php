@@ -264,4 +264,28 @@ class SupplementFactory extends BaseFactory
         $db->delete();
     }
 
+    public function completeFree(SupplementResource $supplement)
+    {
+        $registrationFactory = new RegistrationFactory();
+        $registration = $registrationFactory->load($supplement->registrationId);
+        $session = $registrationFactory->getSession($registration);
+
+        if ($supplement->completed == 0) {
+            if ($session->guestCost > 0 || $session->mealCost > 0) {
+                if ($supplement->newGuests > 0 && $session->guestCost > 0) {
+                    return false;
+                }
+                if ($supplement->newMeals > 0 && $session->mealCost > 0) {
+                    return false;
+                }
+            }
+            $supplement->completed = true;
+            $supplement->stampClose();
+            $this->save($supplement);
+            $this->appendRegistration($supplement);
+            LogFactory::log('Applied supplement that did not increase cost.');
+            return true;
+        }
+    }
+
 }
