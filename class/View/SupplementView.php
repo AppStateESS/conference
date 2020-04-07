@@ -78,4 +78,20 @@ class SupplementView extends AbstractView
         return $template->get();
     }
 
+    public function completed(SupplementResource $supplement)
+    {
+        $conferenceFactory = new ConferenceFactory;
+        $sessionFactory = new SessionFactory;
+        $registrationFactory = new RegistrationFactory;
+        $registration = $registrationFactory->load($supplement->registrationId);
+        $conference = $conferenceFactory->load($registration->conferenceId);
+        $session = $sessionFactory->load($registration->sessionId);
+        $vars['conferenceTitle'] = $conference->title;
+        $vars['sessionTitle'] = $session->title;
+
+        $template = new Template($vars);
+        $template->setModuleTemplate('conference', 'Supplement/Completed.html');
+        return $template->get();
+    }
+
 }
