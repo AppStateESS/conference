@@ -66,7 +66,7 @@ class Module extends \Canopy\Module implements SettingDefaults
 
     public function getSettingDefaults()
     {
-        $settings = array('contactName' => '', 'contactEmail' => '', 'defaultConference' => 0);
+        $settings = array('contactName' => '', 'contactEmail' => '', 'defaultConference' => 0, 'bannerApi' => 0);
         return $settings;
     }
 
