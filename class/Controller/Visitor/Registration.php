@@ -143,7 +143,10 @@ class Registration extends SubController
                 return $this->view->payOnSite($registration, $payment);
             }
         } else {
-            return $this->view->complete();
+            if ($registration->completed == 0 && $registration->totalCost == 0) {
+                $this->factory->completeFree($registration);
+            }
+            return $this->view->view($this->id, VisitorFactory::getCurrentId());
         }
     }
 
