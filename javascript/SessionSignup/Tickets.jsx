@@ -35,7 +35,7 @@ export default class Tickets extends Component {
             className="form-control"
             value={registration.guestCount}
             onChange={update.bind(null, 'guestCount')}>
-            {options.map(v => {
+            {options.map((v) => {
               return v
             })}
           </select>
@@ -135,6 +135,16 @@ export default class Tickets extends Component {
 
   pricing() {
     const {session, student, registration} = this.props
+    let registrationNote = (
+      <span className="small">
+        Registration cost covers one parent&apos;s attendance
+      </span>
+    )
+    if (session.registerCost == 0) {
+      registrationNote = (
+        <div className="badge badge-success">Registration is free!</div>
+      )
+    }
     let discount
     let finalPrice = session.registerCost
     if (student.discountAmount) {
@@ -147,9 +157,7 @@ export default class Tickets extends Component {
         <th>
           <span>Registration cost:</span>
           <br />
-          <span className="small">
-            Registration cost covers one parent&apos;s attendance
-          </span>
+          {registrationNote}
         </th>
         <td>
           ${session.registerCost.toFixed(2)}
@@ -253,7 +261,7 @@ Tickets.propTypes = {
   totalCost: PropTypes.func,
   student: PropTypes.object,
   questions: PropTypes.bool,
-  back: PropTypes.func
+  back: PropTypes.func,
 }
 
 Tickets.defaultProps = {}
