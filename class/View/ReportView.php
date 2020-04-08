@@ -42,7 +42,7 @@ class ReportView extends AbstractView
                 $registrations);
         $csv = array();
 
-        $csvRow[0] = '"created","updated", "cancelled", "cancel date","cancelled by","visitor","guest count","extra meals","vegetarian","total cost","paid", "discount", "completed", "refund amount", "arrived", "arrival time"';
+        $csvRow[0] = '"created","updated", "cancelled", "cancel date","cancelled by","visitor", "email", "guest count","extra meals","vegetarian","total cost","paid", "discount", "completed", "refund amount", "arrived", "arrival time"';
         if (!empty($answers)) {
             $csvRow[0] .= ', "' . implode('", "', array_keys(current($answers))) . '"';
         }
@@ -56,6 +56,7 @@ class ReportView extends AbstractView
                             $reg['cancelledDate']) : '';
             $sub[] = $reg['cancelledBy'];
             $sub[] = $reg['lastName'] . ', ' . $reg['firstName'];
+            $sub[] = $reg['email'];
             $sub[] = $reg['guestCount'];
             $sub[] = $reg['mealTickets'];
             $sub[] = $reg['veggieMeals'];

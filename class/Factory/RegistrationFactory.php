@@ -121,6 +121,7 @@ class RegistrationFactory extends BaseFactory
             $visTbl = $db->addTable('conf_visitor');
             $visTbl->addField('firstName');
             $lastNameField = $visTbl->addField('lastName');
+            $visTbl->addField('email');
             $visitorConditional = $db->createConditional($tbl->getField('visitorId'),
                     $visTbl->getField('id'));
             $db->joinResources($tbl, $visTbl, $visitorConditional, 'left');
