@@ -88,6 +88,7 @@ class SupplementView extends AbstractView
         $session = $sessionFactory->load($registration->sessionId);
         $vars['conferenceTitle'] = $conference->title;
         $vars['sessionTitle'] = $session->title;
+        $vars['registrationId'] = $registration->id;
 
         $template = new Template($vars);
         $template->setModuleTemplate('conference', 'Supplement/Completed.html');
