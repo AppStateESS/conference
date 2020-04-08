@@ -10,9 +10,10 @@ const Refund = ({registrationId}) => {
   const [registration, setRegistration] = useState({
     id: 0,
     amount: 0,
-    registrationId
+    registrationId,
   })
   const [session, setSession] = useState({id: 0})
+  const [visitor, setVisitor] = useState({id: 0})
   const [guests, setGuests] = useState([])
   const [loading, setLoading] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
@@ -22,12 +23,12 @@ const Refund = ({registrationId}) => {
       url: `conference/Admin/Registration/${registrationId}`,
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         setRegistration(data)
       },
-      error: data => {
+      error: (data) => {
         showError(data)
-      }
+      },
     })
   }, [])
 
@@ -39,12 +40,22 @@ const Refund = ({registrationId}) => {
       url: `conference/Admin/Session/${registration.sessionId}`,
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         setSession(data)
       },
-      error: data => {
+      error: (data) => {
         showError(data)
-      }
+      },
+    })
+
+    $.ajax({
+      url: `conference/Admin/Visitor/${registration.visitorId}`,
+      dataType: 'json',
+      type: 'get',
+      success: (data) => {
+        setVisitor(data)
+      },
+      error: () => {},
     })
   }, [registration])
 
@@ -57,19 +68,32 @@ const Refund = ({registrationId}) => {
       data: {registrationId},
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         setGuests(data)
         setLoading(false)
       },
-      error: data => {
+      error: (data) => {
         showError(data)
-      }
+      },
     })
   }, [session])
 
-  const showError = e => {
+  const showError = (e) => {
     setErrorMessage('Error: ' + e.responseJSON.exception.message)
     setLoading(false)
+  }
+
+  const getTitle = () => {
+    return (
+      <div>
+        <h2 className="mb-1">
+          Session: {session.title} {session.eventDateFormat}
+        </h2>
+        <h3 className="mb-4">
+          Refund registration for {visitor.firstName} {visitor.lastName}
+        </h3>
+      </div>
+    )
   }
 
   if (loading) {
@@ -79,11 +103,10 @@ const Refund = ({registrationId}) => {
   if (errorMessage) {
     return <div className="alert alert-danger">{errorMessage}</div>
   }
-
   if (registration.cancelledBy.length > 0) {
     return (
       <div>
-        <h2>Refund registration: {session.title}</h2>
+        {getTitle()}
         <p>
           This registration was previously cancelled on{' '}
           {registration.cancelledDate} by {registration.cancelledBy}.
@@ -101,7 +124,7 @@ const Refund = ({registrationId}) => {
   if (registration.refundAmount > 0 && registration.totalCost == 0) {
     return (
       <div>
-        <h2>Refund registration: {session.title}</h2>
+        {getTitle()}
         <div>This registration was completely refunded.</div>
       </div>
     )
@@ -109,8 +132,7 @@ const Refund = ({registrationId}) => {
 
   return (
     <div>
-      <h2>Refund registration: {session.title}</h2>
-
+      {getTitle()}
       <RefundForm
         registration={registration}
         session={session}
@@ -121,7 +143,7 @@ const Refund = ({registrationId}) => {
 }
 
 Refund.propTypes = {
-  registrationId: PropTypes.number
+  registrationId: PropTypes.number,
 }
 
 ReactDOM.render(
