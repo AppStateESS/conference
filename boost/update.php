@@ -182,6 +182,8 @@ class ConferenceUpdate
                 $this->content[] = '1.4.0';
                 $this->content[] = '------------------------';
                 $this->content[] = 'Added onsite login';
+                $this->content[] = 'New code for free registration';
+                $this->content[] = 'Added ability to disable the visitor interaction';
                 $this->content[] = '</pre>';
         }
         return $this->content;
@@ -208,7 +210,7 @@ class ConferenceUpdate
     {
         $db = Database::getDB();
         $tbl = $db->addTable('conf_locked');
-        $sessionId = $tbl->addDataType('sessionId', 'smallint');
+        $sessionId = $tbl->addDataType('sessionId', 'int');
         $sessionId->add();
     }
 
