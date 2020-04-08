@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import GuestListing from './GuestListing'
+import BigCheckbox from 'canopy-react-bigcheckbox'
 
 /* global $ */
 
@@ -11,6 +12,7 @@ const RefundForm = ({registration, session, guests}) => {
   const [mealReduction, setMealReduction] = useState(0)
   const [guestReduction, setGuestReduction] = useState(0)
   const [guestRemoved, setGuestRemoved] = useState([])
+  const [cancel, setCancel] = useState(true)
 
   useEffect(() => {
     const totalReduction =
@@ -18,7 +20,7 @@ const RefundForm = ({registration, session, guests}) => {
     setRefundAmount(totalReduction)
   }, [guestReduction, mealReduction])
 
-  const toggleGuest = id => {
+  const toggleGuest = (id) => {
     const found = guestRemoved.indexOf(id)
     if (found === -1) {
       guestRemoved.push(id)
@@ -37,13 +39,13 @@ const RefundForm = ({registration, session, guests}) => {
     ) {
       $.ajax({
         url: 'conference/Admin/Refund/full',
-        data: {registrationId: registration.id},
+        data: {registrationId: registration.id, cancel},
         dataType: 'json',
         type: 'post',
         success: () => {
           window.location.href = `conference/Admin/Payment/?registrationId=${registration.id}`
         },
-        error: () => {}
+        error: () => {},
       })
     }
   }
@@ -148,14 +150,14 @@ const RefundForm = ({registration, session, guests}) => {
           refundAmount,
           mealReduction,
           guestRemoved,
-          guestReduction
+          guestReduction,
         },
         dataType: 'json',
         type: 'post',
         success: () => {
           window.location.href = `conference/Admin/Payment/?registrationId=${registration.id}`
         },
-        error: () => {}
+        error: () => {},
       })
     }
   }
@@ -184,6 +186,14 @@ const RefundForm = ({registration, session, guests}) => {
           {registration.amountPaid.toFixed(2)})
         </button>
       </div>
+
+      <div className="d-flex justify-content-center">
+        <BigCheckbox
+          label="Cancel registration"
+          checked={cancel}
+          handle={setCancel}
+        />
+      </div>
     </div>
   )
 }
@@ -192,7 +202,7 @@ RefundForm.propTypes = {
   registration: PropTypes.object,
   session: PropTypes.object,
   close: PropTypes.func,
-  guests: PropTypes.array
+  guests: PropTypes.array,
 }
 
 export default RefundForm

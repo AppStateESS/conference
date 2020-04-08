@@ -24,7 +24,8 @@ class RefundFactory extends BaseFactory
         return $refund;
     }
 
-    public function emailInfo(RefundResource $refund, $complete = false)
+    public function emailInfo(RefundResource $refund, $complete = false,
+            $cancelled = true)
     {
         $registrationFactory = new RegistrationFactory;
         $registration = $registrationFactory->load($refund->registrationId);
@@ -41,7 +42,13 @@ class RefundFactory extends BaseFactory
         $template = new \phpws2\Template($vars);
 
         if ($complete) {
-            $template->setModuleTemplate('conference', 'Email/FullRefund.html');
+            if ($cancelled) {
+                $template->setModuleTemplate('conference',
+                        'Email/FullRefund.html');
+            } else {
+                $template->setModuleTemplate('conference',
+                        'Email/FullRefundNoCancel.html');
+            }
         } else {
             $template->setModuleTemplate('conference',
                     'Email/PartialRefund.html');
@@ -73,7 +80,9 @@ class RefundFactory extends BaseFactory
         $registration->totalCost = 0;
         $registration->mealTickets = 0;
         $registration->guestCount = 0;
-        $registrationFactory->cancel($registration);
+        if ($cancel) {
+            $registrationFactory->cancel($registration);
+        }
         $registrationFactory->save($registration);
         $guestFactory = new GuestFactory;
         $guestFactory->deleteByRegistrationId($registrationId);

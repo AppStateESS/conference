@@ -51,8 +51,9 @@ class Refund extends SubController
     protected function fullPost(Request $request)
     {
         $registrationId = $request->pullPostInteger('registrationId');
-        $refund = $this->factory->refundRegistration($registrationId);
-        $this->factory->emailInfo($refund, true);
+        $cancel = $request->pullPostBoolean('cancel');
+        $refund = $this->factory->refundRegistration($registrationId, $cancel);
+        $this->factory->emailInfo($refund, true, $cancel);
         \conference\Factory\LogFactory::log("Full registration refund.");
         return ['success' => 1];
     }
