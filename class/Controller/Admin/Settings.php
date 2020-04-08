@@ -25,11 +25,6 @@ class Settings extends SubController
      */
     protected $view;
 
-    /**
-     * @var conference\Factory\SettingsFactory
-     */
-    protected $factory;
-
     protected function loadView()
     {
         $this->view = new View;
@@ -64,6 +59,19 @@ class Settings extends SubController
     {
         $api = $request->pullPostBoolean('bannerApi');
         SettingsFactory::setBannerApi($api);
+        return ['success' => true];
+    }
+
+    protected function isDisabledJson(Request $request)
+    {
+        return ['disabled' => SettingsFactory::getDisabled()];
+    }
+
+    protected function setDisabledPost(Request $request)
+    {
+        $disabled = $request->pullPostBoolean('disabled');
+        SettingsFactory::setDisabled($disabled);
+
         return ['success' => true];
     }
 

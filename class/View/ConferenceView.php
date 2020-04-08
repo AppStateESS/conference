@@ -18,6 +18,7 @@ use conference\Factory\VisitorFactory;
 use conference\Factory\RegistrationFactory;
 use conference\Factory\SupplementFactory;
 use conference\View\SessionView;
+use conference\Factory\SettingsFactory;
 
 class ConferenceView extends AbstractView
 {
@@ -85,8 +86,12 @@ class ConferenceView extends AbstractView
                 $vars['supplement'] = $supplement->getStringVars();
             }
         }
-        $vars['form'] = $this->scriptView('SessionMatchForm',
-                ['conferenceId' => $conferenceId]);
+        if (SettingsFactory::getDisabled()) {
+            $vars['form'] = \conference\View\SettingsView::disabled();
+        } else {
+            $vars['form'] = $this->scriptView('SessionMatchForm',
+                    ['conferenceId' => $conferenceId]);
+        }
         $template = new Template($vars);
         $template->setModuleTemplate('conference',
                 'Conference/SessionMatch.html');
@@ -95,7 +100,7 @@ class ConferenceView extends AbstractView
 
     private function showConferences()
     {
-        $conferenceId = \conference\Factory\SettingsFactory::getDefaultConference();
+        $conferenceId = SettingsFactory::getDefaultConference();
         if ($conferenceId) {
             if (VisitorFactory::isLoggedIn()) {
                 return $this->visitorView($conferenceId,
@@ -134,6 +139,9 @@ class ConferenceView extends AbstractView
 
     private function onsiteRegistration()
     {
+        if (SettingsFactory::isDisabled()) {
+            return SettingsView::disabled();
+        }
         VisitorFactory::clearCurrent();
         $sessionId = \conference\Factory\LockedFactory::lockedSessionId();
         return $this->scriptView('Onsite', ['sessionId' => $sessionId]);

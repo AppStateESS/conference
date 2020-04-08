@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom'
 import Contact from './Contact'
 import FrontPage from './FrontPage'
 import BannerStudent from './BannerStudent'
+import Disable from './Disable'
 import dayjs from 'dayjs'
 
 /* global $, bannerApiSetting */
@@ -18,7 +19,7 @@ export default class Settings extends Component {
       sessions: [],
       sessionId: 0,
       currentLocked: {},
-      error: null
+      error: null,
     }
     this.section = 'Settings'
     this.lockedListing = this.lockedListing.bind(this)
@@ -49,10 +50,10 @@ export default class Settings extends Component {
       data: {},
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         this.setState({sessions: data.listing})
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -64,7 +65,7 @@ export default class Settings extends Component {
       success: () => {
         this.loadLocked()
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -78,7 +79,7 @@ export default class Settings extends Component {
       success: () => {
         this.loadLocked()
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -87,13 +88,13 @@ export default class Settings extends Component {
       url: 'conference/Admin/Locked',
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         this.setState({
           locked: data.listing,
-          currentLockedId: data.currentLockedId
+          currentLockedId: data.currentLockedId,
         })
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -112,7 +113,7 @@ export default class Settings extends Component {
       success: () => {
         this.loadLocked()
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -177,7 +178,7 @@ export default class Settings extends Component {
           <select
             className="form-control"
             value={sessionId.id}
-            onChange={e => {
+            onChange={(e) => {
               this.setState({sessionId: e.target.value})
             }}>
             <option value="0">Choose an uncoming session below</option>
@@ -209,6 +210,7 @@ export default class Settings extends Component {
         {this.navbar}
         <h2>Settings</h2>
         {this.getError()}
+        <Disable />
         <Contact />
         <FrontPage />
         <BannerStudent bannerApiSetting={bannerApiSetting} />
@@ -237,7 +239,7 @@ export default class Settings extends Component {
 }
 
 Settings.propTypes = {
-  locked: PropTypes.string
+  locked: PropTypes.string,
 }
 
 ReactDOM.render(<Settings />, document.getElementById('Settings'))

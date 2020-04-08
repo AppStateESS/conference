@@ -51,6 +51,16 @@ class SettingsFactory
         Settings::set('conference', 'bannerApi', (bool) $api);
     }
 
+    public static function setDisabled($disabled)
+    {
+        Settings::set('conference', 'disabled', (bool) $disabled);
+    }
+
+    public static function getDisabled()
+    {
+        return Settings::get('conference', 'disabled');
+    }
+
     /**
      * Returns a SwiftMailer ready reply-to address
      * @param bool $onlyNoReply If true, return the no-reply version

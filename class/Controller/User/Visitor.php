@@ -185,4 +185,14 @@ class Visitor extends SubController
         return ['success' => true];
     }
 
+    public function getHtml(Request $request)
+    {
+        if (SettingsFactory::getDisabled()) {
+            $content = \conference\View\SettingsView::disabled();
+            return $this->htmlResponse($content);
+        } else {
+            return parent::getHtml($request);
+        }
+    }
+
 }

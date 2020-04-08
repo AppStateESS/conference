@@ -58,6 +58,9 @@ class Session extends SubController
 
     protected function signupHtml(Request $request)
     {
+        if (\conference\Factory\SettingsFactory::getDisabled()) {
+            return \conference\View\SettingsView::disabled();
+        }
         $regFactory = new RegistrationFactory;
         $visitorId = VisitorFactory::getCurrentId();
         $studentId = $request->pullGetInteger('studentId');
