@@ -26,6 +26,13 @@ abstract class BaseFactory extends \phpws2\ResourceFactory
 
     abstract public function build();
 
+    /**
+     *
+     * @param int $id
+     * @param type $throwException
+     * @return Resource
+     * @throws ResourceNotFound
+     */
     public function load(int $id, $throwException = true)
     {
         if (empty($id)) {
