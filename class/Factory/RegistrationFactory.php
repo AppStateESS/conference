@@ -229,6 +229,8 @@ class RegistrationFactory extends BaseFactory
             $registration->completed = 1;
             $this->save($registration);
             $this->emailDetails($registration);
+            $paymentFactory = new PaymentFactory();
+            $paymentFactory->closeFreePayments($registration->id);
         }
     }
 
