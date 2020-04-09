@@ -35,6 +35,7 @@ class SupplementFactory extends BaseFactory
 
         $registrationId = $request->pullPostInteger('registrationId');
         $registration = $registrationFactory->load($registrationId);
+        $session = $registrationFactory->getSession($registration);
         $visitor = $visitorFactory->load($registration->visitorId);
         $newGuests = $request->pullPostInteger('newGuests');
         $newMeals = $request->pullPostInteger('newMeals');
@@ -43,7 +44,7 @@ class SupplementFactory extends BaseFactory
             $guestArray = [];
         }
 
-        // if the registration is incomplete, don't make a supplement, append the
+        // if the registration is incomplete or the session is free don't make a supplement, append the
         // registration
         if (!$registration->completed) {
             $registrationFactory->adminUpdate($registration, $guestArray,
@@ -64,6 +65,10 @@ class SupplementFactory extends BaseFactory
         $this->createPayment($supplement, $visitor);
 
         $guestFactory->saveSupplement($supplement, $guestArray);
+
+        if ($supplement->totalCost == 0) {
+            $this->completeFree($supplement);
+        }
 
         LogFactory::log('New supplement posted administratively', $supplement);
     }
@@ -283,6 +288,8 @@ class SupplementFactory extends BaseFactory
             $supplement->stampClose();
             $this->save($supplement);
             $this->appendRegistration($supplement);
+            $paymentFactory = new PaymentFactory();
+            $paymentFactory->closeFreePayments($registration->id);
             LogFactory::log('Applied supplement that did not increase cost.');
             return true;
         }
