@@ -91,13 +91,13 @@ export default class Payment extends Component {
     })
   }
 
-  update(varname, value) {
+  update(varname, value, callback = null) {
     if (typeof value === 'object') {
       value = value.target.value
     }
     const {currentPayment} = this.state
     currentPayment[varname] = value
-    this.setState({currentPayment})
+    this.setState({currentPayment}, callback)
   }
 
   checkTotalCost() {
@@ -199,6 +199,11 @@ export default class Payment extends Component {
       },
       error: () => {},
     })
+  }
+
+  closeFreePayment() {
+    this.update('paymentType', 'free')
+    this.update('amount', 0, this.save)
   }
 
   paymentListing() {
@@ -352,35 +357,47 @@ export default class Payment extends Component {
           </div>
         )
       } else {
-        if (currentPayment.supplementId > 0) {
-          buttonLabel = `Complete current supplemental payment: $${currentPayment.amount.toFixed(
-            2
-          )}`
-          cancelSupplement = (
-            <div className="mb-3 text-center">
-              <button
-                className="btn btn-danger"
-                onClick={() => {
-                  this.cancelSupplement()
-                }}>
-                Cancel the current supplement
-              </button>
-            </div>
+        if (session.registerCost == 0 && registration.totalCost == 0) {
+          payButton = (
+            <button
+              className="btn btn-danger btn-block"
+              onClick={() => {
+                this.closeFreePayment()
+              }}>
+              Close out free payment
+            </button>
           )
         } else {
-          buttonLabel = `Complete current registration payment: $${currentPayment.amount.toFixed(
-            2
-          )}`
+          if (currentPayment.supplementId > 0) {
+            buttonLabel = `Complete current supplemental payment: $${currentPayment.amount.toFixed(
+              2
+            )}`
+            cancelSupplement = (
+              <div className="mb-3 text-center">
+                <button
+                  className="btn btn-danger"
+                  onClick={() => {
+                    this.cancelSupplement()
+                  }}>
+                  Cancel the current supplement
+                </button>
+              </div>
+            )
+          } else {
+            buttonLabel = `Complete current registration payment: $${currentPayment.amount.toFixed(
+              2
+            )}`
+          }
+          payButton = (
+            <button
+              className="btn btn-success btn-block"
+              onClick={() => {
+                this.setState({overlay: true, overlayType: 'payment'})
+              }}>
+              {buttonLabel}
+            </button>
+          )
         }
-        payButton = (
-          <button
-            className="btn btn-success btn-block"
-            onClick={() => {
-              this.setState({overlay: true, overlayType: 'payment'})
-            }}>
-            {buttonLabel}
-          </button>
-        )
       }
     }
 
