@@ -4,18 +4,18 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import GuestList from './GuestList'
 
-/* global registrationId, mealCost, guestCost, mealService */
+/* global registrationId, mealCost, guestCost, mealService, registerCost */
 
 const SupplementAdmin = ({
   registrationId,
   mealCost,
   guestCost,
-  mealService
+  mealService,
 }) => {
   const defaultGuest = {
     email: '',
     firstName: '',
-    lastName: ''
+    lastName: '',
   }
   const [newGuests, setNewGuests] = useState(0)
   const [newMeals, setNewMeals] = useState(0)
@@ -76,7 +76,7 @@ const SupplementAdmin = ({
   const guestsCompleted = () => {
     let completed = true
     if (newGuests !== 0) {
-      guests.forEach(value => {
+      guests.forEach((value) => {
         if (
           value.firstName.length === 0 ||
           value.lastName.length === 0 ||
@@ -89,7 +89,7 @@ const SupplementAdmin = ({
     return completed
   }
 
-  const saveSupplement = e => {
+  const saveSupplement = (e) => {
     e.preventDefault()
     if (!guestsCompleted()) {
       setError(
@@ -136,6 +136,28 @@ const SupplementAdmin = ({
     })
     return hidden
   }
+
+  let addChargeButton
+  if (registerCost > 0) {
+    addChargeButton = (
+      <button
+        className="btn btn-primary btn-block"
+        disabled={newMeals === 0 && newGuests === 0}
+        onClick={saveSupplement}>
+        Add ${totalCost.toFixed(2)} charge to registration
+      </button>
+    )
+  } else {
+    addChargeButton = (
+      <button
+        className="btn btn-primary btn-block"
+        disabled={newMeals === 0 && newGuests === 0}
+        onClick={saveSupplement}>
+        Save additions to registration
+      </button>
+    )
+  }
+
   return (
     <div>
       {error}
@@ -198,14 +220,7 @@ const SupplementAdmin = ({
         {guestsHidden()}
         <input type="hidden" name="newMeals" value={newMeals} />
         <input type="hidden" name="newGuests" value={newGuests} />
-        <div>
-          <button
-            className="btn btn-primary btn-block"
-            disabled={newMeals === 0 && newGuests === 0}
-            onClick={saveSupplement}>
-            Add ${totalCost.toFixed(2)} charge to registration
-          </button>
-        </div>
+        <div>{addChargeButton}</div>
       </form>
     </div>
   )
@@ -214,7 +229,7 @@ const SupplementAdmin = ({
 SupplementAdmin.propTypes = {
   registrationId: PropTypes.number,
   mealCost: PropTypes.number,
-  guestCost: PropTypes.number
+  guestCost: PropTypes.number,
 }
 
 export default SupplementAdmin
