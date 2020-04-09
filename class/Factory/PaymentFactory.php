@@ -26,10 +26,31 @@ use phpws2\Database;
 class PaymentFactory extends BaseFactory
 {
 
-    public function build()
+    public function build($vars = null)
     {
         $payment = new Resource;
+        if (is_array($vars)) {
+            $payment->setVars($vars);
+        }
         return $payment;
+    }
+
+    public function closeFreePayments(int $registrationId)
+    {
+        $payments = $this->listing(['registrationId' => $registrationId]);
+        if (empty($payments)) {
+            throw new \Exception("No payments found for registration");
+        }
+
+        foreach ($payments as $row) {
+            $payment = $this->build($row);
+            if (!$payment->completed) {
+                $payment->amount = 0;
+                $payment->paymentType = 'free';
+                $payment->completed = 1;
+                $this->save($payment);
+            }
+        }
     }
 
     public function listing(array $options = []): array
