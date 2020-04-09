@@ -304,8 +304,14 @@ class PaymentFactory extends BaseFactory
     public function updateAmountDue(RegistrationResource $registration)
     {
         $amountDue = $registration->amountDue();
-        $payment = $this->getIncomplete($registration);
+        $payment = $this->getCurrentRegistrationPayment($registration);
+        if (empty($payment)) {
+            return;
+        }
         $payment->amount = $amountDue;
+        if ($amountDue == 0) {
+            $payment->completed = true;
+        }
         $this->save($payment);
     }
 
