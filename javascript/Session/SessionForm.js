@@ -17,9 +17,9 @@ class SessionForm extends Component {
         title: null,
         eventDate: null,
         startTime: null,
-        signupDate: null
+        signupDate: null,
       },
-      errorFound: false
+      errorFound: false,
     }
     this.titleRef = React.createRef()
     this.numberChange = this.numberChange.bind(this)
@@ -77,7 +77,10 @@ class SessionForm extends Component {
   }
 
   numberChange(varname, e) {
-    const value = e.target.value.replace(/[^\d\.]/g, '')
+    let value = e.target.value.replace(/[^\d\.]/g, '')
+    if (value === '') {
+      value = '0'
+    }
     this.props.update(varname, value)
   }
 
@@ -87,7 +90,7 @@ class SessionForm extends Component {
       title: null,
       eventDate: null,
       startTime: null,
-      signupDate: null
+      signupDate: null,
     }
     const {
       title,
@@ -95,7 +98,7 @@ class SessionForm extends Component {
       startTime,
       endTime,
       signupStart,
-      signupEnd
+      signupEnd,
     } = this.props.resource
     if (title.length === 0) {
       errors.title = 'Title may not be empty'
@@ -218,7 +221,7 @@ class SessionForm extends Component {
       days,
       mealService,
       allowGuest,
-      registrationCount
+      registrationCount,
     } = this.props.resource
     const {update} = this.props
     let eventDateObject
@@ -512,6 +515,6 @@ SessionForm.propTypes = {
   locations: PropTypes.array,
   conference: PropTypes.object,
   save: PropTypes.func,
-  close: PropTypes.func
+  close: PropTypes.func,
 }
 export default SessionForm
