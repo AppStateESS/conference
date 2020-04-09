@@ -15,7 +15,7 @@ export default class Reports extends Component {
       currentSessionKey: -1,
       currentConference: {title: 'n/a'},
       currentSession: {title: 'n/a'},
-      registrationCount: 0
+      registrationCount: 0,
     }
     this.setConference = this.setConference.bind(this)
     this.setSession = this.setSession.bind(this)
@@ -30,10 +30,10 @@ export default class Reports extends Component {
       url: 'conference/Admin/Conference',
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         this.setState({conferences: data.listing})
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -47,10 +47,10 @@ export default class Reports extends Component {
       data: {conferenceId: this.state.currentConference.id},
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         this.setState({sessions: data.listing, currentSession: {title: 'n/a'}})
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -60,10 +60,10 @@ export default class Reports extends Component {
       data: {sessionId: this.state.currentSession.id},
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         this.setState({registrationCount: data.count})
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -77,7 +77,7 @@ export default class Reports extends Component {
     this.setState(
       {
         currentConference: this.state.conferences[key],
-        currentConferenceKey: key
+        currentConferenceKey: key,
       },
       this.loadSessions
     )
@@ -91,7 +91,7 @@ export default class Reports extends Component {
     this.setState(
       {
         currentConference: {title: 'n/a'},
-        currentConferenceKey: -1
+        currentConferenceKey: -1,
       },
       this.resetSession
     )
@@ -123,8 +123,8 @@ export default class Reports extends Component {
       )
     })
     return (
-      <div className="row">
-        <div className="col-sm-6">
+      <div>
+        <div className="mb-4">
           <select
             className="form-control"
             value={this.state.currentSessionKey}
@@ -133,9 +133,11 @@ export default class Reports extends Component {
             {sessOptions}
           </select>
         </div>
-        <div className="col-sm-6">
-          <span className="pr-2">{this.downloadRegistrationsButton()}</span>
-          <span>{this.downloadPaymentsButton()}</span>
+
+        <div className="d-flex justify-content-around">
+          <div>{this.downloadRegistrationsButton()}</div>
+          <div>{this.downloadPaymentsButton()}</div>
+          <div>{this.downloadRefundsButton()}</div>
         </div>
       </div>
     )
@@ -209,6 +211,22 @@ export default class Reports extends Component {
       <a className="btn btn-primary" href={downloadLink}>
         <i className="fas fa-download" />
         &nbsp;Download registrations
+      </a>
+    )
+  }
+
+  downloadRefundsButton() {
+    if (this.state.currentSession.id === undefined) {
+      return
+    }
+    if (this.state.registrationCount === 0) {
+      return <p>No registrations found for this session.</p>
+    }
+    const downloadLink = `conference/Admin/Reports/refunds/?sid=${this.state.currentSession.id}`
+    return (
+      <a className="btn btn-primary" href={downloadLink}>
+        <i className="fas fa-download" />
+        &nbsp;Download refunds
       </a>
     )
   }

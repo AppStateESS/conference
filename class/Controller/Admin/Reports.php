@@ -39,15 +39,32 @@ class Reports extends SubController
     {
         $session = $this->getSession($request);
         $content = $this->view->registrations($session);
-        $filename = preg_replace('/\W/', '-', substr($session->title, 0, 20)) . '.csv';
+        $filename = $this->getFileName($session, 'registrations');
         $this->view->downloadCSV($content, $filename);
+    }
+
+    protected function refundsHtml(Request $request)
+    {
+        $session = $this->getSession($request);
+        $content = $this->view->refunds($session);
+        $filename = $this->getFileName($session, 'refunds');
+        $this->view->downloadCSV($content, $filename);
+    }
+
+    private function getFileName(\conference\Resource\SessionResource $session,
+            $type)
+    {
+        $sessionVars = $session->getStringVars();
+        $filename = $type . ' report -' . preg_replace('/\W/', '-',
+                        substr($session->title, 0, 25)) . ' - ' . $sessionVars['eventDateFormat'] . '.csv';
+        return $filename;
     }
 
     protected function paymentsHtml(Request $request)
     {
         $session = $this->getSession($request);
         $content = $this->view->payments($session);
-        $filename = preg_replace('/\W/', '-', substr($session->title, 0, 20)) . '.csv';
+        $filename = $this->getFileName($session, 'payments');
         $this->view->downloadCSV($content, $filename);
     }
 
@@ -63,7 +80,8 @@ class Reports extends SubController
     {
         $conference = $this->getConference($request);
         $content = $this->view->sessions($conference);
-        $filename = preg_replace('/\W/', '-', substr($conference->title, 0, 20)) . '.csv';
+        $filename = 'conference sessions report - ' . preg_replace('/\W/', '-',
+                        substr($conference->title, 0, 20)) . '.csv';
         $this->view->downloadCSV($content, $filename);
     }
 

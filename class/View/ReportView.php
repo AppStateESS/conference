@@ -28,6 +28,55 @@ class ReportView extends AbstractView
         exit();
     }
 
+    public function refunds(SessionResource $session)
+    {
+        $db = \phpws2\Database::getDB();
+        $refundTable = $db->addTable('conf_refund');
+        $refundTable->addField('amount');
+        $refundTable->addField('dateRefunded');
+        $refundTable->addField('username');
+
+        $regTable = $db->addTable('conf_registration');
+        $regTable->addField('cancelled');
+
+        $visitorTable = $db->addTable('conf_visitor');
+        $visitorTable->addField('firstName');
+        $visitorTable->addField('lastName');
+        $visitorTable->addField('email');
+
+
+        $regTable->addFieldConditional('sessionId', $session->id);
+        $cond = $db->createConditional($refundTable->getField('registrationId'),
+                $regTable->getField('id'));
+        $cond2 = $db->createConditional($regTable->getField('visitorId'),
+                $visitorTable->getField('id'));
+        $db->joinResources($refundTable, $regTable, $cond, 'left');
+        $db->joinResources($regTable, $visitorTable, $cond, 'left');
+        $db->setGroupBy($refundTable->getField('id'));
+        $refunds = $db->select();
+        if (empty($refunds)) {
+            return 'No registrations or refunds found for session #' . $session->id;
+        }
+        $csv = array();
+
+        $csvRow[0] = '"amount","dateRefunded", "refundedBy", "registrationCancelled","firstName", "lastName", "email"';
+
+        foreach ($refunds as $reg) {
+            $sub = [];
+            $sub[] = '$' . number_format($reg['amount'], 2, '.', ',');
+            $sub[] = strftime('%c', $reg['dateRefunded']);
+            $sub[] = $reg['username'];
+            $sub[] = $reg['cancelled'] ? 'Yes' : 'No';
+            $sub[] = $reg['firstName'];
+            $sub[] = $reg['lastName'];
+            $sub[] = $reg['email'];
+
+            $csvRow[] = '"' . implode('","', $sub) . '"';
+        }
+        $content = implode("\n", $csvRow);
+        return $content;
+    }
+
     public function registrations(SessionResource $session)
     {
         $factory = new \conference\Factory\RegistrationFactory;
@@ -82,19 +131,16 @@ class ReportView extends AbstractView
     {
         $paymentFactory = new \conference\Factory\PaymentFactory();
         $options['sessionId'] = $session->id;
-        $options['includeRefundAmount'] = true;
         $options['completedOnly'] = true;
-        $options['sessionName'] = true;
 
         $listing = $paymentFactory->listing($options);
         if (empty($listing)) {
             return "No payments found for session #$session->id - $session->title";
         }
         $csv = array();
-        $csvRow[] = '"session", "payerName","amount","paymentType","cardType","receipt", "datePaid", "checkNumber"';
+        $csvRow[] = '"payerName","amount","paymentType","cardType","receipt", "datePaid", "checkNumber"';
         foreach ($listing as $payment) {
             $sub = [];
-            $sub[] = $payment['sessionTitle'];
             $sub[] = $payment['payerName'];
             $sub[] = '$' . number_format($payment['amount'], 2, '.', ',');
             $sub[] = $payment['paymentType'];
