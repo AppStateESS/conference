@@ -184,6 +184,7 @@ class ConferenceUpdate
                 $this->content[] = 'Added onsite login';
                 $this->content[] = 'New code for free registration';
                 $this->content[] = 'Added ability to disable the visitor interaction';
+                $this->content[] = 'Added refund report';
                 $this->content[] = '</pre>';
         }
         return $this->content;
