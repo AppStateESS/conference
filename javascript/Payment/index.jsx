@@ -36,10 +36,10 @@ export default class Payment extends Component {
         amount: 0,
         payerName: '',
         paymentType: 'unpaid',
-        cardType: 0
+        cardType: 0,
       },
       currentCost: 0,
-      refunds: []
+      refunds: [],
     }
     this.overlayOn = this.overlayOn.bind(this)
     this.overlayOff = this.overlayOff.bind(this)
@@ -67,7 +67,7 @@ export default class Payment extends Component {
         success: () => {
           this.init()
         },
-        error: () => {}
+        error: () => {},
       })
     }
   }
@@ -87,7 +87,7 @@ export default class Payment extends Component {
       success: () => {
         this.update('accountId', this.state.conference.accountId)
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -102,7 +102,7 @@ export default class Payment extends Component {
 
   checkTotalCost() {
     this.setState({
-      currentCost: totalCost(this.state.registration, this.state.session)
+      currentCost: totalCost(this.state.registration, this.state.session),
     })
   }
 
@@ -114,23 +114,23 @@ export default class Payment extends Component {
         '/details',
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         this.setState({
           conference: data.conference,
           registration: data.registration,
           session: data.session,
           visitor: data.visitor,
           student: data.student,
-          guests: data.guests
+          guests: data.guests,
         })
         this.checkTotalCost()
       },
-      error: data => {
+      error: (data) => {
         this.setState({
           errorMessage: 'Error: ' + data.responseJSON.exception.message,
-          registration: {id: 0}
+          registration: {id: 0},
         })
-      }
+      },
     })
   }
 
@@ -141,7 +141,7 @@ export default class Payment extends Component {
       data: {registrationId},
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         const currentPayment =
           data.currentPayment !== null
             ? data.currentPayment
@@ -149,15 +149,15 @@ export default class Payment extends Component {
         currentPayment.cardType = 0
         this.setState({
           currentPayment: currentPayment,
-          completed: data.completed
+          completed: data.completed,
         })
       },
-      error: data => {
+      error: (data) => {
         this.setState({
           errorMessage: 'Error: ' + data.exception.message,
-          registration: {id: 0}
+          registration: {id: 0},
         })
-      }
+      },
     })
   }
 
@@ -167,23 +167,23 @@ export default class Payment extends Component {
       data: {id: this.state.registration.id},
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         this.setState({registration: data})
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
   overlayOn() {
     this.setState({
-      overlay: true
+      overlay: true,
     })
   }
 
   overlayOff() {
     this.setState({
       overlay: false,
-      currentKey: 0
+      currentKey: 0,
     })
   }
 
@@ -197,7 +197,7 @@ export default class Payment extends Component {
         this.init()
         this.overlayOff()
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -211,7 +211,7 @@ export default class Payment extends Component {
       )
     }
 
-    const payments = completed.map(value => {
+    const payments = completed.map((value) => {
       let payType
       switch (value.paymentType) {
         case 'cc-onsite':
@@ -228,6 +228,10 @@ export default class Payment extends Component {
 
         case 'cash':
           payType = 'Cash'
+          break
+
+        case 'free':
+          payType = 'Free'
           break
       }
 
@@ -279,7 +283,7 @@ export default class Payment extends Component {
       registration,
       guests,
       student,
-      currentPayment
+      currentPayment,
     } = this.state
     let costWarning
     if (registration.id === undefined) {
@@ -403,7 +407,7 @@ export default class Payment extends Component {
           onClick={() => {
             this.setState({
               overlay: true,
-              overlayType: 'refundInfo'
+              overlayType: 'refundInfo',
             })
           }}>
           Refund information
@@ -564,7 +568,7 @@ export default class Payment extends Component {
 }
 
 Payment.propTypes = {
-  registrationId: PropTypes.number
+  registrationId: PropTypes.number,
 }
 
 ReactDOM.render(
