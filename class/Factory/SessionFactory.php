@@ -343,4 +343,11 @@ class SessionFactory extends BaseFactory
         $this->save($session);
     }
 
+    public static function isFree(int $sessionId)
+    {
+        $factory = new self;
+        $session = $factory->load($sessionId);
+        return $session->registerCost == 0;
+    }
+
 }
