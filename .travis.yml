@@ -1,21 +1,21 @@
 sudo: false
 language: php
 php:
-  - 7
+- 7
 install:
-  - npm install
+- npm install
 script:
-  - '.travis-build/phplint .'
+- ".travis-build/phplint ."
 after_success:
-  - npm run build
-  - rm -rf node_modules
-  - tar -czf conference.tar.gz *
+- npm run build
+- rm -rf node_modules
+- tar -czf conference.tar.gz *
 deploy:
   provider: releases
   skip_cleanup: true
   api_key:
-    secure: EHOWsXElTPSdIPpTyXwpYigZ/GV0PKk8kbCtpeigfXzkPLNK03bVd21fq5teu96POB9MKf/BHserqh2Ace3/rz4QL37HAmsWHI68ard/dJ4K9PWGV/8mk13mEY/nqiVqzMJAF06FOOv7w7M9IYCc4Cngzn1PhDaZdsvvSfQ/MTgCaOAlPRGAl07FcJ8pYLMp5k++scUZWs5wGy+NX5yVW7+IXbRzCy9sAlcaWtaS26FDKQ2mD3Eb1QfxRZbsSWd2eal4z1/a5jNDzH9oRuOY4Vdq+quA3Qbh40lAiKkDWq4MlBiLLPC6uuoABV7Y8Gbmdk5DNQUPVPQmwFBY5R67EphG8I8QIAlbwZJEe7hI/LalbtL3YcBm3Z8oH9EgAvg/dXpEWRo6FgR+eWVj7rP5J5xkZG/i4NYYnmaDLhIL5X0TQ2gL2yx+he285Th8zmdd/MY4hk7BI5Mr08/DqpXNfrRKRkd2I7hvFZd9KTKTqY30hM0FcoyuBJfi4kMs3+fY8BGu1aMOBqUUot8sdNvL4epQaPBBiWILmNoClr57s3S43Kau5rMa63oSM18HChfMECOw/QAFQo10UvCN+zimthWJ1LaoqEdP/InxCkkaVmR79UmIZm+opMdSBNOO9W8ld3NU02PM2rwshU1G9mdVEy513pyvbRP1MqnaR46Ob5o=
-  file: 'conference.tar.gz'
+    secure: lf0dZxq3ICWnK4ZercgqcAESuAdUqjQDu8xCNKS7qTbe/mH1Rb/1hXn9825Yh/agoAXivIi+fNfeTva9gRRsvCK+2tOuwMNIS+jL8X0IbKi9KgNQSmQ54gfcw1C+L4J7TnR6WVG4Pspyhze4yAKbdyo7S3NCsqFdh/geWq7kZdH7jU6pjfn63hnVORZehRAU+ScbWs2AFzXdacbMKubpSHqiQCtdtB7DaTPcPTLsNQo4PIumwEqyeyXlW4OcI6ZLBBpFoWOJ8WEw0tPi/mP0JNH/RDBqeLFJQ+OD07Vquz4pyId6H4lxUZI6FahJ+NFf9FHoJto0rxGpnhVaILrtFCSYN961zoQIHh218GGofD68x2c9VdoKOxGinFeFCsPBLkuxsYc9VvSq9ivPrfzrZc2J7vko+/Q3ox5Ib0nntbDKgxlIqB9Lry6kRiTDGCSoPRzaq/fCqFmiK/HlspyH7Zcglzh5geVH5lKbjpHd+QnlRItSRDnTjktwnEh3aeGuFwjup7j6armr0vngvFjoAiKDdM2XbanaS3DzsS0yLhzihExiexEHE8mJdMPvV6xiB2lrPVbkWpyHHBtQh9otzxzsZEuuT6ygsN2fXQSOYl5BLf7W+Ne99BZx4M2+wNW+bDoj/UB7XjmkuS48mrIrUju3kfvgav0IMO8vRVJQQOo=
+  file: conference.tar.gz
   overwrite: true
   on:
     repo: AppStateESS/conference
