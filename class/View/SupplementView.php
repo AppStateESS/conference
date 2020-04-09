@@ -62,6 +62,8 @@ class SupplementView extends AbstractView
     {
         $registrationFactory = new RegistrationFactory;
         $registration = $registrationFactory->load($registrationId);
+        $session = $registrationFactory->getSession($registration);
+
         $vars = $registrationFactory->registrationVars($registration,
                 ['session', 'visitor']);
         $mealService = $vars['session']['mealService'];
@@ -71,6 +73,7 @@ class SupplementView extends AbstractView
                 ['registrationId' => $registrationId,
                     'mealCost' => $mealCost,
                     'guestCost' => $guestCost,
+                    'registerCost' => $session->registerCost,
                     'mealService' => $mealService]);
         $template = new Template($vars);
         $template->setModuleTemplate('conference',
