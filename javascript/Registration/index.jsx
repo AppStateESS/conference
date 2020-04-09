@@ -34,14 +34,14 @@ export default class Registration extends Listing {
       totalCost: 0,
       amountPaid: 0,
       visitorName: '',
-      signedIn: 0
+      signedIn: 0,
     }
 
-    const dropdown = key => {
+    const dropdown = (key) => {
       const registrationId = this.state.listing[key].id
       const registration = this.state.listing[key]
       const cancelOrRefund = () => {
-        if (registration.completed) {
+        if (registration.completed && registration.totalCost > 0) {
           return (
             <a
               href={`conference/Admin/Refund/?registrationId=${registrationId}`}
@@ -115,12 +115,12 @@ export default class Registration extends Listing {
         column: 'options',
         callback: (row, key) => {
           return dropdown(key, row.id)
-        }
+        },
       },
       {column: 'id', label: 'Id'},
       {
         column: 'lastName',
-        callback: row => {
+        callback: (row) => {
           if (row.firstName === null || row.firstName.length === 0) {
             return <em>Incomplete</em>
           } else {
@@ -133,11 +133,11 @@ export default class Registration extends Listing {
           }
         },
         label: 'Parent name',
-        sort: true
+        sort: true,
       },
       {
         column: 'studentLastName',
-        callback: row => {
+        callback: (row) => {
           return (
             <span>
               {row.studentFirstName}&nbsp;{row.studentLastName}
@@ -145,34 +145,34 @@ export default class Registration extends Listing {
           )
         },
         label: 'Student name',
-        sort: true
+        sort: true,
       },
       {
         column: 'totalCost',
         label: 'Cost',
-        callback: row => {
+        callback: (row) => {
           const totalCost = parseFloat(row.totalCost).toFixed(2)
           return `$${totalCost}`
-        }
+        },
       },
       {
         column: 'amountPaid',
         label: 'Paid',
-        callback: row => {
+        callback: (row) => {
           const amountPaid = parseFloat(row.amountPaid).toFixed(2)
           return `$${amountPaid}`
-        }
+        },
       },
       {
         column: 'refundAmount',
         label: 'Refunded',
-        callback: row => {
+        callback: (row) => {
           return `$${parseFloat(row.refundAmount).toFixed(2)}`
-        }
+        },
       },
       {
         column: 'completed',
-        callback: row => {
+        callback: (row) => {
           return row.completed === 1 ? (
             <span className="text-success">Yes</span>
           ) : (
@@ -180,8 +180,8 @@ export default class Registration extends Listing {
           )
         },
         label: 'Completed',
-        sort: true
-      }
+        sort: true,
+      },
     ]
     this.state.resource = Object.assign({}, this.defaultResource)
     this.loadSession = this.loadSession.bind(this)
@@ -214,7 +214,7 @@ export default class Registration extends Listing {
         success: () => {
           this.load()
         },
-        error: () => {}
+        error: () => {},
       })
     }
   }
@@ -224,16 +224,16 @@ export default class Registration extends Listing {
       url: 'conference/Admin/Session/available',
       data: {
         conferenceId: this.state.session.conferenceId,
-        registrationId: this.state.resource.id
+        registrationId: this.state.resource.id,
       },
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         if (data.listing !== null) {
           this.setState({availableSessions: data.listing})
         }
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -242,10 +242,10 @@ export default class Registration extends Listing {
       url: 'conference/Admin/Session/' + this.props.sessionId,
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         this.setState({session: data})
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -265,7 +265,7 @@ export default class Registration extends Listing {
       ),
       width: '80%',
       title: 'Update registration',
-      close: this.load
+      close: this.load,
     }
   }
 
@@ -300,7 +300,7 @@ export default class Registration extends Listing {
 }
 
 Registration.propTypes = {
-  sessionId: PropTypes.number
+  sessionId: PropTypes.number,
 }
 
 ReactDOM.render(
