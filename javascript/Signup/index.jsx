@@ -2,9 +2,10 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import Form from './Form'
+import StudentLogin from './StudentLogin'
 import PropTypes from 'prop-types'
 
-/* global $, bannerApi */
+/* global bannerApi */
 
 export default class Signup extends Component {
   constructor(props) {
@@ -41,7 +42,7 @@ export default class Signup extends Component {
   success() {
     return (
       <div>
-        <h3>Almost done!</h3>
+        <h4>Almost done!</h4>
         <p>
           Your account has been created, we just need verification. Please check
           your email and click the authorization link we sent you.
@@ -70,11 +71,11 @@ export default class Signup extends Component {
       case 'form':
         return <Form setStatus={this.setStatus} />
 
-      case 'duplicate':
-        return this.duplicate()
-
       case 'success':
         return this.success()
+
+      case 'student':
+        return <StudentLogin />
 
       case 'error':
         return this.error()
@@ -82,12 +83,42 @@ export default class Signup extends Component {
   }
 
   render() {
+    const {status} = this.state
+    let navButton = (
+      <button
+        className="btn btn-outline-dark btn-block"
+        onClick={() => {
+          this.setState({status: 'form'})
+        }}>
+        Enter my own account information
+      </button>
+    )
+    if (this.props.bannerApi > 0) {
+      if (status == 'form') {
+        navButton = (
+          <button
+            className="btn btn-outline-dark btn-block"
+            onClick={() => {
+              this.setState({status: 'student'})
+            }}>
+            Enter my student&apos;s information to create my account
+          </button>
+        )
+      }
+    }
+
     return (
       <div>
         <div className="row justify-content-md-center">
           <div className="col-sm-6">
             <div className="card">
-              <div className="card-body">{this.getStatusRender()}</div>
+              <div className="card-body">
+                <div className="card-title">
+                  <h3>Signup for a new account</h3>
+                  <div>{navButton}</div>
+                </div>
+                {this.getStatusRender()}
+              </div>
             </div>
           </div>
         </div>
