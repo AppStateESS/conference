@@ -1,7 +1,7 @@
 'use strict'
 import React, {useState, useEffect} from 'react'
-import {getPasswordMessage} from '../Shared/Password'
 import PropTypes from 'prop-types'
+import {getPasswordMessage} from '../Shared/Password'
 
 /* global $ */
 
@@ -128,34 +128,8 @@ const Form = ({setStatus}) => {
     })
   }
 
-  const showDuplicate = () => {
-    if (!duplicate) {
-      return
-    }
-    return (
-      <div className="alert alert-danger mt-4">
-        We already have an account using the email address&nbsp;
-        <span className="text-success">
-          <strong>{email}</strong>
-        </span>
-        .
-        <br />
-        Did you mean to&nbsp;
-        <a href="./conference/User/Visitor/login">log in instead?</a>
-        <br />
-        Or maybe you&nbsp;
-        <a href="./conference/User/Visitor/forgotPassword">
-          forgot your password?
-        </a>
-      </div>
-    )
-  }
-
   return (
     <div>
-      <div className="card-title">
-        <h3>Signup for a new account</h3>
-      </div>
       <div className="card-text">
         <label>Email address</label>
         <input
@@ -211,6 +185,8 @@ const Form = ({setStatus}) => {
   )
 }
 
-Form.propTypes = {}
+Form.propTypes = {
+  setStatus: PropTypes.func,
+}
 
 export default Form
