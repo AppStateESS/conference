@@ -252,11 +252,14 @@ class StudentFactory extends BaseFactory
      * Imports student using alternate API to get parent information.
      * Returns null if no result is found or settings not set.
      */
-    public function importBannerStudent()
+    public function importBannerStudent(int $bannerId)
     {
         if (!defined('STUDENT_BANNER_URL')) {
             return false;
         }
+
+        $queryUrl = sprintf(STUDENT_BANNER_URL, $bannerId);
+
         $connection = curl_init();
         curl_setopt($connection, CURLOPT_URL, STUDENT_BANNER_URL);
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
@@ -266,7 +269,12 @@ class StudentFactory extends BaseFactory
         if ($studentResult === false) {
             return false;
         }
-        $student = json_decode($studentResult)->response;
+        $json = json_decode($studentResult);
+        if (empty($json)) {
+            return false;
+        }
+
+        $student = $json->response;
         if (!is_object($student)) {
             return false;
         }
