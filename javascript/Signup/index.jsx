@@ -13,8 +13,10 @@ export default class Signup extends Component {
     this.state = {
       error: '',
       status: 'form',
+      parentEmail: '',
     }
     this.setStatus = this.setStatus.bind(this)
+    this.setParentEmail = this.setParentEmail.bind(this)
   }
 
   toggleShow() {
@@ -23,16 +25,9 @@ export default class Signup extends Component {
     })
   }
 
-  updatePassword(e) {
-    this.setState({password: e.target.value}, this.comparePassword)
-  }
-
-  updateCheckPassword(e) {
-    this.setState({checkPassword: e.target.value}, this.comparePassword)
-  }
-
-  updateEmail(e) {
-    this.setState({email: e.target.value}, this.checkEmail)
+  setParentEmail(parentEmail) {
+    this.setState({parentEmail})
+    this.setStatus('form')
   }
 
   setStatus(status) {
@@ -69,13 +64,24 @@ export default class Signup extends Component {
   getStatusRender() {
     switch (this.state.status) {
       case 'form':
-        return <Form setStatus={this.setStatus} />
+        return (
+          <Form
+            setStatus={this.setStatus}
+            parentEmail={this.state.parentEmail}
+          />
+        )
 
       case 'success':
         return this.success()
 
       case 'student':
-        return <StudentLogin />
+        return (
+          <StudentLogin
+            topStatus={this.setStatus}
+            goBack={() => this.setStatus('form')}
+            setParentEmail={this.setParentEmail}
+          />
+        )
 
       case 'error':
         return this.error()
@@ -84,27 +90,17 @@ export default class Signup extends Component {
 
   render() {
     const {status} = this.state
-    let navButton = (
-      <button
-        className="btn btn-outline-dark btn-block"
-        onClick={() => {
-          this.setState({status: 'form'})
-        }}>
-        Enter my own account information
-      </button>
-    )
-    if (this.props.bannerApi > 0) {
-      if (status == 'form') {
-        navButton = (
-          <button
-            className="btn btn-outline-dark btn-block"
-            onClick={() => {
-              this.setState({status: 'student'})
-            }}>
-            Enter my student&apos;s information to create my account
-          </button>
-        )
-      }
+    let navButton
+    if (this.props.bannerApi > 0 && status == 'form') {
+      navButton = (
+        <button
+          className="btn btn-outline-dark btn-block"
+          onClick={() => {
+            this.setState({status: 'student'})
+          }}>
+          Enter my student&apos;s information to create my account
+        </button>
+      )
     }
 
     return (

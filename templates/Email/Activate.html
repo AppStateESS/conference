@@ -14,6 +14,13 @@
     <p>Click on this link to activate your account:<br/>
       <?=$activateLink?>
     </p>
+    <?php if (!empty($password)):?>
+    <p>
+      After activation, you may log in with your email and this password:<br />
+      <?=$password?>
+    </p>
+    <p>If you want to change your password, click the Forgot my Password link.</p>
+    <?php endif;?>
     <p>
       The deadline to respond to this request is
       <?=$deadline?>.
