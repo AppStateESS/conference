@@ -41,6 +41,23 @@ class Student extends SubController
 
     }
 
+    protected function bannerSearchJson(Request $request)
+    {
+        $bannerId = $request->pullGetInteger('matchBannerId', true);
+        $username = $request->pullGetString('bannerUsername', true);
+        if (empty($bannerId) || empty($username)) {
+            return ['success' => false, 'code' => 'missing'];
+        }
+        $student = $this->factory->importBannerAPIStudent($bannerId);
+        if (empty($student)) {
+            return ['success' => false, 'code' => 'notfound'];
+        }
+        if (empty($student->parents)) {
+            return ['success' => false, 'code' => 'noparents'];
+        }
+        return ['success' => true, 'parents' => $student->parents];
+    }
+
     protected function matchJson(Request $request)
     {
         try {
