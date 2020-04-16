@@ -84,6 +84,42 @@ class VisitorFactory extends BaseFactory
         return $visitor;
     }
 
+    public function apiCreate(int $bannerId, int $parentKey,
+            string $emailAddress)
+    {
+        $studentFactory = new StudentFactory();
+        $student = $studentFactory->importBannerAPIStudent($bannerId);
+        if (empty($student)) {
+            throw new \Exception('Student not found');
+        }
+        $parent = $student->parents[$parentKey] ?? false;
+        if (!$parent) {
+            throw new \Exception('Parent not found');
+        }
+        if ($parent->emailAddress !== $emailAddress) {
+            throw new \Exception('Parent email address does not match');
+        }
+        if ($this->loadByEmail($emailAddress)) {
+            throw new \Exception('Parent email already in use');
+        }
+        $visitor = $this->build();
+        $visitor->email = $parent->emailAddress;
+        $visitor->firstName = $parent->prefFirstName ?? $parent->firstName;
+        $visitor->lastName = $parent->lastName;
+        $visitor->address1 = $parent->streetLine1;
+        $visitor->address2 = $parent->streetLine2;
+        $visitor->city = $parent->city;
+        $visitor->state = $parent->stateCode;
+        $visitor->zip = $parent->zip;
+        $visitor->phone = $parent->phoneArea . $parent->phoneNumber;
+        $password = $visitor->createRandomPassword();
+        $visitor->hashPassword($password);
+        $visitor->stamp();
+
+        $this->save($visitor);
+        $this->sendActivationEmail($visitor, $password);
+    }
+
     public function clearNotActivated()
     {
         $db = Database::getDB();
@@ -93,7 +129,7 @@ class VisitorFactory extends BaseFactory
         $db->delete();
     }
 
-    public function sendActivationEmail(Resource $visitor)
+    public function sendActivationEmail(Resource $visitor, $password = null)
     {
         $siteTitle = \Layout::getPageTitle(true);
         $transport = self::getSwiftTransport();
@@ -103,6 +139,7 @@ class VisitorFactory extends BaseFactory
         $vars['deadline'] = $visitor->formatActivateDeadline();
         $activateLink = Server::getSiteUrl() . 'conference/User/Visitor/activate/?email=' . $visitor->email . '&amp;hash=' . $visitor->hash;
         $vars['activateLink'] = $activateLink;
+        $vars['password'] = $password;
         $template = new Template($vars);
         $template->setModuleTemplate('conference', 'Email/Activate.html');
         $content = $template->get();
