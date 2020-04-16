@@ -64,6 +64,15 @@ class Visitor extends SubController
         }
     }
 
+    protected function apiCreatePost(Request $request)
+    {
+        $bannerId = $request->pullPostInteger('matchBannerId');
+        $parentEmail = $request->pullPostString('emailAddress');
+        $parentKey = $request->pullPostInteger('parentKey');
+        $this->factory->apiCreate($bannerId, $parentKey, $parentEmail);
+        return ['success' => true];
+    }
+
     protected function signupHtml()
     {
         return $this->view->scriptView('Signup',
