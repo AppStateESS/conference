@@ -96,4 +96,16 @@ class VisitorResource extends AbstractResource
                         ['activateDeadline', 'activated', 'hash', 'password']);
     }
 
+    public function createRandomPassword()
+    {
+        $length = 10;
+        $chars = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789abcdefghijkmnpqrstuvwxyz23456789";
+        $size = strlen($chars);
+        $password = '';
+        for ($i = 0; $i < $length; $i++) {
+            $password .= $chars[rand(0, $size - 1)];
+        }
+        return $password;
+    }
+
 }
