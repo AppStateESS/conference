@@ -62,7 +62,7 @@ class Onsite extends SubController
             if ($student->startDate != $session->eventDate) {
                 return ['success' => false, 'message' => 'Your student is not assigned to this orientation. Please see someone at the front desk.'];
             } else {
-                $bannerStudent = $studentFactory->importBannerStudent($bannerId);
+                $bannerStudent = $studentFactory->importBannerAPIStudent($bannerId);
                 $hidden = ['days', 'campWarningSent', 'active'];
                 return ['success' => true, 'student' => $student->getStringVars(), 'session' => $session->getStringVars(), 'parents' => $bannerStudent->parents];
             }
