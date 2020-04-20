@@ -63,6 +63,9 @@ class Onsite extends SubController
                 return ['success' => false, 'message' => 'Your student is not assigned to this orientation. Please see someone at the front desk.'];
             } else {
                 $bannerStudent = $studentFactory->importBannerAPIStudent($bannerId);
+                if (empty($bannerStudent)) {
+                    return ['success' => false, 'message' => 'Could not find your student account. Please try again or ask for assistance.'];
+                }
                 $hidden = ['days', 'campWarningSent', 'active'];
                 return ['success' => true, 'student' => $student->getStringVars(), 'session' => $session->getStringVars(), 'parents' => $bannerStudent->parents];
             }
