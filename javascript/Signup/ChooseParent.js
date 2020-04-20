@@ -2,6 +2,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+/* global $ */
+
 const ChooseParent = ({parents, goBack, matchBannerId, setStatus}) => {
   const choose = (parentKey, emailAddress) => {
     $.ajax({
@@ -10,8 +12,10 @@ const ChooseParent = ({parents, goBack, matchBannerId, setStatus}) => {
       dataType: 'json',
       type: 'post',
       success: (data) => {
-        if (data.success) {
+        if (data.success == true) {
           setStatus('success')
+        } else if (data.duplicate == true) {
+          setStatus('duplicate')
         }
       },
       error: () => {
@@ -24,7 +28,7 @@ const ChooseParent = ({parents, goBack, matchBannerId, setStatus}) => {
     return (
       <div key={value.ID}>
         <button
-          className="btn btn-outline-dark btn-lg btn-block mb-3"
+          className="btn btn-success btn-lg btn-block mb-3"
           onClick={() => {
             choose(key, value.emailAddress)
           }}>
