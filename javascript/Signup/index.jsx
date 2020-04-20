@@ -3,6 +3,7 @@ import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import Form from './Form'
 import StudentLogin from './StudentLogin'
+import Duplicate from './Duplicate'
 import PropTypes from 'prop-types'
 
 /* global bannerApi */
@@ -83,6 +84,9 @@ export default class Signup extends Component {
           />
         )
 
+      case 'duplicate':
+        return <Duplicate setStatus={this.setStatus} />
+
       case 'error':
         return this.error()
     }
@@ -94,7 +98,7 @@ export default class Signup extends Component {
     if (this.props.bannerApi > 0 && status == 'form') {
       navButton = (
         <button
-          className="btn btn-outline-dark btn-block"
+          className="btn btn-primary btn-block"
           onClick={() => {
             this.setState({status: 'student'})
           }}>
