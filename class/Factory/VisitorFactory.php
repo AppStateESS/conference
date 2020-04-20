@@ -100,8 +100,9 @@ class VisitorFactory extends BaseFactory
             throw new \Exception('Parent email address does not match');
         }
         if ($this->loadByEmail($emailAddress)) {
-            throw new \Exception('Parent email already in use');
+            return false;
         }
+
         $visitor = $this->build();
         $visitor->email = $parent->emailAddress;
         $visitor->firstName = $parent->prefFirstName ?? $parent->firstName;
@@ -118,6 +119,7 @@ class VisitorFactory extends BaseFactory
 
         $this->save($visitor);
         $this->sendActivationEmail($visitor, $password);
+        return true;
     }
 
     public function clearNotActivated()
