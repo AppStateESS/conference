@@ -260,8 +260,7 @@ class StudentFactory extends BaseFactory
 
         $queryUrl = sprintf(STUDENT_BANNER_URL, $bannerId);
 
-        $connection = curl_init();
-        curl_setopt($connection, CURLOPT_URL, STUDENT_BANNER_URL);
+        $connection = curl_init($queryUrl);
         curl_setopt($connection, CURLOPT_RETURNTRANSFER, true);
         $studentResult = curl_exec($connection);
 
@@ -270,12 +269,12 @@ class StudentFactory extends BaseFactory
             return false;
         }
         $json = json_decode($studentResult);
-        if (empty($json)) {
+        if (empty($json) || !isset($json->response)) {
             return false;
         }
 
         $student = $json->response;
-        if (!is_object($student)) {
+        if (!is_object($student) || $student->ID != $bannerId) {
             return false;
         }
 
