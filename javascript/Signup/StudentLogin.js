@@ -1,28 +1,31 @@
 'use strict'
-import React, {useState} from 'react'
+import React, {useState, useRef} from 'react'
 import ChooseParent from './ChooseParent'
 import PropTypes from 'prop-types'
-import Complete from './Complete'
 
-const StudentLogin = ({goBack, setParentEmail, topStatus}) => {
-  const [matchBannerId, setMatchBannerId] = useState('')
-  const [bannerUsername, setBannerUsername] = useState('')
+/* global $ */
+
+const StudentLogin = ({goBack, topStatus}) => {
+  const [matchBannerId, setMatchBannerId] = useState('900000000')
+  const [bannerUsername, setBannerUsername] = useState('bobfred')
   const [parents, setParents] = useState([])
   const [status, setStatus] = useState('form')
-  const [parentChoice, setParentChoice] = useState({})
 
-  const searchForStudent = ({goBack}) => {
+  const usernameRef = useRef()
+  const submitRef = useRef()
+
+  const searchForStudent = () => {
     $.ajax({
       url: 'conference/User/Student/bannerSearch',
       data: {matchBannerId, bannerUsername},
       dataType: 'json',
       type: 'get',
       success: (data) => {
-        if (data.success) {
+        if (data.success == true) {
           setParents(data.parents)
           setStatus('choose')
         } else {
-          setStatus(data.code)
+          setStatus('duplicate')
         }
       },
       error: () => {},
@@ -61,11 +64,17 @@ const StudentLogin = ({goBack, setParentEmail, topStatus}) => {
     }
   }
 
+  const enterTab = (e, ref) => {
+    if (e.which === 13) {
+      ref.current.focus()
+    }
+  }
+
   const form = () => {
     return (
       <div>
         <button
-          className="btn btn-outline-dark btn-block mb-4"
+          className="btn btn-outline-primary btn-block mb-4"
           onClick={goBack}>
           <i className="fas fa-arrow-left"></i>&nbsp; Back to new account
           creation
@@ -80,7 +89,10 @@ const StudentLogin = ({goBack, setParentEmail, topStatus}) => {
                 className="form-control"
                 name="matchBannerId"
                 value={matchBannerId}
-                onChange={(e) => setMatchBannerId(e.target.value)}
+                onKeyDown={(e) => enterTab(e, usernameRef)}
+                onChange={(e) => {
+                  setMatchBannerId(e.target.value)
+                }}
               />
               {checkBannerId()}
             </div>
@@ -89,10 +101,12 @@ const StudentLogin = ({goBack, setParentEmail, topStatus}) => {
             <div className="form-group">
               <label htmlFor="bannerUsername">Student Banner name</label>
               <input
+                ref={usernameRef}
                 type="text"
                 className="form-control"
                 name="bannerUsername"
                 value={bannerUsername}
+                onKeyDown={(e) => enterTab(e, submitRef)}
                 onChange={(e) => setBannerUsername(e.target.value)}
               />
               {checkUsername()}
@@ -100,7 +114,8 @@ const StudentLogin = ({goBack, setParentEmail, topStatus}) => {
           </div>
         </div>
         <button
-          className="btn btn-outline-dark"
+          ref={submitRef}
+          className="btn btn-success btn-block"
           disabled={matchBannerId.length == 0 || bannerUsername == 0}
           onClick={searchForStudent}>
           Search for student
@@ -113,9 +128,6 @@ const StudentLogin = ({goBack, setParentEmail, topStatus}) => {
   switch (status) {
     case 'form':
       return form()
-
-    case 'complete':
-      return <Complete parent={parentChoice} />
 
     case 'choose':
       return (
