@@ -49,7 +49,8 @@ class Student extends SubController
             return ['success' => false, 'code' => 'missing'];
         }
         $student = $this->factory->importBannerAPIStudent($bannerId);
-        if (empty($student)) {
+
+        if (empty($student) || $student->bannerUsername != $username) {
             return ['success' => false, 'code' => 'notfound'];
         }
         if (empty($student->parents)) {

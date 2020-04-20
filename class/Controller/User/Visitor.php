@@ -69,8 +69,11 @@ class Visitor extends SubController
         $bannerId = $request->pullPostInteger('matchBannerId');
         $parentEmail = $request->pullPostString('emailAddress');
         $parentKey = $request->pullPostInteger('parentKey');
-        $this->factory->apiCreate($bannerId, $parentKey, $parentEmail);
-        return ['success' => true];
+        if ($this->factory->apiCreate($bannerId, $parentKey, $parentEmail)) {
+            return ['success' => true];
+        } else {
+            return ['success' => false, 'duplicate' => true];
+        }
     }
 
     protected function signupHtml()
