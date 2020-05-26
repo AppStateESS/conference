@@ -186,6 +186,13 @@ class ConferenceUpdate
                 $this->content[] = 'Added ability to disable the visitor interaction';
                 $this->content[] = 'Added refund report';
                 $this->content[] = '</pre>';
+
+            case $this->compare('1.4.1'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.4.1';
+                $this->content[] = '------------------------';
+                $this->content[] = 'Added email list report';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
