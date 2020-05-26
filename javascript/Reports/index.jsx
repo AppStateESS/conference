@@ -136,6 +136,7 @@ export default class Reports extends Component {
 
         <div className="d-flex justify-content-around">
           <div>{this.downloadRegistrationsButton()}</div>
+          <div>{this.downloadEmailsButton()}</div>
           <div>{this.downloadPaymentsButton()}</div>
           <div>{this.downloadRefundsButton()}</div>
         </div>
@@ -159,7 +160,7 @@ export default class Reports extends Component {
 
     const downloadLink = `conference/Admin/Reports/sessions/?cid=${this.state.currentConference.id}`
     let button
-    if (this.state.currentConferenceKey > -1) {
+    if (currentConferenceKey > -1) {
       button = (
         <a className="btn btn-primary" href={downloadLink}>
           <i className="fas fa-download"></i>&nbsp; Download session summary
@@ -180,6 +181,23 @@ export default class Reports extends Component {
         </div>
         <div className="col-sm-6">{button}</div>
       </div>
+    )
+  }
+
+  downloadEmailsButton() {
+    if (this.state.currentSession.id === undefined) {
+      return
+    }
+    if (this.state.registrationCount === 0) {
+      return
+    }
+
+    const downloadLink = `conference/Admin/Reports/emails/?sid=${this.state.currentSession.id}`
+    return (
+      <a className="btn btn-primary" href={downloadLink}>
+        <i className="fas fa-download" />
+        &nbsp;Download completed registration emails
+      </a>
     )
   }
 

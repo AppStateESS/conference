@@ -28,6 +28,55 @@ class ReportView extends AbstractView
         exit();
     }
 
+    public function emails(SessionResource $session)
+    {
+        $db = \phpws2\Database::getDB();
+        $visitorTable = $db->addTable('conf_visitor');
+        $guestTable = $db->addTable('conf_guest');
+        $regTable = $db->addTable('conf_registration', null, false);
+
+        $regTable->addFieldConditional('sessionId', $session->id);
+        $regId = $regTable->addField('id');
+        $visitorTable->addField('email', 'vemail');
+        $guestTable->addField('email', 'gemail');
+        $cond1 = new \phpws2\Database\Conditional($db,
+                $regTable->getField('visitorId'), $visitorTable->getField('id'),
+                '=');
+        $cond2 = new \phpws2\Database\Conditional($db, $regId,
+                $guestTable->getField('registrationId'), '=');
+        $db->joinResources($regTable, $visitorTable, $cond1, 'left');
+        $db->joinResources($regTable, $guestTable, $cond2, 'left');
+        $regTable->addFieldConditional('completed', 1);
+        $regTable->addFieldConditional('cancelled', 0);
+        $result = $db->select();
+
+        if (empty($result)) {
+            return 'No registrations found for session #' . $session->id;
+        }
+        $csvRow = array();
+        $csvRow[0] = '"email","is guest"';
+        $visitors = array();
+        foreach ($result as $row) {
+
+            if (!in_array($row['vemail'], $visitors)) {
+                $sub = [];
+                $visitors[] = $row['vemail'];
+                $sub[] = $row['vemail'];
+                $sub[] = '0';
+                $csvRow[] = '"' . implode('","', $sub) . '"';
+            }
+            if (!empty($row['gemail']) && !in_array($row['gemail'], $visitors)) {
+                $sub = [];
+                $sub[] = $row['gemail'];
+                $sub[] = '1';
+                $csvRow[] = '"' . implode('","', $sub) . '"';
+            }
+        }
+
+        $content = implode("\n", $csvRow);
+        return $content;
+    }
+
     public function refunds(SessionResource $session)
     {
         $db = \phpws2\Database::getDB();

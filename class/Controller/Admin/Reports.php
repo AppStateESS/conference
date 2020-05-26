@@ -68,6 +68,14 @@ class Reports extends SubController
         $this->view->downloadCSV($content, $filename);
     }
 
+    protected function emailsHtml(Request $request)
+    {
+        $session = $this->getSession($request);
+        $content = $this->view->emails($session);
+        $filename = $this->getFileName($session, 'emails');
+        $this->view->downloadCSV($content, $filename);
+    }
+
     private function getSession(Request $request)
     {
         $sessionId = $request->pullGetInteger('sid');

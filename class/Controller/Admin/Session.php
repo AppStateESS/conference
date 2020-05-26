@@ -57,6 +57,7 @@ class Session extends SubController
         $options = $this->factory->listingOptions($request);
         $options['conferenceId'] = $request->pullGetInteger('conferenceId');
         $options['registrationCount'] = true;
+        $options['sortBy'] = 'eventDate';
         return ['listing' => $this->factory->listing($options)];
     }
 
