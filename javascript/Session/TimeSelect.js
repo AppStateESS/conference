@@ -2,15 +2,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const intToString = timeVar => {
+const intToString = (timeVar) => {
   return timeVar < 10 ? '0' + timeVar.toString() : timeVar.toString()
 }
 
-const getCurrentAmPm = timeInteger => {
+const getCurrentAmPm = (timeInteger) => {
   return timeInteger >= 1200 ? 'PM' : 'AM'
 }
 
-const getHourMatch = hourInteger => {
+const getHourMatch = (hourInteger) => {
   if (hourInteger > 12) {
     hourInteger -= 12
   }
@@ -21,7 +21,7 @@ const TimeSelect = ({time, onChange}) => {
   const timeInt = parseInt(time)
 
   let ampm = getCurrentAmPm(timeInt)
-  let hourInt = timeInt / 100
+  let hourInt = Math.floor(timeInt / 100)
   // first two digits of hour saved in database
   let hourStr = intToString(hourInt)
   // used to match on the select
@@ -30,7 +30,7 @@ const TimeSelect = ({time, onChange}) => {
   let minuteInt = timeInt % 100
   let minuteStr = intToString(minuteInt)
 
-  const handleAMPM = e => {
+  const handleAMPM = (e) => {
     const {value} = e.target
     if (value === 'AM') {
       hourInt -= 12
@@ -56,7 +56,7 @@ const TimeSelect = ({time, onChange}) => {
     onChange(timeStr)
   }
 
-  const handleHour = e => {
+  const handleHour = (e) => {
     const {value} = e.target
     hourInt = parseInt(value)
     if (ampm === 'PM') {
@@ -70,13 +70,12 @@ const TimeSelect = ({time, onChange}) => {
     sendChange(hourStr, minuteStr)
   }
 
-  const handleMinute = e => {
+  const handleMinute = (e) => {
     const {value} = e.target
     minuteInt = parseInt(value)
     minuteStr = intToString(minuteInt)
     sendChange(hourStr, minuteStr)
   }
-
   return (
     <div>
       <div className="row">
@@ -122,8 +121,8 @@ const TimeSelect = ({time, onChange}) => {
 }
 
 TimeSelect.propTypes = {
-  time: PropTypes.string,
-  onChange: PropTypes.func
+  time: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  onChange: PropTypes.func,
 }
 
 export default TimeSelect
