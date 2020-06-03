@@ -15,7 +15,7 @@ class SessionMatchForm extends Component {
       idError: false,
       message: null,
       sessionFound: false,
-      session: null
+      session: null,
     }
     this.messageRef = React.createRef()
     this.submit = this.submit.bind(this)
@@ -23,6 +23,7 @@ class SessionMatchForm extends Component {
     this.updateUsername = this.updateUsername.bind(this)
     this.checkBannerId = this.checkBannerId.bind(this)
     this.loginErrorMessage = this.loginErrorMessage.bind(this)
+    this.checkEnter = this.checkEnter.bind(this)
   }
 
   updateId(e) {
@@ -87,11 +88,11 @@ class SessionMatchForm extends Component {
         data: {
           conferenceId: this.props.conferenceId,
           matchBannerId: this.state.bannerId,
-          bannerUsername: this.state.bannerUsername
+          bannerUsername: this.state.bannerUsername,
         },
         dataType: 'json',
         type: 'get',
-        success: data => {
+        success: (data) => {
           this.setState({student: data.student})
           if (data.session) {
             this.setState({sessionFound: true, session: data.session})
@@ -100,7 +101,7 @@ class SessionMatchForm extends Component {
           } else {
             this.messageRef.current.scrollIntoView({
               behavior: 'smooth',
-              block: 'start'
+              block: 'start',
             })
             this.setState({message: data.message})
           }
@@ -108,10 +109,17 @@ class SessionMatchForm extends Component {
         error: () => {
           this.setState({
             message:
-              'Our server has experienced a unknown problem with your request.'
+              'Our server has experienced a unknown problem with your request.',
           })
-        }
+        },
       })
+    }
+  }
+
+  checkEnter(e) {
+    if (e.which === 13) {
+      console.log('wtf')
+      this.submit()
     }
   }
 
@@ -175,6 +183,7 @@ class SessionMatchForm extends Component {
               type="text"
               name="bannerUsername"
               className="form-control"
+              onKeyDown={this.checkEnter}
               value={this.state.bannerUsername}
               onChange={this.updateUsername}
               placeholder="e.g. lastnamefm"
@@ -210,7 +219,7 @@ class SessionMatchForm extends Component {
 
 SessionMatchForm.propTypes = {
   conferenceId: PropTypes.number,
-  sessionId: PropTypes.number
+  sessionId: PropTypes.number,
 }
 
 ReactDOM.render(
