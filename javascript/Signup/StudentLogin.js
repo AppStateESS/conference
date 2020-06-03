@@ -6,8 +6,8 @@ import PropTypes from 'prop-types'
 /* global $ */
 
 const StudentLogin = ({goBack, topStatus}) => {
-  const [matchBannerId, setMatchBannerId] = useState('900000000')
-  const [bannerUsername, setBannerUsername] = useState('bobfred')
+  const [matchBannerId, setMatchBannerId] = useState('')
+  const [bannerUsername, setBannerUsername] = useState('')
   const [parents, setParents] = useState([])
   const [status, setStatus] = useState('form')
 
