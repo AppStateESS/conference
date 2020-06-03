@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import Registrations from './Registrations'
 import useInterval from './useInterval'
-
 /* global $, sessionId */
 
 const Signin = ({sessionId}) => {
@@ -35,10 +34,10 @@ const Signin = ({sessionId}) => {
       url: `conference/Admin/Session/${sessionId}`,
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         setSession(data)
       },
-      error: () => {}
+      error: () => {},
     })
   }, [])
 
@@ -49,14 +48,14 @@ const Signin = ({sessionId}) => {
       data: {sessionId, search},
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         setLoading(false)
         setRegistrations(data.listing)
         setIsRunning(data.listing.length > 0 && search.length === 0)
       },
       error: () => {
         setIsRunning(false)
-      }
+      },
     })
   }
 
@@ -81,7 +80,7 @@ const Signin = ({sessionId}) => {
             className="form-control"
             placeholder="Search..."
             value={search}
-            onChange={e => setSearch(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
           />
           <button
             className="btn btn-outline-primary"
@@ -118,7 +117,7 @@ const Signin = ({sessionId}) => {
 }
 
 Signin.propTypes = {
-  sessionId: PropTypes.number
+  sessionId: PropTypes.number,
 }
 
 ReactDOM.render(
