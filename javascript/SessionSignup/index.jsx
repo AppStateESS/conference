@@ -29,7 +29,7 @@ export default class SessionSignup extends Component {
         guestCount: 0,
         mealTickets: 0,
         veggieMeals: 0,
-        completed: 0
+        completed: 0,
       },
       student: null,
       signupAllowed: true,
@@ -45,9 +45,9 @@ export default class SessionSignup extends Component {
         address1: false,
         city: false,
         phone: false,
-        zip: false
+        zip: false,
       },
-      proceed: true
+      proceed: true,
     }
     this.updateVisitor = this.updateVisitor.bind(this)
     this.updateRegistration = this.updateRegistration.bind(this)
@@ -109,10 +109,10 @@ export default class SessionSignup extends Component {
       data: {registrationId: this.state.registration.id},
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         this.setState({visitorInfo: data.listing})
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -121,10 +121,10 @@ export default class SessionSignup extends Component {
       url: 'conference/Visitor/Student/' + this.state.registration.studentId,
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         this.setState({student: data})
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -134,12 +134,12 @@ export default class SessionSignup extends Component {
       data: {},
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         this.setState({visitor: data})
       },
       error: () => {
         this.setState({errorMessage: true})
-      }
+      },
     })
   }
 
@@ -150,10 +150,10 @@ export default class SessionSignup extends Component {
       data: {},
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         this.setState({registration: data})
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -168,7 +168,7 @@ export default class SessionSignup extends Component {
         let guests = listing
         const guestLength = guests.length
         if (guestLength > 0) {
-          guests.forEach(element => {
+          guests.forEach((element) => {
             element.complete =
               element.firstName.length > 0 &&
               element.lastName.length > 0 &&
@@ -183,7 +183,7 @@ export default class SessionSignup extends Component {
                 lastName: '',
                 email: '',
                 registrationId: id,
-                complete: false
+                complete: false,
               })
             }
           }
@@ -192,7 +192,7 @@ export default class SessionSignup extends Component {
         }
         this.setState({guests})
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -201,7 +201,7 @@ export default class SessionSignup extends Component {
     $.ajax({
       url: `conference/Visitor/Registration/${registration.id}/changeSession`,
       data: {
-        sessionId: sessionId
+        sessionId: sessionId,
       },
       dataType: 'json',
       type: 'patch',
@@ -210,7 +210,7 @@ export default class SessionSignup extends Component {
       },
       error: () => {
         this.setState({errorMessage: true})
-      }
+      },
     })
   }
 
@@ -225,7 +225,7 @@ export default class SessionSignup extends Component {
       return true
     }
     let questionsComplete = true
-    visitorInfo.forEach(value => {
+    visitorInfo.forEach((value) => {
       if (value.answer === null || value.answer.length === 0) {
         questionsComplete = false
       }
@@ -238,7 +238,7 @@ export default class SessionSignup extends Component {
       url: 'conference/Visitor/Guest/',
       data: {
         registrationId: this.state.registration.id,
-        guests: this.state.guests
+        guests: this.state.guests,
       },
       dataType: 'json',
       type: 'post',
@@ -246,14 +246,14 @@ export default class SessionSignup extends Component {
         this.lastStage = 'review'
         this.setState({stage: 'review'})
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
   checkInfo() {
     const {visitorInfo} = this.state
     let errorFound = false
-    visitorInfo.forEach(question => {
+    visitorInfo.forEach((question) => {
       if (
         question.type === 'text' &&
         question.required === 1 &&
@@ -277,7 +277,7 @@ export default class SessionSignup extends Component {
       data: {
         info: this.state.visitorInfo,
         registrationId: this.state.registration.id,
-        conferenceId: this.state.registration.conferenceId
+        conferenceId: this.state.registration.conferenceId,
       },
       dataType: 'json',
       type: 'post',
@@ -286,7 +286,7 @@ export default class SessionSignup extends Component {
       },
       error: () => {
         alert('Could not save your information.')
-      }
+      },
     })
   }
 
@@ -298,7 +298,7 @@ export default class SessionSignup extends Component {
         firstName: '',
         lastName: '',
         email: '',
-        complete: false
+        complete: false,
       }
     }
     return guests
@@ -363,7 +363,7 @@ export default class SessionSignup extends Component {
       },
       error: () => {
         this.setState({errorMessage: true})
-      }
+      },
     })
     this.setState({stage: 'review'})
   }
@@ -385,7 +385,7 @@ export default class SessionSignup extends Component {
         if (parseInt(this.state.registration.guestCount) > 0) {
           if (this.state.guests.length === 0) {
             this.setState({
-              guests: this.buildGuests(this.state.registration.guestCount)
+              guests: this.buildGuests(this.state.registration.guestCount),
             })
           }
           this.lastStage = 'guest'
@@ -423,7 +423,7 @@ export default class SessionSignup extends Component {
       },
       error: () => {
         this.setState({errorMessage: true})
-      }
+      },
     })
   }
 
@@ -555,7 +555,7 @@ export default class SessionSignup extends Component {
             visitor={this.state.visitor}
             registration={this.state.registration}
             session={session}
-            goBack={stage => this.setState({stage})}
+            goBack={(stage) => this.setState({stage})}
             totalCost={this.totalCost}
           />
         )
@@ -600,7 +600,7 @@ SessionSignup.propTypes = {
   studentId: PropTypes.number,
   visitorId: PropTypes.number,
   onsite: PropTypes.bool,
-  registrationId: PropTypes.number
+  registrationId: PropTypes.number,
 }
 
 ReactDOM.render(
