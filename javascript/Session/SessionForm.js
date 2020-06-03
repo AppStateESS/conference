@@ -207,8 +207,6 @@ class SessionForm extends Component {
     const {
       title,
       eventDate,
-      startTime,
-      endTime,
       signupStart,
       signupEnd,
       registerCost,
@@ -223,6 +221,9 @@ class SessionForm extends Component {
       allowGuest,
       registrationCount,
     } = this.props.resource
+    const startTime = parseInt(this.props.resource.startTime)
+    const endTime = parseInt(this.props.resource.endTime)
+
     const {update} = this.props
     let eventDateObject
     if (eventDate) {
