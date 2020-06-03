@@ -1,7 +1,11 @@
 <?php if ($buttons):?>
-<a class="float-right btn btn-primary" target="_blank" rel="noreferrer noopener" id="print-registration" href="./conference/Visitor/Registration/<?=$registration['id']?>/?print=true"><i class="fas fa-print"></i>&nbsp;Print</a>
+<a class="float-right btn btn-primary" target="_blank" rel="noreferrer noopener" id="print-registration"
+  href="./conference/Visitor/Registration/<?=$registration['id']?>/?print=true"><i
+    class="fas fa-print"></i>&nbsp;Print</a>
 <?php else:?>
-<script>window.print()</script>
+<script>
+  window.print()
+</script>
 <?php endif;?>
 <div id="registration-info">
   <h2 class="mb-2"><?=$conference['title']?></h2>
@@ -19,7 +23,11 @@
       </tr>
       <tr>
         <th>End time</th>
-        <td><?=$session['endTimeFormat']?></td>
+        <td>
+          <div><?=$session['endTimeFormat']?></div>
+          <div class="badge badge-info">Note: student orientation may extend beyond your
+            session.</div>
+        </td>
       </tr>
       <tr>
         <th>Location</th>
@@ -53,7 +61,7 @@
       <?php endif;?>
     </tbody>
   </table>
-<?php if ($buttons):?>
+  <?php if ($buttons):?>
   <?php if ($supplementAllowed): if($registration['completed']):?>
   <div class="text-center">
     <a class="btn btn-primary" href="conference/Visitor/Supplement/?registrationId=<?=$registrationId?>">Add a
