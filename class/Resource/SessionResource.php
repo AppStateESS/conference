@@ -26,13 +26,13 @@ class SessionResource extends AbstractResource
 
     /**
      * Time session begins in military time: 1330
-     * @var \phpws2\Variable\SmallInteger
+     * @var \phpws2\Variable\TextOnly
      */
     protected $startTime;
 
     /**
      * Time session ends in military time: 1530
-     * @var \phpws2\Variable\SmallInteger
+     * @var \phpws2\Variable\TextOnly
      */
     protected $endTime;
 
