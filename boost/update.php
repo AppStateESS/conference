@@ -193,6 +193,15 @@ class ConferenceUpdate
                 $this->content[] = '------------------------';
                 $this->content[] = 'Added email list report';
                 $this->content[] = '</pre>';
+
+            case $this->compare('1.4.2'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.4.2';
+                $this->content[] = '------------------------';
+                $this->content[] = '- Enter key on student search username field submits the form now.';
+                $this->content[] = '- Extended visitor activation from two hours to twelve.';
+                $this->content[] = '- Fixed session end time bug.';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
