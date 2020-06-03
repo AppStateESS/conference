@@ -1,20 +1,29 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
-  <body>
-    <p><?=$visitor['firstName']?>,</p>
-    <p>Thank you for <a href="<?=$registrationUrl?>">registering</a> for the <strong><?=$session['title']?></strong> session of the <strong><a href="<?=$conferenceUrl?>"><?=$conference['title']?></a></strong>!</p>
-    <p>Please arrive at the <a href="<?=$locationUrl?>"><strong><?=$location['title']?></strong></a> on <strong><?=$session['eventDateFormat']?></strong> by <strong><?=$session['startTimeFormat']?></strong>.</p>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <p><?=$visitor['firstName']?>,</p>
+  <p>Thank you for <a href="<?=$registrationUrl?>">registering</a> for the <strong><?=$session['title']?></strong>
+    session of the <strong><a href="<?=$conferenceUrl?>"><?=$conference['title']?></a></strong>!</p>
+  <p>Please arrive at the <a href="<?=$locationUrl?>"><strong><?=$location['title']?></strong></a> on
+    <strong><?=$session['eventDateFormat']?></strong>. The session starts at
+    <strong><?=$session['startTimeFormat']?></strong> and continues until
+    <?=$session['endTimeFormat']?>.</p>
+    <p>Please be aware student orientation sessions may extend beyond yours.</p>
     <p>We look forward to meeting you.</p>
     <hr />
-    <p>Need to add a guest or change your session date? You may <a href="<?=$loginUrl?>">make additions to your registration</a> until <?=$session['signupEndFormat']?>.</p>
-    <p>We look forward to seeing you and your student soon!</p>
-    <p>Best regards,<br />
-      App State Parent & Family Services<br />
-      <a href="https://parents.appstate.edu">parents.appstate.edu</a></p>
+    <p>Need to add a guest or change your session date? You may <a href="<?=$loginUrl?>">make additions to your
+    registration</a> until <?=$session['signupEndFormat']?>.</p>
+  <p>We look forward to seeing you and your student soon!</p>
+  <p>Best regards,<br />
+    App State Parent & Family Services<br />
+    <a href="https://parents.appstate.edu">parents.appstate.edu</a></p>
 
-  </body>
+</body>
+
 </html>
