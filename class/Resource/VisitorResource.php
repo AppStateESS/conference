@@ -73,7 +73,7 @@ class VisitorResource extends AbstractResource
 
     public function stamp()
     {
-        $this->activateDeadline->set(time() + (7200));
+        $this->activateDeadline->set(time() + (43200));
         $this->hash->sha1Random();
     }
 
