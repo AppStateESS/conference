@@ -108,7 +108,9 @@ class StudentFactory extends BaseFactory
      */
     public function getBannerStudent(int $bannerId, string $bannerUsername)
     {
+        $bannerUsername = strtolower($bannerUsername);
         $student = $this->loadByBannerId($bannerId);
+
         if (empty($student)) {
             $bannerStudent = $this->pullBannerStudent($bannerId, $bannerUsername);
             if (!empty($bannerStudent)) {
