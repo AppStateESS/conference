@@ -158,12 +158,19 @@ export default class Reports extends Component {
       )
     })
 
-    const downloadLink = `conference/Admin/Reports/sessions/?cid=${this.state.currentConference.id}`
-    let button
+    let summaryButton
+    let allEmailsButton
     if (currentConferenceKey > -1) {
-      button = (
-        <a className="btn btn-primary" href={downloadLink}>
-          <i className="fas fa-download"></i>&nbsp; Download session summary
+      const sessionDownloadLink = `conference/Admin/Reports/sessions/?cid=${this.state.currentConference.id}`
+      const allEmailDownloadLink = `conference/Admin/Reports/allEmails/?cid=${this.state.currentConference.id}`
+      summaryButton = (
+        <a className="btn btn-primary" href={sessionDownloadLink}>
+          <i className="fas fa-download"></i>&nbsp;Download session summary
+        </a>
+      )
+      allEmailsButton = (
+        <a className="btn btn-primary" href={allEmailDownloadLink}>
+          <i className="fas fa-download"></i>&nbsp;Download all emails
         </a>
       )
     }
@@ -179,7 +186,9 @@ export default class Reports extends Component {
             {confOptions}
           </select>
         </div>
-        <div className="col-sm-6">{button}</div>
+        <div className="col-sm-6">
+          {summaryButton}&nbsp;{allEmailsButton}
+        </div>
       </div>
     )
   }

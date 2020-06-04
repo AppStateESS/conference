@@ -84,6 +84,14 @@ class Reports extends SubController
         return $session;
     }
 
+    protected function allEmailsHtml(Request $request)
+    {
+        $conference = $this->getConference($request);
+        $content = $this->view->allEmails($conference);
+        $filename = $conference->title . ' - All Emails.csv';
+        $this->view->downloadCSV($content, $filename);
+    }
+
     protected function sessionsHtml(Request $request)
     {
         $conference = $this->getConference($request);
@@ -93,6 +101,11 @@ class Reports extends SubController
         $this->view->downloadCSV($content, $filename);
     }
 
+    /**
+     *
+     * @param Request $request
+     * @return conference\Resource\ConferenceResource
+     */
     private function getConference(Request $request)
     {
         $conferenceId = $request->pullGetInteger('cid');

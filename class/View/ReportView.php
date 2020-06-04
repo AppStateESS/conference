@@ -13,6 +13,7 @@
 namespace conference\View;
 
 use conference\Resource\SessionResource;
+use conference\Resource\ConferenceResource;
 
 class ReportView extends AbstractView
 {
@@ -28,7 +29,7 @@ class ReportView extends AbstractView
         exit();
     }
 
-    public function emails(SessionResource $session)
+    private function getSessionEmails(SessionResource $session)
     {
         $db = \phpws2\Database::getDB();
         $visitorTable = $db->addTable('conf_visitor');
@@ -48,11 +49,39 @@ class ReportView extends AbstractView
         $db->joinResources($regTable, $guestTable, $cond2, 'left');
         $regTable->addFieldConditional('completed', 1);
         $regTable->addFieldConditional('cancelled', 0);
-        $result = $db->select();
+        return $db->select();
+    }
 
+    public function allEmails(ConferenceResource $conference)
+    {
+        $db = \phpws2\Database::getDB();
+        $visitorTable = $db->addTable('conf_visitor');
+        $guestTable = $db->addTable('conf_guest');
+        $regTable = $db->addTable('conf_registration', null, false);
+
+        $regTable->addFieldConditional('conferenceId', $conference->id);
+        $regId = $regTable->addField('id');
+        $visitorTable->addField('email', 'vemail');
+        $guestTable->addField('email', 'gemail');
+        $cond1 = new \phpws2\Database\Conditional($db,
+                $regTable->getField('visitorId'), $visitorTable->getField('id'),
+                '=');
+        $cond2 = new \phpws2\Database\Conditional($db, $regId,
+                $guestTable->getField('registrationId'), '=');
+        $db->joinResources($regTable, $visitorTable, $cond1, 'left');
+        $db->joinResources($regTable, $guestTable, $cond2, 'left');
+        $regTable->addFieldConditional('completed', 1);
+        $regTable->addFieldConditional('cancelled', 0);
+        $result = $db->select();
+        return $this->siftRegistrationEmail($result);
+    }
+
+    private function siftRegistrationEmail($result)
+    {
         if (empty($result)) {
             return 'No registrations found for session #' . $session->id;
         }
+
         $csvRow = array();
         $csvRow[0] = '"email","is guest"';
         $visitors = array();
@@ -75,6 +104,12 @@ class ReportView extends AbstractView
 
         $content = implode("\n", $csvRow);
         return $content;
+    }
+
+    public function emails(SessionResource $session)
+    {
+        $result = $this->getSessionEmails($session);
+        return $this->siftRegistrationEmail($result);
     }
 
     public function refunds(SessionResource $session)
