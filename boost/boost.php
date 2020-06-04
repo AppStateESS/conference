@@ -10,7 +10,7 @@
  * @license https://opensource.org/licenses/MIT
  */
 $proper_name = 'Conference';
-$version = '1.4.2';
+$version = '1.4.3';
 $register = false;
 $unregister = false;
 $import_sql = false;

@@ -202,6 +202,13 @@ class ConferenceUpdate
                 $this->content[] = '- Extended visitor activation from two hours to twelve.';
                 $this->content[] = '- Fixed session end time bug.';
                 $this->content[] = '</pre>';
+
+            case $this->compare('1.4.3'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.4.3';
+                $this->content[] = '------------------------';
+                $this->content[] = '- Added report that lists all emails from a conference';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
