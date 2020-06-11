@@ -43,15 +43,16 @@ const Form = ({setStatus}) => {
       )
     } else if (duplicate) {
       return (
-        <div className="d-block badge badge-danger">
-          This email address is already in use. You can&nbsp;
-          <a href="./conference/User/Visitor/login" className="text-light">
+        <div className="d-block text-center text-danger">
+          This email address is already in use. You can
+          <br />
+          <a href="./conference/User/Visitor/login" className="text-primary">
             login
           </a>{' '}
           or{' '}
           <a
             href="./conference/User/Visitor/forgotPassword"
-            className="text-light">
+            className="text-primary">
             reset your password
           </a>
         </div>
