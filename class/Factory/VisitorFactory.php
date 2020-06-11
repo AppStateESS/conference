@@ -209,14 +209,17 @@ class VisitorFactory extends BaseFactory
 
     public function login(string $email, string $password)
     {
-        $visitor = $this->loadByEmail($email, true);
-        if ($visitor && $visitor->id && password_verify($password,
-                        $visitor->password)) {
+        $visitor = $this->loadByEmail($email);
+        if (empty($visitor) || empty($visitor->id)) {
+            return ['success' => false, 'reason' => 'noemail'];
+        } elseif (!password_verify($password, $visitor->password)) {
+            return ['success' => false, 'reason' => 'nopassword'];
+        } elseif (!$visitor->activated) {
+            return ['success' => false, 'reason' => 'notactivated'];
+        } else {
             $this->setCurrent($visitor);
             LogFactory::log('Visitor logged in.', $visitor);
-            return true;
-        } else {
-            return false;
+            return ['success' => true];
         }
     }
 

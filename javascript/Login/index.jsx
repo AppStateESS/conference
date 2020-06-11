@@ -12,6 +12,7 @@ export default class Login extends Component {
       capWarning: '',
       emailError: false,
       loginError: false,
+      errorReason: '',
     }
     this.post = this.post.bind(this)
     this.postOnEnter = this.postOnEnter.bind(this)
@@ -38,7 +39,7 @@ export default class Login extends Component {
             'conference/Visitor/Conference'
           )
         } else {
-          this.setState({loginError: true})
+          this.setState({loginError: true, errorReason: data.reason})
         }
       },
       error: () => {},
@@ -81,7 +82,48 @@ export default class Login extends Component {
   }
 
   reset() {
-    this.setState({loginError: false})
+    this.setState({loginError: false, errorReason: ''})
+  }
+
+  errorMessage() {
+    let content
+    switch (this.state.errorReason) {
+      case 'noemail':
+        content = (
+          <span>
+            Do not recognize your email address. Do you need to{' '}
+            <a href="./conference/User/Visitor/signup">
+              signup for an account?
+            </a>
+          </span>
+        )
+        break
+
+      case 'nopassword':
+        content = (
+          <span>
+            Password and email do not match.{' '}
+            <a href="./conference/User/Visitor/forgotPassword">
+              Did you forget your password?
+            </a>
+          </span>
+        )
+        break
+
+      case 'missing':
+        content = <span>Password and/or email must not be blank.</span>
+        break
+
+      case 'notactivated':
+        content = (
+          <span>
+            It appears you have not activated your account. Check your email and
+            click the activation link.
+          </span>
+        )
+        break
+    }
+    return content
   }
 
   render() {
@@ -93,21 +135,7 @@ export default class Login extends Component {
             <h5 className="alert-link text-center">
               Account not found or not activated.
             </h5>
-            <ul>
-              <li>
-                Have you{' '}
-                <a href="./conference/User/Visitor/signup">
-                  signed up for an account?
-                </a>
-              </li>
-              <li>Did you activate your account via the email we sent?</li>
-              <li>Did you type in your password correctly?</li>
-              <li>
-                <a href="./conference/User/Visitor/forgotPassword">
-                  Did you forget your password?
-                </a>
-              </li>
-            </ul>
+            {this.errorMessage()}
           </div>
           <div>
             <button className="btn btn-primary btn-block" onClick={this.reset}>

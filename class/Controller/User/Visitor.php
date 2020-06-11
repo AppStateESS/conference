@@ -85,19 +85,20 @@ class Visitor extends SubController
     protected function loginPost(Request $request)
     {
         $this->factory->clearNotActivated();
-        $email = $request->pullPostString('email');
-        $password = $request->pullPostString('password');
+        $email = $request->pullPostString('email', true);
+        $password = $request->pullPostString('password', true);
         if (empty($email) || empty($password)) {
-            return ['success' => false];
+            return ['success' => false, 'reason' => 'missing'];
         }
-        if ($this->factory->login($email, $password)) {
+        $result = $this->factory->login($email, $password);
+        if ($result['success']) {
             if ($returnUrl = $this->factory->getReturnUrl()) {
                 return ['success' => true, 'returnUrl' => $returnUrl];
             } else {
                 return ['success' => true, 'returnUrl' => './conference/Visitor/Conference'];
             }
         } else {
-            return ['success' => false];
+            return $result;
         }
     }
 
