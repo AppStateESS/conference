@@ -39,14 +39,14 @@ export default class Signup extends Component {
     return (
       <div>
         <h4>Almost done!</h4>
-        <p>
-          Your account has been created, we just need verification. Please check
-          your email and click the authorization link we sent you.
-        </p>
-        <p>
-          Once you have done that,&nbsp;
-          <a href="./conference/User/Visitor/login">you can log in</a>.
-        </p>
+        <p>Your account has been created, we just need verification.</p>
+        <div className="alert alert-danger text-center">
+          <strong>
+            Please check your email and
+            <br /> click the authorization link we sent you.
+          </strong>
+        </div>
+        <p>Once you have verified your account, you can log in.</p>
       </div>
     )
   }
