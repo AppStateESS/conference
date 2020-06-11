@@ -104,6 +104,12 @@ class SessionResource extends AbstractResource
     protected $locationId;
 
     /**
+     *
+     * @var \phpws2\Variable\StringVar
+     */
+    protected $notes;
+
+    /**
      * Number of registrations allowed for session.
      * Default is 0 (no limit)
      * @var \phpws2\Variable\IntegerVar
@@ -154,6 +160,7 @@ class SessionResource extends AbstractResource
                 'mealIncluded');
         $this->mealCost = new \phpws2\Variable\FloatVar(0.00, 'mealCost');
         $this->mealCost->setPrecision(7, 2);
+        $this->notes = new \phpws2\Variable\TextOnly(null, 'notes');
         $this->locationId = new \phpws2\Variable\IntegerVar(null, 'locationId');
         $this->locationId->allowNull(false);
         $this->registrationCount = new \phpws2\Variable\IntegerVar(0,
@@ -170,6 +177,7 @@ class SessionResource extends AbstractResource
     {
         $vars = parent::getStringVars();
         $this->formatDates($vars);
+        $vars['notes'] = nl2br($vars['notes']);
         return $vars;
     }
 

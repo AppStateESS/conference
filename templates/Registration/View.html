@@ -11,6 +11,11 @@
   <h2 class="mb-2"><?=$conference['title']?></h2>
   <h3>Session: <?=$session['title']?></h3>
   <h4>Student: <?=$student['firstName'], ' ', $student['lastName']?></h4>
+  <?php if (!empty($session['notes'])):?>
+  <div class="p-3 border-success border mb-3 rounded">
+    <?=$session['notes']?>
+  </div>
+  <?php endif;?>
   <table class="table table-striped">
     <tbody>
       <tr>

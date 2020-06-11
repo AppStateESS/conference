@@ -206,6 +206,7 @@ class SessionForm extends Component {
   render() {
     const {
       title,
+      notes,
       eventDate,
       signupStart,
       signupEnd,
@@ -324,7 +325,7 @@ class SessionForm extends Component {
                   onChange={this.setDate.bind(this, 'eventDate')}
                   className="form-control"
                   dateFormat="MMM d, yyyy"
-                />{' '}
+                />
                 {eventDateError}
               </div>
               <div className="col-md-4">
@@ -474,7 +475,7 @@ class SessionForm extends Component {
               </div>
             </div>
             <div className="row">
-              <div className="col-sm-4">
+              <div className="col-sm-6">
                 <label className="mt-3">Attendance cap</label>
                 <InputField
                   name="attendanceCap"
@@ -483,6 +484,8 @@ class SessionForm extends Component {
                   value={attendanceCap}
                   change={update.bind(null, 'attendanceCap')}
                 />
+              </div>
+              <div className="col-sm-6">
                 <label className="mt-3">Soft cap</label>
                 <InputField
                   name="softCap"
@@ -490,6 +493,17 @@ class SessionForm extends Component {
                   maxLength="4"
                   value={softCap}
                   change={update.bind(null, 'softCap')}
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-12">
+                <label>Notes</label>
+                <textarea
+                  name="notes"
+                  className="form-control"
+                  value={notes}
+                  onChange={update.bind(null, 'notes')}
                 />
               </div>
             </div>
