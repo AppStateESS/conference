@@ -209,6 +209,16 @@ class ConferenceUpdate
                 $this->content[] = '------------------------';
                 $this->content[] = '- Added report that lists all emails from a conference';
                 $this->content[] = '</pre>';
+
+            case $this->compare('1.4.4'):
+                $this->v144();
+                $this->content[] = '<pre>';
+                $this->content[] = '1.4.4';
+                $this->content[] = '------------------------';
+                $this->content[] = '- Added session comments';
+                $this->content[] = '- Better log in errors';
+                $this->content[] = '- More obvious activation message';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
@@ -236,6 +246,14 @@ class ConferenceUpdate
         $tbl = $db->addTable('conf_locked');
         $sessionId = $tbl->addDataType('sessionId', 'int');
         $sessionId->add();
+    }
+
+    private function v144()
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('conf_session');
+        $notes = $tbl->addDataType('notes', 'text');
+        $notes->add();
     }
 
 }
