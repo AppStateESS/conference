@@ -13,6 +13,7 @@
     "url": "https://github.com/AppStateESS/conference/issues"
   },
   "dependencies": {
+    "core-js": "^3.6.5",
     "immutable": "^4.0.0-rc.12"
   },
   "scripts": {
