@@ -1,14 +1,17 @@
 <h2><?=$conference['title']?></h2>
-<h3><?=$session['title']?></h3>
+<h3><?=$session['title']?> - <?=$session['eventDateFormat']?></h3>
 <table class="table table-striped">
   <tbody>
     <tr>
       <th>Status</th>
-      <td><?=$registration['completed'] == 1 ? '<span class="alert alert-success">Completed</span>' : '<span class="alert alert-danger">Incomplete</span>'?></td>
+      <td>
+        <?=$registration['completed'] == 1 ? '<span class="alert alert-success">Completed</span>' : '<span class="alert alert-danger">Incomplete</span>'?>
+      </td>
     </tr>
     <tr>
       <th>Visitor</th>
-      <td><?=$visitor['firstName'], ' ', $visitor['lastName']?> - <a href="mailto:<?=$visitor['email']?>"><?=$visitor['email']?></td>
+      <td><?=$visitor['firstName'], ' ', $visitor['lastName']?> - <a
+          href="mailto:<?=$visitor['email']?>"><?=$visitor['email']?></td>
     </tr>
     <tr>
       <th>Guests</th>
