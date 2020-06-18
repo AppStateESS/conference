@@ -105,7 +105,7 @@ class SessionResource extends AbstractResource
 
     /**
      *
-     * @var \phpws2\Variable\StringVar
+     * @var \phpws2\Variable\TextOnly
      */
     protected $notes;
 
