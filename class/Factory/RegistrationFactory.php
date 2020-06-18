@@ -578,14 +578,16 @@ class RegistrationFactory extends BaseFactory
         LogFactory::log('Emailed session change details', $registration);
     }
 
-    public function changeSession(Resource $registration, $sessionId)
+    public function changeSession(Resource $registration, int $sessionId)
     {
         $oldCost = (float) $registration->totalCost;
-        $oldSessionId = $registration->sessionId;
+        $oldSession = $this->getSession($registration);
+
         $registration->sessionId = $sessionId;
+        $newSession = $this->getSession($registration);
+
         $this->processTotalCost($registration);
         $newCost = (float) $registration->totalCost;
-
         if ($registration->completed && $oldCost !== $newCost) {
             LogFactory::log("Could not change session due to difference in cost",
                     $registration);
@@ -601,7 +603,10 @@ class RegistrationFactory extends BaseFactory
         }
         PaymentFactory::updateSessionByRegistration($registration);
 
-        LogFactory::log("Session changed from session id #$oldSessionId",
+        $oldDate = strftime('%B %e, %Y', $oldSession->eventDate);
+        $newDate = strftime('%B %e, %Y', $newSession->eventDate);
+
+        LogFactory::log("Session changed from $oldDate (id #$oldSession->id) to $newDate (id #$newSession->id)",
                 $registration);
         $this->emailSessionChange($registration);
     }
