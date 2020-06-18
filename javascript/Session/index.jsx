@@ -9,7 +9,7 @@ import '../Shared/style.css'
 
 /* global $, conferenceId, locationId, sessionSoftCap */
 
-const regLink = val => {
+const regLink = (val) => {
   return (
     <a href={`conference/Admin/Registration/?sessionId=${val.id}`}>
       {val.registrationCount}
@@ -17,7 +17,7 @@ const regLink = val => {
   )
 }
 
-const warning = row => {
+const warning = (row) => {
   if (row.softCap == 0) {
     return <div className="badge badge-success">Under</div>
   }
@@ -61,10 +61,11 @@ export default class Session extends Listing {
       mealService: 0,
       mealCost: 0.0,
       allowGuest: 0,
+      notes: '',
       locationId: props.locationId,
       registrationCount: 0,
       capWarningSent: 0,
-      active: 1
+      active: 1,
     }
     const dropdown = (key, row) => {
       const id = row.id
@@ -127,18 +128,18 @@ export default class Session extends Listing {
           return dropdown(key, row)
         },
         style: {
-          width: '10%'
-        }
+          width: '10%',
+        },
       },
       {
         column: 'title',
         label: 'Title',
-        sort: true
+        sort: true,
       },
       {
         column: 'registerCost',
         label: 'Cost / Guest / Meal',
-        callback: row => {
+        callback: (row) => {
           const mealCost =
             row.mealService === 1 ? (
               <span>${row.mealCost.toFixed(2)}</span>
@@ -158,7 +159,7 @@ export default class Session extends Listing {
               ${row.registerCost.toFixed(2)} / {guestCost} / {mealCost}
             </span>
           )
-        }
+        },
       },
       {
         column: 'registrationCount',
@@ -166,21 +167,21 @@ export default class Session extends Listing {
         sort: true,
         style: {width: '100px'},
         className: 'text-right',
-        callback: row => {
+        callback: (row) => {
           return regLink(row)
-        }
+        },
       },
       {
         label: 'Soft cap',
-        callback: row => {
+        callback: (row) => {
           return warning(row)
-        }
+        },
       },
       {
         column: 'eventDate',
         label: 'Event date',
         sort: true,
-        callback: session => {
+        callback: (session) => {
           const eventDateObj = new Date()
           const now = new Date()
           eventDateObj.setTime(session.eventDate * 1000)
@@ -199,14 +200,14 @@ export default class Session extends Listing {
           } else {
             return eventDateObj.toDateString()
           }
-        }
+        },
       },
       {
         column: 'active',
         callback: (row, key) => {
           return this.activeButton(row, key)
-        }
-      }
+        },
+      },
     ]
     this.state.currentConference = {}
     this.state.currentConferenceKey = 0
@@ -248,7 +249,7 @@ export default class Session extends Listing {
       },
       error: () => {
         this.setMessage('Could not create copy')
-      }
+      },
     })
   }
 
@@ -284,7 +285,7 @@ export default class Session extends Listing {
       success: () => {
         this.setState({listing})
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -297,13 +298,13 @@ export default class Session extends Listing {
       url: 'conference/Admin/Conference',
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         this.conferences = data.listing
         this.setState({currentConference: data.listing[0]})
       },
       error: () => {
         this.setMessage('Could not access server')
-      }
+      },
     })
   }
 
@@ -334,7 +335,7 @@ export default class Session extends Listing {
       <NavbarSearch
         value={this.state.search}
         placeholder="Search: title or date"
-        onChange={e => {
+        onChange={(e) => {
           this.updateSearch(e.target.value)
         }}
       />
@@ -363,7 +364,7 @@ export default class Session extends Listing {
         (this.state.resource.id > 0 ? 'Update' : 'Create') +
         ' session for conference: ' +
         title,
-      close: this.load
+      close: this.load,
     }
   }
 }
