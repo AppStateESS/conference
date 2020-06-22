@@ -63,9 +63,21 @@ class Visitor extends SubController
         return ['success' => true];
     }
 
+    protected function checkEmailJson(Request $request)
+    {
+        $email = $request->pullGetString('email');
+        $id = $request->pullGetInteger('id');
+        $visitor = $this->factory->loadByEmail($email);
+        return ['allow' => $visitor === false || $visitor->id == $id];
+    }
+
     protected function put(Request $request)
     {
         $visitor = $this->factory->put($this->id, $request);
+        $password = $request->pullPutString('password', true);
+        if ($password) {
+            $visitor->hashPassword($password);
+        }
         $this->factory->save($visitor);
         return ['success' => true];
     }

@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom'
 import Listing from '@essappstate/canopy-listing'
 import VisitorForm from './VisitorForm'
 
+/* global $ */
+
 class Visitor extends Listing {
   constructor(props) {
     super(props)
@@ -11,6 +13,7 @@ class Visitor extends Listing {
     this.label = 'Visitor'
     this.defaultResource = {
       id: 0,
+      password: '',
       email: '',
       lastName: '',
       firstName: '',
@@ -20,10 +23,10 @@ class Visitor extends Listing {
       state: '',
       zip: '',
       phone: '',
-      activated: 0
+      activated: 0,
     }
 
-    const dropdown = key => {
+    const dropdown = (key) => {
       const visitorId = this.state.listing[key].id
       return (
         <div className="dropdown">
@@ -75,8 +78,8 @@ class Visitor extends Listing {
           return dropdown(key)
         },
         style: {
-          width: '10%'
-        }
+          width: '10%',
+        },
       },
       {
         column: 'activated',
@@ -94,25 +97,25 @@ class Visitor extends Listing {
               No
             </button>
           )
-        }
+        },
       },
       {
         column: 'email',
         label: 'Email/Username',
         sort: true,
-        callback: row => {
+        callback: (row) => {
           return <a href={`mailto:${row.email}`}>{row.email}</a>
-        }
+        },
       },
       {
         column: 'lastName',
         label: 'Last name',
-        sort: true
+        sort: true,
       },
       {
         column: 'firstName',
-        label: 'First name'
-      }
+        label: 'First name',
+      },
     ]
 
     this.state.resource = Object.assign({}, this.defaultResource)
@@ -121,6 +124,14 @@ class Visitor extends Listing {
 
   navbarButton() {
     return null
+  }
+
+  loadResource(key, callback = null) {
+    super.loadResource(key, () => {
+      const {resource} = this.state
+      resource.password = ''
+      this.setState({resource})
+    })
   }
 
   deleteResource(key, e) {
@@ -145,7 +156,7 @@ class Visitor extends Listing {
           listing[key].activated = 1
           this.setState({listing})
         },
-        error: () => {}
+        error: () => {},
       })
     }
   }
@@ -155,7 +166,10 @@ class Visitor extends Listing {
       content: <div className="visitor-form">{this.form()}</div>,
       width: '80%',
       title: 'Edit visitor',
-      close: this.load
+      close: () => {
+        this.setState({resource: Object.assign({}, this.defaultResource)})
+        this.load()
+      },
     }
   }
 
