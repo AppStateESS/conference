@@ -219,6 +219,17 @@ class ConferenceUpdate
                 $this->content[] = '- Better log in errors';
                 $this->content[] = '- More obvious activation message';
                 $this->content[] = '</pre>';
+
+            case $this->compare('1.4.5'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.4.5';
+                $this->content[] = '------------------------';
+                $this->content[] = '- Session changes log improvement';
+                $this->content[] = '- Fixed note saving on new sessions';
+                $this->content[] = '- Added session date to registration admin view';
+                $this->content[] = '- Can now change Visitor email, password, and phone number';
+                $this->content[] = '- Can change visitor session from history view';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
