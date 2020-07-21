@@ -230,6 +230,13 @@ class ConferenceUpdate
                 $this->content[] = '- Can now change Visitor email, password, and phone number';
                 $this->content[] = '- Can change visitor session from history view';
                 $this->content[] = '</pre>';
+
+            case $this->compare('1.4.6'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.4.6';
+                $this->content[] = '------------------------';
+                $this->content[] = '- NPM package updates';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
