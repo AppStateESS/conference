@@ -3,9 +3,9 @@
 /**
  * MIT License
  * Copyright (c) 2019 Electronic Student Services @ Appalachian State University
- * 
+ *
  * See LICENSE file in root directory for copyright and distribution permissions.
- * 
+ *
  * @author Matthew McNaney <mcnaneym@appstate.edu>
  * @license https://opensource.org/licenses/MIT
  */
@@ -21,10 +21,10 @@ class Conference extends SubController
 {
 
     /**
-     * @var conference\View\ConferenceView 
+     * @var conference\View\ConferenceView
      */
     protected $view;
-    
+
     /**
      * @var conference\Factory\ConferenceFactory
      */
@@ -51,20 +51,26 @@ class Conference extends SubController
         return ['listing' => $this->factory->listing($options)];
     }
 
+    protected function viewJson(Request $request)
+    {
+        $conference = $this->factory->load($this->id);
+        return $conference->getStringVars();
+    }
+
     protected function post(Request $request)
     {
         $conference = $this->factory->post($request);
         $this->factory->save($conference);
-        return ['success' => true, 'id'=>$conference->id];
+        return ['success' => true, 'id' => $conference->id];
     }
 
     protected function put(Request $request)
     {
         $conference = $this->factory->put($this->id, $request);
         $this->factory->save($conference);
-        return ['success' => true, 'id'=>$this->id];
+        return ['success' => true, 'id' => $this->id];
     }
-    
+
     protected function delete(Request $request)
     {
         $this->factory->delete($this->id);
