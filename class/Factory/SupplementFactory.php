@@ -140,7 +140,11 @@ class SupplementFactory extends BaseFactory
         $registration = $registrationFactory->load($supplement->registrationId);
         $session = $sessionFactory->load($registration->sessionId);
         $conference = $conferenceFactory->load($session->conferenceId);
-        $account = $accountFactory->load($conference->accountId);
+        if ($conference->accountId) {
+            $account = $accountFactory->load($conference->accountId);
+        } else {
+            $account = $accountFactory->build();
+        }
 
         return $paymentFactory->createSupplementPayment($supplement,
                         $registration, $account, $visitor);
