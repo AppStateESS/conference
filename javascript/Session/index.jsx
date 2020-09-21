@@ -210,18 +210,15 @@ export default class Session extends Listing {
       },
     ]
     this.state.currentConference = {}
-    this.state.currentConferenceKey = 0
 
     this.locations = []
-    this.conferences = []
     this.state.resource = Object.assign({}, this.defaultResource)
-    this.setCurrentConference = this.setCurrentConference.bind(this)
     this.activeButton = this.activeButton.bind(this)
   }
 
   componentDidMount() {
     loadLocations(this)
-    this.loadConferences()
+    this.loadConference()
     super.componentDidMount()
   }
 
@@ -293,28 +290,18 @@ export default class Session extends Listing {
     super.load({conferenceId: this.props.conferenceId})
   }
 
-  loadConferences() {
+  loadConference() {
     $.ajax({
-      url: 'conference/Admin/Conference',
+      url: 'conference/Admin/Conference/' + this.props.conferenceId,
       dataType: 'json',
       type: 'get',
       success: (data) => {
-        this.conferences = data.listing
-        this.setState({currentConference: data.listing[0]})
+        this.setState({currentConference: data})
       },
       error: () => {
         this.setMessage('Could not access server')
       },
     })
-  }
-
-  setCurrentConference(e) {
-    const currentConferenceKey = e.target.value
-    const currentConference = Object.assign(
-      {},
-      this.conferences[currentConferenceKey]
-    )
-    this.setState({currentConferenceKey, currentConference})
   }
 
   form() {
