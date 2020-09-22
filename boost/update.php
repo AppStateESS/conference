@@ -245,6 +245,12 @@ class ConferenceUpdate
                 $this->content[] = '- NPM package updates';
                 $this->content[] = '- Fixed Session admin bugs';
                 $this->content[] = '</pre>';
+            case $this->compare('1.4.8'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.4.8';
+                $this->content[] = '------------------------';
+                $this->content[] = '- Updated travis';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
