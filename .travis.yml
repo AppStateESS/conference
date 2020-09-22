@@ -1,15 +1,17 @@
 sudo: false
 language: php
 php:
-- 7
+  - 7
+before_install:
+  - npm i -g npm@v10.20.1
 install:
-- npm install
+  - npm install
 script:
-- ".travis-build/phplint ."
+  - '.travis-build/phplint .'
 after_success:
-- npm run build
-- rm -rf node_modules
-- tar -czf conference.tar.gz *
+  - npm run build
+  - rm -rf node_modules
+  - tar -czf conference.tar.gz *
 deploy:
   provider: releases
   skip_cleanup: true
