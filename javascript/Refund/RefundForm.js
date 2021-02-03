@@ -2,7 +2,7 @@
 import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import GuestListing from './GuestListing'
-import BigCheckbox from 'canopy-react-bigcheckbox'
+import BigCheckbox from '@essappstate/canopy-react-bigcheckbox'
 
 /* global $ */
 

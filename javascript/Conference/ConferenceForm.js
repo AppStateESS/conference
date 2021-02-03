@@ -2,13 +2,13 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import ConferenceQuestion from './ConferenceQuestion'
-import Editor from '../Shared/Editor'
+//import Editor from '../Shared/Editor'
 
 class ConferenceForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      titleError: false
+      titleError: false,
     }
 
     this.titleRef = React.createRef()
@@ -39,7 +39,7 @@ class ConferenceForm extends Component {
 
   checkTitle() {
     this.setState({
-      titleError: this.props.resource.title.length === 0
+      titleError: this.props.resource.title.length === 0,
     })
   }
 
@@ -61,7 +61,7 @@ class ConferenceForm extends Component {
       addInfo,
       updateInfo,
       dropInfo,
-      conferenceQuestion
+      conferenceQuestion,
     } = this.props
     const disableSave = this.disableSave()
     const titleClass = this.state.titleError
@@ -101,10 +101,11 @@ class ConferenceForm extends Component {
         </div>
         <div className="mb-4">
           <label className="d-block">Description:</label>
-          <Editor
-            ident={toString(resource.id)}
-            content={resource.description}
-            update={update.bind(null, 'description')}
+          <textarea
+            style={{width: '100%'}}
+            rows="10"
+            value={resource.description}
+            onChange={update.bind(null, 'description')}
           />
         </div>
         <div className="row">
@@ -170,7 +171,7 @@ ConferenceForm.propTypes = {
   save: PropTypes.func,
   addInfo: PropTypes.func,
   updateInfo: PropTypes.func,
-  conferenceQuestion: PropTypes.array
+  conferenceQuestion: PropTypes.array,
 }
 
 export default ConferenceForm

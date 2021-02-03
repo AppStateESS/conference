@@ -251,6 +251,12 @@ class ConferenceUpdate
                 $this->content[] = '------------------------';
                 $this->content[] = '- Updated travis';
                 $this->content[] = '</pre>';
+            case $this->compare('1.4.9'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.4.9';
+                $this->content[] = '------------------------';
+                $this->content[] = '- Editor stripped due to bugs.';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
@@ -259,8 +265,7 @@ class ConferenceUpdate
     {
         $db = Database::getDB();
         $tbl = $db->addTable('conf_session');
-        $capWarningSent = new \phpws2\Database\Datatype\Boolean($tbl,
-                'capWarningSent');
+        $capWarningSent = new \phpws2\Database\Datatype\Boolean($tbl, 'capWarningSent');
         $capWarningSent->add();
     }
 

@@ -1,13 +1,13 @@
 'use strict'
 import React from 'react'
 import PropTypes from 'prop-types'
-import Editor from '../Shared/Editor'
+//import Editor from '../Shared/Editor'
 
 class LocationForm extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      titleError: false
+      titleError: false,
     }
   }
 
@@ -48,18 +48,20 @@ class LocationForm extends React.Component {
         </div>
         <div className="mb-4">
           <label className="d-block">Description:</label>
-          <Editor
-            ident={'desc' + resource.id}
-            content={resource.description}
-            update={update.bind(null, 'description')}
+          <textarea
+            style={{width: '100%'}}
+            rows="10"
+            value={resource.description}
+            onChange={update.bind(null, 'description')}
           />
         </div>
         <div className="mb-4">
           <label className="d-block">Directions:</label>
-          <Editor
-            ident={'dir' + resource.id}
-            content={resource.directions}
-            update={update.bind(null, 'directions')}
+          <textarea
+            style={{width: '100%'}}
+            rows="10"
+            value={resource.directions}
+            onChange={update.bind(null, 'directions')}
           />
         </div>
         <div className="mb-4">
@@ -89,7 +91,7 @@ LocationForm.propTypes = {
   update: PropTypes.func,
   resource: PropTypes.object,
   save: PropTypes.func,
-  close: PropTypes.func
+  close: PropTypes.func,
 }
 
 export default LocationForm

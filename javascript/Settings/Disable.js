@@ -1,6 +1,6 @@
 'use strict'
 import React, {useState, useEffect} from 'react'
-import BigCheckbox from 'canopy-react-bigcheckbox'
+import BigCheckbox from '@essappstate/canopy-react-bigcheckbox'
 
 const Disable = ({}) => {
   const [disabled, setDisabled] = useState(false)

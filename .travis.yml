@@ -1,13 +1,13 @@
 sudo: false
 matrix:
-    include:
-        - language: php
-          php:
-            - 7
-          script:
-            - '.travis-build/phplint .'
-        - language: node.js
-          node_js: "10.20.1"
+  include:
+    - language: php
+      php:
+        - 7
+      script:
+        - '.travis-build/phplint .'
+    - language: node.js
+      node_js: '10.20.1'
 
 before_install:
   - npm i -g npm@v6.14.8
