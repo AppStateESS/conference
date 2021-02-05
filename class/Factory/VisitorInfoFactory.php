@@ -35,8 +35,7 @@ class VisitorInfoFactory extends BaseFactory
             $tbl->addFieldConditional('conferenceId', $options['conferenceId']);
         }
         if (!empty($options['registrationId'])) {
-            $tbl->addFieldConditional('registrationId',
-                    $options['registrationId']);
+            $tbl->addFieldConditional('registrationId', $options['registrationId']);
         }
         return $db->select();
     }
@@ -57,6 +56,9 @@ class VisitorInfoFactory extends BaseFactory
      */
     public function visitorListing(int $registrationId): array
     {
+        $regFactory = new RegistrationFactory;
+        $registration = $regFactory->load($registrationId);
+        $conferenceId = $registration->conferenceId;
         $db = Database::getDB();
         $qTbl = $db->addTable('conf_confquestion');
         $vTbl = $db->addTable('conf_visitorinfo');
@@ -68,15 +70,15 @@ class VisitorInfoFactory extends BaseFactory
         $qTbl->addOrderBy('sort');
         $vTbl->addField('id');
         $qTbl->addFieldConditional('deleted', 0);
+        $qTbl->addFieldConditional('conferenceId', $conferenceId);
 
-        $exp = new Expression("IFNULL(" . $vTbl->getField('answer') . ",'')",
-                'answer');
+        $exp = new Expression("IFNULL(" . $vTbl->getField('answer') . ",'')", 'answer');
         $vTbl->addField($exp);
 
         $cond = new \phpws2\Database\Conditional($db, $qTbl->getField('id'),
                 $vTbl->getField('questionId'), '=');
-        $cond2 = new \phpws2\Database\Conditional($db,
-                $vTbl->getField('registrationId'), $registrationId, '=');
+        $cond2 = new \phpws2\Database\Conditional($db, $vTbl->getField('registrationId'),
+                $registrationId, '=');
         $cond3 = new \phpws2\Database\Conditional($db, $cond, $cond2, 'and');
 
         $db->joinResources($qTbl, $vTbl, $cond3, 'left');
