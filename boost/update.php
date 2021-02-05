@@ -265,6 +265,12 @@ class ConferenceUpdate
                 $this->content[] = '- Fixed mixed questions appearing.';
                 $this->content[] = '- Updated packages.';
                 $this->content[] = '</pre>';
+            case $this->compare('1.5.1'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.5.1';
+                $this->content[] = '------------------------';
+                $this->content[] = '- Fixed asset update adding auto directory.';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
