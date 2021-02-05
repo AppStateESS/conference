@@ -63,8 +63,7 @@ class SessionFactory extends BaseFactory
             $cond3 = $db->createConditional($regTbl->getField('completed'), 1);
             $cond4 = $db->createConditional($cond2, $cond3);
             $cond5 = $db->createConditional($cond, $cond4);
-            $db->joinResources($sessionTbl, $regTbl,
-                    $cond5
+            $db->joinResources($sessionTbl, $regTbl, $cond5
                     , 'left');
 
             if (!empty($options['guestCount'])) {
@@ -90,25 +89,21 @@ class SessionFactory extends BaseFactory
 
         if (!empty($options['sameCost'])) {
             $session = $this->load($options['sameCost']);
-            $sessionTbl->addFieldConditional('registerCost',
-                    $session->registerCost);
+            $sessionTbl->addFieldConditional('registerCost', $session->registerCost);
             if ($session->allowGuest) {
                 $sessionTbl->addFieldConditional('allowGuest', 1);
-                $sessionTbl->addFieldConditional('guestCost',
-                        $session->guestCost);
+                $sessionTbl->addFieldConditional('guestCost', $session->guestCost);
             }
 
             if ($session->mealService) {
                 $sessionTbl->addFieldConditional('mealService', 1);
-                $sessionTbl->addFieldConditional('mealIncluded',
-                        (int) $session->mealIncluded);
+                $sessionTbl->addFieldConditional('mealIncluded', (int) $session->mealIncluded);
                 $sessionTbl->addFieldConditional('mealCost', $session->mealCost);
             }
         }
 
         if (!empty($options['conferenceId'])) {
-            $sessionTbl->addFieldConditional('conferenceId',
-                    $options['conferenceId']);
+            $sessionTbl->addFieldConditional('conferenceId', $options['conferenceId']);
         }
         if (!empty($options['activeOnly'])) {
             $sessionTbl->addFieldConditional('active', 1);
@@ -119,8 +114,8 @@ class SessionFactory extends BaseFactory
                 $sessionTbl->addFieldConditional('eventDate', $dateSearch);
             } else {
                 $searchQuery = '%' . strip_tags($options['search']) . '%';
-                $cond2 = new \phpws2\Database\Conditional($db,
-                        $sessionTbl->getField('title'), $searchQuery, 'like');
+                $cond2 = new \phpws2\Database\Conditional($db, $sessionTbl->getField('title'),
+                        $searchQuery, 'like');
                 $db->addConditional($cond2);
             }
         }
@@ -151,8 +146,7 @@ class SessionFactory extends BaseFactory
      */
     public function midnight(int $timestamp): int
     {
-        return mktime(0, 0, 0, date('m', $timestamp), date('d', $timestamp),
-                date('Y', $timestamp));
+        return mktime(0, 0, 0, date('m', $timestamp), date('d', $timestamp), date('Y', $timestamp));
     }
 
     public function post(Request $request)
@@ -204,8 +198,7 @@ class SessionFactory extends BaseFactory
         $db = Database::getDB();
         $sesTbl = $db->addTable('conf_session');
         $regTbl = $db->addTable('conf_registration', null, false);
-        $cond = $db->createConditional($sesTbl->getField('id'),
-                $regTbl->getField('sessionId'), '=');
+        $cond = $db->createConditional($sesTbl->getField('id'), $regTbl->getField('sessionId'), '=');
         $regTbl->addFieldConditional('id', $registrationId);
         $db->joinResources($sesTbl, $regTbl, $cond, 'left');
         return $db->selectInto($session) ? $session : null;
@@ -226,14 +219,11 @@ class SessionFactory extends BaseFactory
     public function getEventDateRange(Resource $session)
     {
         $lastDay = $session->eventDate + ($session->days * 86400);
-        $differentMonth = strftime('%m', $session->eventDate) !== strftime('%m',
-                        $lastDay);
+        $differentMonth = strftime('%m', $session->eventDate) !== strftime('%m', $lastDay);
         if ($differentMonth) {
-            return strftime('%B %e', $session->eventDate) . ' &ndash; ' . strftime('%B %e',
-                            $lastDay);
+            return strftime('%B %e', $session->eventDate) . ' &ndash; ' . strftime('%B %e', $lastDay);
         } else {
-            return strftime('%B %e', $session->eventDate) . ' &ndash; ' . strftime('%e',
-                            $lastDay);
+            return strftime('%B %e', $session->eventDate) . ' &ndash; ' . strftime('%e', $lastDay);
         }
     }
 
@@ -267,8 +257,7 @@ class SessionFactory extends BaseFactory
             if ($session['id'] == $registration->sessionId) {
                 unset($listing[$key]);
             } else {
-                $listing[$key]['eventDateFormat'] = strftime('%b %e, %Y',
-                        $session['eventDate']);
+                $listing[$key]['eventDateFormat'] = strftime('%b %e, %Y', $session['eventDate']);
             }
         }
         return array_values($listing);
