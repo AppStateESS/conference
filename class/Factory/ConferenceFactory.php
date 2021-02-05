@@ -46,8 +46,8 @@ class ConferenceFactory extends BaseFactory
                 $tbl3->getField('conferenceId'));
         $db->joinResources($tbl, $tbl3, $join_conditional, 'left');
 
-        $conditional = new \phpws2\Database\Conditional($db,
-                $tbl->getField('locationId'), $tbl2->getField('id'), '=');
+        $conditional = new \phpws2\Database\Conditional($db, $tbl->getField('locationId'),
+                $tbl2->getField('id'), '=');
 
         $db->joinResources($tbl, $tbl2, $conditional, 'left');
 
@@ -98,6 +98,10 @@ class ConferenceFactory extends BaseFactory
     public function delete(int $id)
     {
         $conference = $this->load($id);
+        $defaultConference = SettingsFactory::getDefaultConference();
+        if ($defaultConference == $conference->id) {
+            SettingsFactory::setDefaultConference(0);
+        }
         $conference->deleted = true;
         $this->save($conference);
     }
