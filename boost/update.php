@@ -257,6 +257,14 @@ class ConferenceUpdate
                 $this->content[] = '------------------------';
                 $this->content[] = '- Editor stripped due to bugs.';
                 $this->content[] = '</pre>';
+            case $this->compare('1.5.0'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.5.0';
+                $this->content[] = '------------------------';
+                $this->content[] = '- Fixed editor.';
+                $this->content[] = '- Fixed mixed questions appearing.';
+                $this->content[] = '- Updated packages.';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
