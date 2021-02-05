@@ -39,10 +39,13 @@ class ReportView extends AbstractView
         $regTable->addFieldConditional('sessionId', $session->id);
         $regId = $regTable->addField('id');
         $visitorTable->addField('email', 'vemail');
+        $visitorTable->addField('firstName', 'vfn');
+        $visitorTable->addField('lastName', 'vln');
         $guestTable->addField('email', 'gemail');
-        $cond1 = new \phpws2\Database\Conditional($db,
-                $regTable->getField('visitorId'), $visitorTable->getField('id'),
-                '=');
+        $guestTable->addField('firstName', 'gfn');
+        $guestTable->addField('lastName', 'gln');
+        $cond1 = new \phpws2\Database\Conditional($db, $regTable->getField('visitorId'),
+                $visitorTable->getField('id'), '=');
         $cond2 = new \phpws2\Database\Conditional($db, $regId,
                 $guestTable->getField('registrationId'), '=');
         $db->joinResources($regTable, $visitorTable, $cond1, 'left');
@@ -62,10 +65,13 @@ class ReportView extends AbstractView
         $regTable->addFieldConditional('conferenceId', $conference->id);
         $regId = $regTable->addField('id');
         $visitorTable->addField('email', 'vemail');
+        $visitorTable->addField('firstName', 'vfn');
+        $visitorTable->addField('lastName', 'vln');
         $guestTable->addField('email', 'gemail');
-        $cond1 = new \phpws2\Database\Conditional($db,
-                $regTable->getField('visitorId'), $visitorTable->getField('id'),
-                '=');
+        $guestTable->addField('firstName', 'gfn');
+        $guestTable->addField('lastName', 'gln');
+        $cond1 = new \phpws2\Database\Conditional($db, $regTable->getField('visitorId'),
+                $visitorTable->getField('id'), '=');
         $cond2 = new \phpws2\Database\Conditional($db, $regId,
                 $guestTable->getField('registrationId'), '=');
         $db->joinResources($regTable, $visitorTable, $cond1, 'left');
@@ -78,26 +84,31 @@ class ReportView extends AbstractView
 
     private function siftRegistrationEmail($result)
     {
+
         if (empty($result)) {
             return 'No registrations found for session #' . $session->id;
         }
 
         $csvRow = array();
-        $csvRow[0] = '"email","is guest"';
+        $csvRow[0] = '"firstName","lastName","email","is guest"';
         $visitors = array();
         foreach ($result as $row) {
 
             if (!in_array($row['vemail'], $visitors)) {
                 $sub = [];
                 $visitors[] = $row['vemail'];
+                $sub[] = $row['vfn'];
+                $sub[] = $row['vln'];
                 $sub[] = $row['vemail'];
-                $sub[] = '0';
+                $sub[] = 'no';
                 $csvRow[] = '"' . implode('","', $sub) . '"';
             }
             if (!empty($row['gemail']) && !in_array($row['gemail'], $visitors)) {
                 $sub = [];
+                $sub[] = $row['gfn'];
+                $sub[] = $row['gln'];
                 $sub[] = $row['gemail'];
-                $sub[] = '1';
+                $sub[] = 'yes';
                 $csvRow[] = '"' . implode('","', $sub) . '"';
             }
         }
@@ -124,10 +135,9 @@ class ReportView extends AbstractView
         $regTable->addField('cancelled');
 
         $visitorTable = $db->addTable('conf_visitor');
-        $visitorTable->addField('firstName');
-        $visitorTable->addField('lastName');
+        $visitorTable->addField('firstName', 'vfn');
+        $visitorTable->addField('lastName', 'vln');
         $visitorTable->addField('email');
-
 
         $regTable->addFieldConditional('sessionId', $session->id);
         $cond = $db->createConditional($refundTable->getField('registrationId'),
@@ -171,8 +181,7 @@ class ReportView extends AbstractView
             throw new \Exception('No registrations found for session #' . $session->id);
         }
 
-        $answers = $factory->getVisitorInfo($session->conferenceId,
-                $registrations);
+        $answers = $factory->getVisitorInfo($session->conferenceId, $registrations);
         $csv = array();
 
         $csvRow[0] = '"created","updated", "cancelled", "cancel date","cancelled by","visitor", "email", "guest count","extra meals","vegetarian","total cost","paid", "discount", "completed", "refund amount", "arrived", "arrival time"';
@@ -185,8 +194,7 @@ class ReportView extends AbstractView
             $sub[] = strftime('%c', $reg['createDate']);
             $sub[] = strftime('%c', $reg['updateDate']);
             $sub[] = $reg['cancelled'] ? 'Yes' : 'No';
-            $sub[] = ($reg['cancelledDate']) ? strftime('%c',
-                            $reg['cancelledDate']) : '';
+            $sub[] = ($reg['cancelledDate']) ? strftime('%c', $reg['cancelledDate']) : '';
             $sub[] = $reg['cancelledBy'];
             $sub[] = $reg['lastName'] . ', ' . $reg['firstName'];
             $sub[] = $reg['email'];
