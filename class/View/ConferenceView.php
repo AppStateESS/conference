@@ -42,8 +42,7 @@ class ConferenceView extends AbstractView
     {
 
         $template = new \phpws2\Template;
-        $template->setModuleTemplate('conference',
-                'Conference/NoConferences.html');
+        $template->setModuleTemplate('conference', 'Conference/NoConferences.html');
         return $template->get();
     }
 
@@ -89,12 +88,10 @@ class ConferenceView extends AbstractView
         if (SettingsFactory::getDisabled()) {
             $vars['form'] = \conference\View\SettingsView::disabled();
         } else {
-            $vars['form'] = $this->scriptView('SessionMatchForm',
-                    ['conferenceId' => $conferenceId]);
+            $vars['form'] = $this->scriptView('SessionMatchForm', ['conferenceId' => $conferenceId]);
         }
         $template = new Template($vars);
-        $template->setModuleTemplate('conference',
-                'Conference/SessionMatch.html');
+        $template->setModuleTemplate('conference', 'Conference/SessionMatch.html');
         return $template->get();
     }
 
@@ -103,8 +100,7 @@ class ConferenceView extends AbstractView
         $conferenceId = SettingsFactory::getDefaultConference();
         if ($conferenceId) {
             if (VisitorFactory::isLoggedIn()) {
-                return $this->visitorView($conferenceId,
-                                VisitorFactory::getCurrentId());
+                return $this->visitorView($conferenceId, VisitorFactory::getCurrentId());
             } else {
                 return $this->userView($conferenceId);
             }
@@ -112,8 +108,7 @@ class ConferenceView extends AbstractView
         $vars['select'] = null;
         if ($visitorId = VisitorFactory::getCurrentId()) {
             $registrationFactory = new RegistrationFactory();
-            $registrations = $registrationFactory->getRegistrationsByVisitorId($visitorId,
-                    false);
+            $registrations = $registrationFactory->getRegistrationsByVisitorId($visitorId, false);
             if (!empty($registrations)) {
                 $vars['select'] = $this->selectRegistration($registrations);
             }
