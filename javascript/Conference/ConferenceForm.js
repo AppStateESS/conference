@@ -2,7 +2,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import ConferenceQuestion from './ConferenceQuestion'
-//import Editor from '../Shared/Editor'
+import Editor from '../Shared/Editor'
 
 class ConferenceForm extends Component {
   constructor(props) {
@@ -101,11 +101,9 @@ class ConferenceForm extends Component {
         </div>
         <div className="mb-4">
           <label className="d-block">Description:</label>
-          <textarea
-            style={{width: '100%'}}
-            rows="10"
-            value={resource.description}
-            onChange={update.bind(null, 'description')}
+          <Editor
+            content={resource.description}
+            update={update.bind(null, 'description')}
           />
         </div>
         <div className="row">

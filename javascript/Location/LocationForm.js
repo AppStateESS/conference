@@ -1,7 +1,7 @@
 'use strict'
 import React from 'react'
 import PropTypes from 'prop-types'
-//import Editor from '../Shared/Editor'
+import Editor from '../Shared/Editor'
 
 class LocationForm extends React.Component {
   constructor(props) {
@@ -48,20 +48,16 @@ class LocationForm extends React.Component {
         </div>
         <div className="mb-4">
           <label className="d-block">Description:</label>
-          <textarea
-            style={{width: '100%'}}
-            rows="10"
-            value={resource.description}
-            onChange={update.bind(null, 'description')}
+          <Editor
+            content={resource.description}
+            update={update.bind(null, 'description')}
           />
         </div>
         <div className="mb-4">
           <label className="d-block">Directions:</label>
-          <textarea
-            style={{width: '100%'}}
-            rows="10"
-            value={resource.directions}
-            onChange={update.bind(null, 'directions')}
+          <Editor
+            content={resource.directions}
+            update={update.bind(null, 'directions')}
           />
         </div>
         <div className="mb-4">
