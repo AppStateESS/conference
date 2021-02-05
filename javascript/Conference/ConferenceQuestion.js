@@ -44,7 +44,7 @@ const ConferenceQuestion = ({conferenceQuestion, updateInfo, dropInfo}) => {
                 checked={info.type === 'text'}
                 onChange={updateType.bind(this, 'text', key)}
               />
-              &#32; Text field
+              &nbsp;Text field
             </label>
             <div className="ml-3">
               <label>
@@ -54,7 +54,7 @@ const ConferenceQuestion = ({conferenceQuestion, updateInfo, dropInfo}) => {
                   checked={info.required === 1}
                   onChange={updateRequired.bind(this, info.required, key)}
                 />
-                &#32; Text field required
+                &nbsp;Text field required
               </label>
             </div>
             <label>
@@ -64,7 +64,7 @@ const ConferenceQuestion = ({conferenceQuestion, updateInfo, dropInfo}) => {
                 checked={info.type === 'checkbox'}
                 onChange={updateType.bind(this, 'checkbox', key)}
               />
-              &#32; Checkbox
+              &nbsp;Checkbox
             </label>
           </div>
         </div>
@@ -80,7 +80,7 @@ ConferenceQuestion.propTypes = {
   resource: PropTypes.object,
   key: PropTypes.number,
   updateInfo: PropTypes.func,
-  dropInfo: PropTypes.func
+  dropInfo: PropTypes.func,
 }
 
 export default ConferenceQuestion
