@@ -2,6 +2,7 @@
 /nbproject/
 **/node_modules/
 /config/defines.php
+/config/sendmail.php
 **/assets.json
 /.tags
 /.sass-cache/
