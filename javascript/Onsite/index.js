@@ -46,7 +46,7 @@ const Onsite = () => {
     $.ajax({
       url: 'conference/Visitor/Onsite/Logout',
       dataType: 'json',
-      type: 'get'
+      type: 'get',
     })
   }
 
@@ -55,7 +55,7 @@ const Onsite = () => {
     setLoadingMessage('Loading...')
   }
 
-  const setParent = parentKey => {
+  const setParent = (parentKey) => {
     if (parentKey == -1) {
       setStage('createAccount')
       return
@@ -73,14 +73,15 @@ const Onsite = () => {
       state: parent.stateCode ?? '',
       zip: parent.zip ?? '',
       phone: (parent.phoneArea ?? '') + parent.phoneNumber ?? '',
-      studentId: student.id
+      studentId: student.id,
+      sessionId,
     }
     $.ajax({
       url: 'conference/User/Onsite/createVisitor',
       data: newVisitor,
       dataType: 'json',
       type: 'post',
-      success: data => {
+      success: (data) => {
         setVisitor(data.visitor)
         if (data['found']) {
           setStage('login')
@@ -93,7 +94,7 @@ const Onsite = () => {
       error: () => {
         setStage('error')
         resetTimer()
-      }
+      },
     })
   }
 
