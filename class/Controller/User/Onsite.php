@@ -75,13 +75,14 @@ class Onsite extends SubController
     protected function createVisitorPost(Request $request)
     {
         $studentId = $request->pullPostInteger('studentId');
+        $sessionId = $request->pullPostInteger('sessionId');
         $email = $request->pullPostString('email');
         $visitorFactory = new VisitorFactory;
         $visitor = $visitorFactory->loadByEmail($email);
         if ($visitor) {
             $registrationFactory = new \conference\Factory\RegistrationFactory;
             $registration = $registrationFactory->getByStudentId($visitor->id,
-                    $studentId);
+                    $studentId, $sessionId);
             $json['hasRegistration'] = $registration->getStringVars();
             $json['found'] = true;
         } else {
