@@ -64,7 +64,7 @@ class Session extends SubController
         $regFactory = new RegistrationFactory;
         $visitorId = VisitorFactory::getCurrentId();
         $studentId = $request->pullGetInteger('studentId');
-        $registration = $regFactory->getByStudentId($visitorId, $studentId);
+        $registration = $regFactory->getByStudentId($visitorId, $studentId, $this->id);
         if (empty($registration)) {
             $registration = $regFactory->createRegistration($visitorId,
                     $this->id, $studentId);

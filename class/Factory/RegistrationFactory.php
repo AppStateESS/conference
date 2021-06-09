@@ -393,13 +393,14 @@ class RegistrationFactory extends BaseFactory
      * @param int $studentId
      * @return boolean
      */
-    public function getByStudentId(int $visitorId, int $studentId)
+    public function getByStudentId(int $visitorId, int $studentId, int $sessionId)
     {
         $registration = $this->build();
         $db = Database::getDB();
         $tbl = $db->addTable('conf_registration');
         $tbl->addFieldConditional('studentId', $studentId);
         $tbl->addFieldConditional('visitorId', $visitorId);
+        $tbl->addFieldConditional('sessionId', $sessionId);
         if ($data = $db->selectOneRow()) {
             $registration->setVars($data);
             return $registration;
