@@ -2,7 +2,8 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import {getPasswordMessage} from '../Shared/Password'
-/* global $, visitorId */
+import PropTypes from 'prop-types'
+/* global $, visitorId, hash */
 
 export default class Reset extends Component {
   constructor(props) {
@@ -14,7 +15,7 @@ export default class Reset extends Component {
       checkPassword: '',
       toggleShow: false,
       allowSave: false,
-      complete: false
+      complete: false,
     }
     this.toggleShow = this.toggleShow.bind(this)
     this.comparePassword = this.comparePassword.bind(this)
@@ -27,20 +28,20 @@ export default class Reset extends Component {
     if (this.state.allowSave) {
       $.ajax({
         url: 'conference/User/Visitor/' + visitorId + '/password',
-        data: {password: this.state.password},
+        data: {password: this.state.password, hash: this.props.hash},
         dataType: 'json',
         type: 'patch',
         success: () => {
           this.setState({complete: true})
         },
-        error: () => {}
+        error: () => {},
       })
     }
   }
 
   toggleShow() {
     this.setState({
-      toggleShow: !this.state.toggleShow
+      toggleShow: !this.state.toggleShow,
     })
   }
 
@@ -129,7 +130,9 @@ export default class Reset extends Component {
   }
 }
 
+Reset.propTypes = {hash: PropTypes.string}
+
 ReactDOM.render(
-  <Reset visitorId={visitorId} />,
+  <Reset visitorId={visitorId} hash={hash} />,
   document.getElementById('Reset')
 )
