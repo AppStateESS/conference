@@ -6,11 +6,36 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 /* global $ */
 
-const ChangeDate = ({close, student, saved}) => {
+const ChangeDate = ({close, student, saved, sessionListing}) => {
   const [startDate, setStartDate] = useState(student.startDate)
   useEffect(() => {
     setStartDate(student.startDate)
   }, [student.id])
+
+  let sessionOption = 0
+  if (sessionListing.length > 0) {
+    const sessionRows = sessionListing.map((val) => {
+      return (
+        <option key={`session-${val.id}`} value={val.eventDate}>
+          {val.formatDate}
+        </option>
+      )
+    })
+    sessionOption = (
+      <div className="mt-4">
+        <p>or pick from an upcoming session</p>
+        <select
+          className="form-control"
+          defaultValue="0"
+          onChange={(e) => setStartDate(e.target.value)}>
+          <option value="0" disabled={true}>
+            Pick an upcoming session below to set the date.
+          </option>
+          {sessionRows}
+        </select>
+      </div>
+    )
+  }
 
   const startDateObject = new Date(startDate * 1000)
   const saveDate = () => {
@@ -23,7 +48,7 @@ const ChangeDate = ({close, student, saved}) => {
       success: () => {
         saved()
       },
-      error: () => {}
+      error: () => {},
     })
   }
   return (
@@ -37,7 +62,7 @@ const ChangeDate = ({close, student, saved}) => {
         <div className="col-sm-6">
           <DatePicker
             selected={startDateObject}
-            onChange={val => setStartDate(val / 1000)}
+            onChange={(val) => setStartDate(val / 1000)}
             className="form-control"
             dateFormat="MMM d, yyyy"
           />
@@ -51,6 +76,7 @@ const ChangeDate = ({close, student, saved}) => {
           </button>
         </div>
       </div>
+      {sessionOption}
     </div>
   )
 }
@@ -58,7 +84,8 @@ const ChangeDate = ({close, student, saved}) => {
 ChangeDate.propTypes = {
   close: PropTypes.func,
   student: PropTypes.object,
-  saved: PropTypes.func
+  saved: PropTypes.func,
+  sessionListing: PropTypes.array,
 }
 
 ChangeDate.defaultProps = {}

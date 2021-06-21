@@ -115,4 +115,13 @@ class Session extends SubController
         return ['success' => true];
     }
 
+    protected function upcomingJson()
+    {
+        $options['sortBy'] = 'eventDate';
+        $options['todayOrLater'] = true;
+        $options['fields'] = ['id', 'title', 'eventDate'];
+        $listing = $this->factory->listing($options);
+        return ['listing' => $listing];
+    }
+
 }

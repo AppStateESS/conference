@@ -14,6 +14,23 @@ import {faFileImport, faLock, faUnlock} from '@fortawesome/free-solid-svg-icons'
 
 /* global $ */
 
+let sessionListing = []
+
+$.ajax({
+  url: 'conference/Admin/Session/upcoming',
+  data: {},
+  dataType: 'json',
+  type: 'get',
+  success: (response) => {
+    sessionListing = response.listing
+    sessionListing.forEach((row, index) => {
+      const date = new Date(row.eventDate * 1000)
+      sessionListing[index]['formatDate'] = date.toDateString()
+    })
+  },
+  error: () => {},
+})
+
 export default class Student extends Listing {
   constructor(props) {
     super(props)
@@ -29,7 +46,7 @@ export default class Student extends Listing {
       hidden: 0,
       startDate: 0,
       discountAmount: 0.0,
-      discountLabel: ''
+      discountLabel: '',
     }
 
     this.hideStudent = this.hideStudent.bind(this)
@@ -66,7 +83,7 @@ export default class Student extends Listing {
               </button>
             )
           }
-        }
+        },
       },
       {
         column: 'discount',
@@ -79,7 +96,7 @@ export default class Student extends Listing {
               ${row.discountAmount}
             </button>
           )
-        }
+        },
       },
       {
         column: 'startDate',
@@ -109,8 +126,8 @@ export default class Student extends Listing {
               {dayjs(row.startDate * 1000).format('YYYY-MM-DD')} {locked}
             </div>
           )
-        }
-      }
+        },
+      },
     ]
   }
 
@@ -151,7 +168,7 @@ export default class Student extends Listing {
       success: () => {
         this.load()
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -169,7 +186,7 @@ export default class Student extends Listing {
         />
       ),
       title: 'Hide student',
-      close: this.finishOverlay
+      close: this.finishOverlay,
     }
   }
 
@@ -187,7 +204,7 @@ export default class Student extends Listing {
         />
       ),
       title: 'Discount student',
-      close: this.finishOverlay
+      close: this.finishOverlay,
     }
   }
 
@@ -196,6 +213,7 @@ export default class Student extends Listing {
       content: (
         <div className="student-form">
           <ChangeDate
+            sessionListing={sessionListing}
             close={this.overlayOff}
             student={this.state.resource}
             saved={() => {
@@ -206,7 +224,7 @@ export default class Student extends Listing {
         </div>
       ),
       title: 'Lock start date',
-      close: this.load
+      close: this.load,
     }
   }
 
@@ -219,7 +237,7 @@ export default class Student extends Listing {
       ),
       title: 'Import students',
       width: '100%',
-      close: this.load
+      close: this.load,
     }
   }
 
@@ -237,7 +255,7 @@ export default class Student extends Listing {
         />
       ),
       title: 'Reveal student',
-      close: this.finishOverlay
+      close: this.finishOverlay,
     }
   }
 
