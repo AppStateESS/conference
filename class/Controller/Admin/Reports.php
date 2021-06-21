@@ -32,6 +32,9 @@ class Reports extends SubController
 
     protected function listHtml()
     {
+        // Performs a clean up of non-activated users.
+        // Triggered when admins view reports, which should be infrequently.
+        $this->factory->clearNotActivated();
         return $this->view->scriptView('Reports');
     }
 
