@@ -171,7 +171,7 @@ class VisitorFactory extends BaseFactory
         $tbl->addFieldConditional('hash', $hash);
         $tbl->addFieldConditional('activateDeadline', time(), '>');
         $db->selectInto($visitor);
-        if (empty($visitor)) {
+        if (empty($visitor) || empty($visitor->id)) {
             return false;
         }
         $visitor->activated = true;
