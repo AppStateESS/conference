@@ -13,7 +13,7 @@
     "url": "https://github.com/AppStateESS/conference/issues"
   },
   "dependencies": {
-    "core-js": "^3.14.0",
+    "core-js": "^3.15.0",
     "immutable": "^4.0.0-rc.12"
   },
   "scripts": {
@@ -26,11 +26,10 @@
     "@babel/preset-env": "^7.14.5",
     "@babel/preset-react": "^7.14.5",
     "@babel/runtime": "^7.14.6",
-    "@ckeditor/ckeditor5-alignment": "^28.0.0",
     "@ckeditor/ckeditor5-build-classic": "^28.0.0",
     "@ckeditor/ckeditor5-react": "^3.0.2",
     "@essappstate/canopy-listing": "^1.2.1",
-    "@essappstate/canopy-react-bigcheckbox": "^0.2.7",
+    "@essappstate/canopy-react-bigcheckbox": "^0.3.0",
     "@essappstate/canopy-react-buttongroup": "^0.2.4",
     "@essappstate/canopy-react-inputfield": "^0.2.3",
     "@essappstate/canopy-react-overlay": "^0.2.10",
@@ -44,7 +43,6 @@
     "babel-loader": "^8.2.2",
     "browser-sync": "^2.26.14",
     "browser-sync-webpack-plugin": "^2.3.0",
-    "canopy-react-bigcheckbox": "^0.1.9",
     "css-loader": "^5.2.6",
     "dayjs": "^1.10.5",
     "es6-promise": "^4.2.8",
@@ -55,7 +53,7 @@
     "style-loader": "^2.0.0",
     "terser": "^5.7.0",
     "terser-webpack-plugin": "^5.1.3",
-    "webpack": "^5.39.1",
+    "webpack": "^5.40.0",
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.7.2"
   }
