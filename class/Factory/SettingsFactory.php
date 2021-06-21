@@ -46,6 +46,11 @@ class SettingsFactory
         return Settings::get('conference', 'bannerApi');
     }
 
+    public static function isDisabled()
+    {
+        return (bool) Settings::get('conference', 'disabled');
+    }
+
     public static function setBannerApi($api)
     {
         Settings::set('conference', 'bannerApi', (bool) $api);
