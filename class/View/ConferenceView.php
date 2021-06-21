@@ -19,6 +19,7 @@ use conference\Factory\RegistrationFactory;
 use conference\Factory\SupplementFactory;
 use conference\View\SessionView;
 use conference\Factory\SettingsFactory;
+use conference\Factory\LockedFactory;
 
 class ConferenceView extends AbstractView
 {
@@ -125,8 +126,12 @@ class ConferenceView extends AbstractView
 
     public function frontPage()
     {
-        if (\conference\Factory\LockedFactory::isLocked()) {
-            return $this->onsiteRegistration();
+        if (LockedFactory::isLocked()) {
+            if (LockedFactory::lockedIsToday()) {
+                return $this->onsiteRegistration();
+            } else {
+                return '<div class="alert alert-danger">This system is locked to a session that does occur today.</div>';
+            }
         } else {
             return $this->showConferences();
         }
@@ -138,7 +143,8 @@ class ConferenceView extends AbstractView
             return SettingsView::disabled();
         }
         VisitorFactory::clearCurrent();
-        $sessionId = \conference\Factory\LockedFactory::lockedSessionId();
+        $sessionId = LockedFactory::lockedSessionId();
+
         return $this->scriptView('Onsite', ['sessionId' => $sessionId]);
     }
 
