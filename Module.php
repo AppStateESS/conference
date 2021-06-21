@@ -54,7 +54,6 @@ class Module extends \Canopy\Module implements SettingDefaults
 
         $class_path = PHPWS_SOURCE_DIR . 'mod/conference/class/' . $class_dir . '.php';
 
-
         if (is_file($class_path)) {
             require_once $class_path;
             return true;
@@ -72,6 +71,10 @@ class Module extends \Canopy\Module implements SettingDefaults
 
     public function runTime(Request $request)
     {
+        if (empty(STUDENT_ORIENTATION_TABLE)) {
+            \Layout::add('<div class="alert alert-danger">Error: Orientation table and Banner URL are not set.</div>', 'conference');
+            return;
+        }
         if (\Current_User::allow('conference')) {
             $this->loadAdminBar();
         }
@@ -108,11 +111,11 @@ class Module extends \Canopy\Module implements SettingDefaults
                 throw $e;
             }
         } catch (\conference\Exception\VisitorLoginRequired $e) {
-            VisitorFactory::setReturnUrl();
             if ($request->isAjax()) {
                 $controller = new \conference\Controller\AjaxLoginError($this);
                 return $controller;
             } else {
+                VisitorFactory::setReturnUrl();
                 \Canopy\Server::forward('./conference/User/Visitor/login');
             }
         } catch (\Exception $e) {
