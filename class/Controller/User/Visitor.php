@@ -84,7 +84,6 @@ class Visitor extends SubController
 
     protected function loginPost(Request $request)
     {
-        $this->factory->clearNotActivated();
         $email = $request->pullPostString('email', true);
         $password = $request->pullPostString('password', true);
         if (empty($email) || empty($password)) {
