@@ -55,6 +55,7 @@ class VisitorFactory extends BaseFactory
 
     public function loadByEmail(string $email, bool $activatedOnly = false)
     {
+        $email = strtolower($email);
         $visitor = $this->build();
         $db = Database::getDB();
         $tbl = $db->addTable('conf_visitor');
@@ -62,6 +63,7 @@ class VisitorFactory extends BaseFactory
         if ($activatedOnly) {
             $tbl->addFieldConditional('activated', 1);
         }
+
         $result = $db->selectInto($visitor);
         return $result ? $visitor : false;
     }
@@ -70,9 +72,12 @@ class VisitorFactory extends BaseFactory
     {
         $visitor = $this->build();
         $visitor->email = $request->pullPostString('email');
+        if ($visitor->isEmpty('email')) {
+            throw new \Exception('Missing email');
+        }
         $password = $request->pullPostString('password');
         $visitor->hashPassword($password);
-        $visitor->stamp();
+        $visitor->stamp(12);
         return $visitor;
     }
 
@@ -87,6 +92,7 @@ class VisitorFactory extends BaseFactory
     public function apiCreate(int $bannerId, int $parentKey,
             string $emailAddress)
     {
+        $emailAddress = strtolower($emailAddress);
         $studentFactory = new StudentFactory();
         $student = $studentFactory->importBannerAPIStudent($bannerId);
         if (empty($student)) {
@@ -115,7 +121,7 @@ class VisitorFactory extends BaseFactory
         $visitor->phone = $parent->phoneArea . $parent->phoneNumber;
         $password = $visitor->createRandomPassword();
         $visitor->hashPassword($password);
-        $visitor->stamp();
+        $visitor->stamp(12);
 
         $this->save($visitor);
         $this->sendActivationEmail($visitor, $password);
@@ -146,7 +152,7 @@ class VisitorFactory extends BaseFactory
         $template->setModuleTemplate('conference', 'Email/Activate.html');
         $content = $template->get();
 
-        $message = \Swift_Message::newInstance();
+        $message = new \Swift_Message();
         $message->setSubject($subject);
         $message->setFrom($from);
         $message->setTo($visitor->email);
@@ -169,6 +175,7 @@ class VisitorFactory extends BaseFactory
             return false;
         }
         $visitor->activated = true;
+        $visitor->resetHash();
         $this->save($visitor);
         LogFactory::log('Visitor account activated.', $visitor);
         return true;
@@ -237,7 +244,7 @@ class VisitorFactory extends BaseFactory
         $template->setModuleTemplate('conference', 'Email/OnsiteCreation.html');
         $content = $template->get();
 
-        $message = \Swift_Message::newInstance();
+        $message = new \Swift_Message;
         $message->setSubject($subject);
         $message->setFrom($from);
         $message->setTo($visitor->email);
@@ -322,7 +329,7 @@ class VisitorFactory extends BaseFactory
         if (empty($visitor)) {
             return false;
         }
-        $visitor->stamp();
+        $visitor->stamp(2);
         $this->save($visitor);
 
         $siteTitle = \Layout::getPageTitle(true);
@@ -336,7 +343,7 @@ class VisitorFactory extends BaseFactory
         $template->setModuleTemplate('conference', 'Email/Forgot.html');
         $content = $template->get();
 
-        $message = \Swift_Message::newInstance();
+        $message = new \Swift_Message;
         $message->setSubject($subject);
         $message->setFrom($from);
         $message->setTo($visitor->email);
@@ -347,6 +354,15 @@ class VisitorFactory extends BaseFactory
         return true;
     }
 
+    /**
+     * Returns a visitor if:
+     * + the id is correct
+     * + the hash matches, and
+     * + the activateDeadline has not passed
+     * @param int $id
+     * @param string $hash
+     * @return Resource
+     */
     public function getByHashId(int $id, string $hash)
     {
         if (empty($id) || empty($hash)) {
@@ -356,6 +372,7 @@ class VisitorFactory extends BaseFactory
         $tbl = $db->addTable('conf_visitor');
         $tbl->addFieldConditional('id', $id);
         $tbl->addFieldConditional('hash', $hash);
+        $tbl->addFieldConditional('activateDeadline', time(), '>');
         return $db->selectOneRow();
     }
 
