@@ -59,6 +59,11 @@ class LockedFactory extends BaseFactory
         return $db->delete();
     }
 
+    public static function removeLockSession()
+    {
+        unset($_SESSION['ConferenceClientLocked']);
+    }
+
     public static function lockedSessionId()
     {
         if (self::isLocked()) {
@@ -84,6 +89,20 @@ class LockedFactory extends BaseFactory
                 return false;
             }
         }
+    }
+
+    /**
+     * Checks if an onsite, locked session takes place today.
+     * True if the days are the same.
+     * @return boolean
+     */
+    public static function lockedIsToday()
+    {
+        $sessionId = self::lockedSessionId();
+        $sessionFactory = new SessionFactory;
+        $session = $sessionFactory->load($sessionId);
+        $now = mktime(0, 0, 0);
+        return $session->eventDate == mktime(0, 0, 0);
     }
 
 }
