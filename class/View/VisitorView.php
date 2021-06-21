@@ -3,9 +3,9 @@
 /**
  * MIT License
  * Copyright (c) 2019 Electronic Student Services @ Appalachian State University
- * 
+ *
  * See LICENSE file in root directory for copyright and distribution permissions.
- * 
+ *
  * @author Matthew McNaney <mcnaneym@appstate.edu>
  * @license https://opensource.org/licenses/MIT
  */
@@ -38,9 +38,9 @@ class VisitorView extends AbstractView
         return $template->get();
     }
 
-    public function activated()
+    public function activated(string $email)
     {
-        $template = new Template;
+        $template = new Template(['email' => $email]);
         $template->setModuleTemplate('conference', 'Screens/Activated.html');
         return $template->get();
     }
