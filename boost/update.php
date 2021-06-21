@@ -271,6 +271,13 @@ class ConferenceUpdate
                 $this->content[] = '------------------------';
                 $this->content[] = '- Fixed asset update adding auto directory.';
                 $this->content[] = '</pre>';
+            case $this->compare('1.6.0'):
+                $this->v160();
+                $this->content[] = '<pre>';
+                $this->content[] = '1.6.0';
+                $this->content[] = '------------------------';
+                $this->content[] = '- Added additional visitor/guest demographic information.';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
@@ -305,6 +312,38 @@ class ConferenceUpdate
         $tbl = $db->addTable('conf_session');
         $notes = $tbl->addDataType('notes', 'text');
         $notes->add();
+    }
+
+    private function v160()
+    {
+        $db = Database::getDB();
+        $tbl = $db->addTable('conf_visitor');
+        $altPhone = $tbl->addDataType('altPhone', 'varchar');
+        $altPhone->setSize(25);
+        $altPhone->add();
+
+        $relationship = $tbl->addDataType('relationship', 'varchar');
+        $relationship->setSize(20);
+        $relationship->add();
+
+        $employer = $tbl->addDataType('employer', 'varchar');
+        $employer->setSize(50);
+        $employer->add();
+
+        $position = $tbl->addDataType('position', 'varchar');
+        $position->setSize(25);
+        $position->add();
+
+        $alum = $tbl->addDataType('alum', 'boolean');
+        $alum->add();
+
+        $gradYear = $tbl->addDataType('gradYear', 'smallint');
+        $gradYear->setSize(25);
+        $gradYear->add();
+
+        $hometown = $tbl->addDataType('hometown', 'varchar');
+        $hometown->setSize(60);
+        $hometown->add();
     }
 
 }
