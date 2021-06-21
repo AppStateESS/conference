@@ -34,10 +34,7 @@ export default class Login extends Component {
       type: 'post',
       success: (data) => {
         if (data.success) {
-          location.href = location.href.replace(
-            /conference\/User\/Visitor\/login$/,
-            'conference/Visitor/Conference'
-          )
+          location.href = data.returnUrl
         } else {
           this.setState({loginError: true, errorReason: data.reason})
         }
@@ -91,7 +88,7 @@ export default class Login extends Component {
       case 'noemail':
         content = (
           <span>
-            Do not recognize your email address. Do you need to{' '}
+            This email address is not recognized. Do you need to{' '}
             <a href="./conference/User/Visitor/signup">
               signup for an account?
             </a>
@@ -101,12 +98,16 @@ export default class Login extends Component {
 
       case 'nopassword':
         content = (
-          <span>
-            Password and email do not match.{' '}
-            <a href="./conference/User/Visitor/forgotPassword">
-              Did you forget your password?
-            </a>
-          </span>
+          <div className="text-center">
+            <p>Password and email do not match.</p>
+            <div>
+              <a
+                href="./conference/User/Visitor/forgotPassword"
+                className="btn btn-outline-danger">
+                Do you need to reset your password?
+              </a>
+            </div>
+          </div>
         )
         break
 
@@ -158,6 +159,25 @@ export default class Login extends Component {
       }
       content = (
         <div>
+          <div className="bg-light p-3">
+            <p>
+              If this is your first time here, you will need to{' '}
+              <a href="conference/User/Visitor/signup">create an account</a> to
+              access register for parent orientation.
+            </p>
+            <p className="text-center">
+              <a
+                href="conference/User/Visitor/signup"
+                className="btn btn-primary btn-lg">
+                Click here to create an account.
+              </a>
+            </p>
+          </div>
+          <hr />
+          <p>
+            If you are returning to our site after creating an account, please
+            login below.
+          </p>
           <label>Email address</label>
           <input
             type="text"
@@ -189,21 +209,6 @@ export default class Login extends Component {
               Log in
             </button>
           </div>
-          <hr />
-          <div className="bg-light p-3">
-            <p>
-              Parent/family users need to{' '}
-              <a href="conference/User/Visitor/signup">create an account</a> to
-              access the Parent &amp; Family Orientation Registration form.
-            </p>
-            <p className="text-center">
-              <a
-                href="conference/User/Visitor/signup"
-                className="btn btn-primary">
-                Need to sign up? Click here to create an account.
-              </a>
-            </p>
-          </div>
         </div>
       )
     }
@@ -213,9 +218,7 @@ export default class Login extends Component {
         <div className="col-sm-6">
           <div className="card">
             <div className="card-body">
-              <h3 className="card-title">
-                Please login to your parent account
-              </h3>
+              <h3 className="card-title">Welcome!</h3>
               <div className="card-text login">{content}</div>
             </div>
           </div>
