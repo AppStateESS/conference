@@ -17,6 +17,13 @@ class VisitorResource extends AbstractResource
 
     protected $email;
     protected $password;
+
+    /**
+     * This is reset twice. Once when activating the account. This value is 12 hours.
+     * Again when changing the password. The value will then only be 2 hours.
+     * If the deadline has passed, activation or password changing will not be allowed.
+     * @var integer
+     */
     protected $activateDeadline;
     protected $activated;
     protected $firstName;
@@ -27,6 +34,13 @@ class VisitorResource extends AbstractResource
     protected $state;
     protected $zip;
     protected $phone;
+    protected $altPhone;
+    protected $relationship;
+    protected $employer;
+    protected $position;
+    protected $alum;
+    protected $gradYear;
+    protected $hometown;
 
     /**
      * Hash used to authorize account
@@ -69,12 +83,28 @@ class VisitorResource extends AbstractResource
         $this->zip->setLimit(20);
         $this->phone = new \phpws2\Variable\PhoneNumber(null, 'phone');
         $this->phone->allowNull(true);
+        $this->altPhone = new \phpws2\Variable\PhoneNumber(null, 'altPhone');
+        $this->altPhone->allowNull(true);
+        $this->relationship = new \phpws2\Variable\TextOnly(null, 'relationship');
+        $this->relationship->allowNull(true);
+        $this->employer = new \phpws2\Variable\TextOnly(null, 'employer');
+        $this->employer->allowNull(true);
+        $this->position = new \phpws2\Variable\TextOnly(null, 'position');
+        $this->position->allowNull(true);
+        $this->alum = new \phpws2\Variable\BooleanVar(false, 'alum');
+        $this->gradYear = new \phpws2\Variable\NumberString(null, 'gradYear');
+        $this->gradYear->allowNull(true);
+        $this->hometown = new \phpws2\Variable\TextOnly(null, 'hometown');
+        $this->hometown->allowNull(true);
     }
 
-    public function stamp()
+    public function stamp(int $hours = 2)
     {
-        $this->activateDeadline->set(time() + (43200));
-        $this->hash->sha1Random();
+        if (!$hours) {
+            $hours = 2;
+        }
+        $this->activateDeadline->set(time() + ($hours * 3600));
+        $this->resetHash();
     }
 
     public function formatActivateDeadline()
@@ -106,6 +136,25 @@ class VisitorResource extends AbstractResource
             $password .= $chars[rand(0, $size - 1)];
         }
         return $password;
+    }
+
+    public function setEmail(string $email)
+    {
+        $this->email->set(strtolower($email));
+    }
+
+    /**
+     * This may look redundant but emails were not saved with forced lowercase.
+     * @return string
+     */
+    public function getEmail()
+    {
+        return strtolower($this->email->get());
+    }
+
+    public function resetHash()
+    {
+        $this->hash->sha1Random();
     }
 
 }
