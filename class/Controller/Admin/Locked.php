@@ -65,6 +65,7 @@ class Locked extends SubController
     protected function delete(Request $request)
     {
         $this->factory->delete($this->id);
+        LockedFactory::removeLockSession();
         return ['success' => true];
     }
 
