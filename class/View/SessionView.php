@@ -73,6 +73,7 @@ class SessionView extends AbstractView
         $student = $studentFactory->load($studentId);
         $conferenceFactory = new ConferenceFactory;
         $session = $this->factory->load($sessionId);
+
         // TODO this should be moved out
         $conference = $conferenceFactory->load($session->conferenceId);
         $tpl['conferenceTitle'] = $conference->title;
@@ -85,7 +86,7 @@ class SessionView extends AbstractView
                             $session->signupStart);
         } elseif ($session->signupEnd < $now) {
             $tpl['notTimeYet'] = 'Sorry, but sign up ended on ' . strftime('%B %e, %Y at %l:%M %p.',
-                            $session->signupStart);
+                            $session->signupEnd);
         } else {
             $vars['session'] = $session->getStringVars();
             $vars['studentId'] = $student->id;
