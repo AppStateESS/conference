@@ -1,0 +1,4 @@
+:root {
+    --ck-z-default: 1200;
+    --ck-z-modal: calc( var(--ck-z-default) + 999 );
+}

@@ -1,10 +1,37 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
+import {CKEditor} from '@ckeditor/ckeditor5-react'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import './editor.css'
 
 const Editor = ({content, update}) => {
-  return <ReactQuill theme="snow" value={content} onChange={update} />
+  return (
+    <CKEditor
+      editor={ClassicEditor}
+      config={{
+        toolbar: [
+          'bold',
+          'italic',
+          'link',
+          '|',
+          'bulletedList',
+          'numberedList',
+          '|',
+          'outdent',
+          'indent',
+          '|',
+
+          'undo',
+          'redo',
+        ],
+      }}
+      data={content}
+      onChange={(event, editor) => {
+        const data = editor.getData()
+        update(data)
+      }}
+    />
+  )
 }
 
 Editor.propTypes = {
