@@ -29,6 +29,10 @@ class OnsiteFactory
         $visitor->state = $request->pullPostString('state', true) ?: null;
         $visitor->zip = $request->pullPostString('zip', true) ?: null;
         $visitor->phone = $request->pullPostString('phone', true) ?: null;
+        $visitor->altPhone = $request->pullPostString('altPhone', true) ?: null;
+        $visitor->relationship = $request->pullPostString('relationship', true) ?: null;
+        $visitor->employer = $request->pullPostString('employer', true) ?: null;
+        $visitor->position = $request->pullPostString('position', true) ?: null;
         $visitor->activated = 1;
         $password = $this->makePassword();
         $visitor->hashPassword($password);
