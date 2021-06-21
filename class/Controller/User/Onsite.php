@@ -25,6 +25,12 @@ use conference\Factory\VisitorFactory;
 class Onsite extends SubController
 {
 
+    /**
+     *
+     * @var OnsiteFactory
+     */
+    protected $factory;
+
     public function __construct($role)
     {
         parent::__construct($role);
@@ -45,29 +51,27 @@ class Onsite extends SubController
 
     protected function searchJson(Request $request)
     {
+        $sessionFactory = new SessionFactory();
         $bannerId = $request->pullGetInteger('checkBannerId');
         $bannerUsername = $request->pullGetString('bannerUsername');
+
+        $sessionId = LockedFactory::lockedSessionId();
+        if ($sessionId) {
+            $session = $sessionFactory->load($sessionId);
+        } else {
+            return ['success' => false, 'message' => 'There are a problem pulling the session.'];
+        }
+
         $studentFactory = new StudentFactory;
         $student = $studentFactory->getBannerStudent($bannerId, $bannerUsername);
-        $sessionFactory = new SessionFactory();
 
         if (!$student) {
             return ['success' => false, 'message' => 'Could not find your student account. Please try again or ask for assistance.'];
         } else {
-            $sessionId = LockedFactory::lockedSessionId();
-            if (!$sessionId) {
-                return ['success' => false, 'message' => 'Your student is not assigned to this orientation. Please see someone at the front desk.'];
-            }
-            $session = $sessionFactory->load($sessionId);
             if ($student->startDate != $session->eventDate) {
                 return ['success' => false, 'message' => 'Your student is not assigned to this orientation. Please see someone at the front desk.'];
             } else {
-                $bannerStudent = $studentFactory->importBannerAPIStudent($bannerId);
-                if (empty($bannerStudent)) {
-                    return ['success' => false, 'message' => 'Could not find your student account. Please try again or ask for assistance.'];
-                }
-                $hidden = ['days', 'campWarningSent', 'active'];
-                return ['success' => true, 'student' => $student->getStringVars(), 'session' => $session->getStringVars(), 'parents' => $bannerStudent->parents];
+                return ['success' => true, 'student' => $student->getStringVars(), 'session' => $session->getStringVars()];
             }
         }
     }
@@ -100,7 +104,9 @@ class Onsite extends SubController
         $email = $request->pullGetString('email');
         $visitorFactory = new VisitorFactory;
         $visitor = $visitorFactory->loadByEmail($email);
-        return ['found' => (bool) $visitor];
+        $visitorValues = $visitor->getStringVars();
+        unset($visitorValues['password']);
+        return ['found' => (bool) $visitor, 'visitor' => $visitorValues];
     }
 
     protected function createQuickPost(Request $request)
