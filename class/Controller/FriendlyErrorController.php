@@ -27,6 +27,9 @@ class FriendlyErrorController extends \phpws2\Http\Controller
 
     public function get(\Canopy\Request $request)
     {
+        if ($request->isAjax()) {
+            throw new \Exception(CONFERENCE_FRIENDLY_MESSAGE);
+        }
         $vars = \conference\Factory\SettingsFactory::getContact();
         $template = new \phpws2\Template($vars);
         $template->setModuleTemplate('conference', 'error.html');
