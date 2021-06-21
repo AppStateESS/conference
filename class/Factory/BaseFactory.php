@@ -52,7 +52,7 @@ abstract class BaseFactory extends \phpws2\ResourceFactory
 
     public static function getSwiftTransport()
     {
-        return \Swift_SendmailTransport::newInstance(CONFERENCE_SENDMAIL_COMMAND);
+        return new \Swift_SendmailTransport(CONFERENCE_SENDMAIL_COMMAND);
     }
 
     public function save(\phpws2\Resource $resource)
@@ -87,8 +87,8 @@ abstract class BaseFactory extends \phpws2\ResourceFactory
 
     protected function sendEmail($subject, array $from, $to, $content)
     {
-        $transport = \Swift_SendmailTransport::newInstance('/usr/sbin/sendmail -t -i');
-        $message = \Swift_Message::newInstance();
+        $transport = new \Swift_SendmailTransport(CONFERENCE_SENDMAIL_COMMAND);
+        $message = new \Swift_Message;
         $message->setSubject($subject);
         $message->setFrom($from);
         $message->setTo($to);
