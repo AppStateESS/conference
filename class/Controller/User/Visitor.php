@@ -93,6 +93,9 @@ class Visitor extends SubController
         $result = $this->factory->login($email, $password);
         if ($result['success']) {
             if ($returnUrl = $this->factory->getReturnUrl()) {
+                if (preg_match('@conference/User/Visitor/login@', $returnUrl)) {
+                    $returnUrl = './conference/Visitor/Conference';
+                }
                 return ['success' => true, 'returnUrl' => $returnUrl];
             } else {
                 return ['success' => true, 'returnUrl' => './conference/Visitor/Conference'];
@@ -125,9 +128,9 @@ class Visitor extends SubController
         return $this->view->notActivated();
     }
 
-    protected function activatedHtml()
+    protected function activatedHtml(Request $request)
     {
-        return $this->view->activated();
+        return $this->view->activated($request->pullGetString('email'));
     }
 
     protected function activateHtml(Request $request)
@@ -136,7 +139,7 @@ class Visitor extends SubController
         $hash = $request->pullGetString('hash');
 
         if ($this->factory->activateAccount($email, $hash)) {
-            Server::forward('./conference/User/Visitor/activated');
+            Server::forward('./conference/User/Visitor/activated?email=' . $email);
         } else {
             Server::forward('./conference/User/Visitor/notActivated');
         }
@@ -179,21 +182,26 @@ class Visitor extends SubController
     protected function resetHtml(Request $request)
     {
         $id = $request->pullGetInteger('id');
-        $hash = $request->pullGetInteger('hash');
+        $hash = $request->pullGetString('hash');
 
-        $visitor = $this->factory->getByHashId($request->pullGetInteger('id'),
-                $request->pullGetString('hash'));
+        $visitor = $this->factory->getByHashId($request->pullGetInteger('id'), $hash);
         if (empty($visitor)) {
             return $this->view->resetFailed();
         }
         $vars['visitorId'] = $id;
+        $vars['hash'] = $hash;
         return $this->view->scriptView('Reset', $vars);
     }
 
     protected function passwordPatch(Request $request)
     {
         $visitor = $this->factory->load($this->id);
+        $hash = $request->pullPatchString('hash');
+        if ($visitor->hash != $hash) {
+            throw new \Exception('Mismashed hash');
+        }
         $visitor->hashPassword($request->pullPatchString('password'));
+        $visitor->resetHash();
         $this->factory->save($visitor);
         return ['success' => true];
     }
