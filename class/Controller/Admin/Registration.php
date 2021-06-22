@@ -135,7 +135,7 @@ class Registration extends SubController
     protected function cancelPatch()
     {
         $registration = $this->factory->load($this->id);
-        if ($registration->completed) {
+        if ($registration->completed && $registration->totalCost > 0) {
             throw new \Exception('Cannot cancel registration without refund.');
         }
         $this->factory->cancel($registration);
