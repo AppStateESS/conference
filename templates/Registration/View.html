@@ -1,3 +1,4 @@
+<?php if ($registration['completed']):?>
 <?php if ($buttons):?>
 <a class="float-right btn btn-primary" target="_blank" rel="noreferrer noopener" id="print-registration"
   href="./conference/Visitor/Registration/<?=$registration['id']?>/?print=true"><i
@@ -6,6 +7,7 @@
 <script>
   window.print()
 </script>
+<?php endif;?>
 <?php endif;?>
 <div id="registration-info">
   <h2 class="mb-2"><?=$conference['title']?></h2>
@@ -30,7 +32,7 @@
         <th>End time</th>
         <td>
           <div><?=$session['endTimeFormat']?></div>
-          <div class="badge badge-info">Note: student orientation may extend beyond your
+          <div class="badge badge-info text-white">Note: student orientation may extend beyond your
             session.</div>
         </td>
       </tr>
@@ -67,17 +69,30 @@
     </tbody>
   </table>
   <?php if ($buttons):?>
-  <?php if ($supplementAllowed): if($registration['completed']):?>
+  <?php if ($supplementAllowed):?>
+  <?php if($registration['completed']):?>
   <div class="text-center">
     <a class="btn btn-primary" href="conference/Visitor/Supplement/?registrationId=<?=$registrationId?>">Add a
-      guest<?php if ($session['mealService']): ?>, meal, <?php endif;?> or switch your session</a>
+        guest<?php if ($session['mealService']): ?>, meal,
+        <?php endif;?> or switch your session</a>
   </div>
   <?php elseif (!$registration['completed']):?>
   <div class="text-center">
     <a class="btn btn-primary"
-      href="conference/Visitor/Session/<?=$registration['sessionId']?>/signup?studentId=<?=$registration['studentId']?>">Complete
-      registration</a>
+      href="conference/Visitor/Session/<?=$registration['sessionId']?>/signup?studentId=<?=$registration['studentId']?>">Finish your
+      incomplete registration</a>
   </div>
+  <?php endif;?>
+  <?php
+  /** supplementAllowed == false, signup date has passed **/
+  else:
+  if ($registration['completed']):?>
+  <div class="alert alert-success">Sign up date has passed. No more changes may be made.</div>
+  <?php
+  /** registration not completed **/
+  else:
+  ?>
+  <div class="alert alert-danger">Sign up date has passed but your registration is not complete. Please <a href="mailto:<?=$contactEmail?>">contact our office</a> if you need to attend at a later date.</div>
   <?php endif;?>
   <?php endif;?>
   <?php endif;?>
