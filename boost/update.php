@@ -311,6 +311,7 @@ class ConferenceUpdate
         $db = Database::getDB();
         $tbl = $db->addTable('conf_session');
         $notes = $tbl->addDataType('notes', 'text');
+        $notes->setIsNull(true);
         $notes->add();
     }
 
@@ -319,6 +320,7 @@ class ConferenceUpdate
         $db = Database::getDB();
         $tbl = $db->addTable('conf_visitor');
         $altPhone = $tbl->addDataType('altPhone', 'varchar');
+        $altPhone->setIsNull(true);
         $altPhone->setSize(25);
         $altPhone->add();
 
@@ -328,21 +330,26 @@ class ConferenceUpdate
 
         $employer = $tbl->addDataType('employer', 'varchar');
         $employer->setSize(50);
+        $employer->setIsNull(true);
         $employer->add();
 
         $position = $tbl->addDataType('position', 'varchar');
         $position->setSize(25);
+        $position->setIsNull(true);
         $position->add();
 
         $alum = $tbl->addDataType('alum', 'boolean');
+        $alum->setDefault(0);
         $alum->add();
 
         $gradYear = $tbl->addDataType('gradYear', 'smallint');
+        $gradYear->setDefault(0);
         $gradYear->setSize(25);
         $gradYear->add();
 
         $hometown = $tbl->addDataType('hometown', 'varchar');
         $hometown->setSize(60);
+        $hometown->setIsNull(true);
         $hometown->add();
     }
 
