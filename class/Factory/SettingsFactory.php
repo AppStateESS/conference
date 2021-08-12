@@ -25,6 +25,10 @@ class SettingsFactory
         Settings::set('conference', 'contactEmail', $email);
     }
 
+    /**
+     * Returns contactName and contactEmail in an array
+     * @return array
+     */
     public static function getContact()
     {
         return ['contactName' => Settings::get('conference', 'contactName'),
