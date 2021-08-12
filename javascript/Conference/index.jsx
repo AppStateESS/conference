@@ -68,6 +68,13 @@ class Conference extends Listing {
               &nbsp;Sessions
             </a>
             <hr className="my-1" />
+            <a
+              className="dropdown-item pointer"
+              href={'./conference/User/Conference/' + conferenceId}>
+              <i className="fas fa-eye" />
+              &nbsp;View
+            </a>
+
             {accountId > 0 ? (
               <a
                 className="dropdown-item pointer"
