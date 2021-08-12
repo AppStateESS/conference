@@ -67,6 +67,8 @@ class RegistrationFactory extends BaseFactory
         $tbl = $db->addTable('conf_registration');
 
         // conditional options
+
+
         if (!empty($options['visitorId'])) {
             $tbl->addFieldConditional('visitorId', $options['visitorId']);
         }
@@ -110,7 +112,15 @@ class RegistrationFactory extends BaseFactory
             $cond = $db->createConditional($tbl->getField('sessionId'),
                     $tbl2->getField('id'));
             $db->joinResources($tbl, $tbl2, $cond, 'left');
+            /**
+             * priorOnly is only used in one function: RegistrationView:listPreviousRegistrations
+             * The view function is not called anywhere, so it is deprecated.
+             * The conditional was also incorrect.
+             */
             if (!empty($options['priorOnly'])) {
+                $tbl2->addFieldConditional('eventDate', time(), '<');
+            }
+            if (!empty($options['upcomingOnly'])) {
                 $tbl2->addFieldConditional('eventDate', time(), '>');
             }
         }
