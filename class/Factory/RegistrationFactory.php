@@ -288,6 +288,13 @@ class RegistrationFactory extends BaseFactory
         return $sessionFactory->load($registration->sessionId);
     }
 
+    /**
+     * Returns array of values from the registration including conference, session, location,
+     * visitor, guest, and student sub-arrays.
+     * @param Resource $registration
+     * @param array $limit
+     * @return array
+     */
     public function registrationVars(Resource $registration, array $limit = []): array
     {
         $session = $this->getSession($registration);
