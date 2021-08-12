@@ -12,7 +12,7 @@ const defaultResource = {
   title: '',
   description: '',
   locationId: 0,
-  active: 1
+  active: 1,
 }
 
 const defaultInfo = {
@@ -20,7 +20,7 @@ const defaultInfo = {
   type: 'text',
   question: '',
   required: 0,
-  sort: 1
+  sort: 1,
 }
 
 class Conference extends Listing {
@@ -39,11 +39,15 @@ class Conference extends Listing {
     this.dropInfo = this.dropInfo.bind(this)
     this.loadConferenceQuestion = this.loadConferenceQuestion.bind(this)
 
-    const titleCallback = val => {
-      return <a href={`./conference/User/Conference/${val.id}`}>{val.title}</a>
+    const titleCallback = (val) => {
+      return (
+        <a href={`./conference/Admin/Session/?conferenceId=${val.id}`}>
+          {val.title}
+        </a>
+      )
     }
 
-    const dropdown = key => {
+    const dropdown = (key) => {
       const conferenceId = this.state.listing[key].id
       const accountId = this.state.listing[key].accountId
       return (
@@ -97,31 +101,31 @@ class Conference extends Listing {
           return dropdown(key)
         },
         style: {
-          width: '10%'
-        }
+          width: '10%',
+        },
       },
       {
         column: 'title',
         label: 'Title',
         callback: titleCallback,
-        sort: true
+        sort: true,
       },
       {
         column: 'location',
-        label: 'Location'
+        label: 'Location',
       },
       {
         column: 'sessionCount',
         label: 'Sessions',
         className: 'text-right',
-        callback: row => {
+        callback: (row) => {
           return (
             <a href={`conference/Admin/Session/?conferenceId=${row.id}`}>
               {row.sessionCount}
             </a>
           )
-        }
-      }
+        },
+      },
     ]
     this.state.resource = Object.assign({}, this.defaultResource)
     this.locations = null
@@ -145,10 +149,10 @@ class Conference extends Listing {
       data: {},
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         this.setState({services: data.listing})
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -159,10 +163,10 @@ class Conference extends Listing {
       data: {id: conferenceId},
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         this.setState({conferenceQuestion: data.conferenceQuestion})
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -185,7 +189,7 @@ class Conference extends Listing {
       success: () => {
         this.load()
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -215,7 +219,7 @@ class Conference extends Listing {
         success: () => {},
         error: () => {
           this.setMessage('Could not delete extra info')
-        }
+        },
       })
     }
   }
@@ -288,7 +292,7 @@ class Conference extends Listing {
       success: () => {},
       error: () => {
         this.setMessage('Could not save extra information data.')
-      }
+      },
     })
   }
 
@@ -321,7 +325,7 @@ class Conference extends Listing {
       width: '90%',
       title:
         this.state.resource.id > 0 ? 'Update conference' : 'Create conference',
-      close: this.load
+      close: this.load,
     }
   }
 }
