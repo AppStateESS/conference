@@ -125,6 +125,8 @@ class RegistrationView extends AbstractView
 
         $tpl = $this->factory->registrationVars($registration);
         $tpl['buttons'] = $buttons;
+        $contact = \conference\Factory\SettingsFactory::getContact();
+        $tpl['contactEmail'] = $contact['contactEmail'];
 
         $template = new Template($tpl);
         $template->setModuleTemplate('conference', 'Registration/View.html');
