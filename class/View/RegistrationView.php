@@ -104,6 +104,17 @@ class RegistrationView extends AbstractView
         return $template->get();
     }
 
+    /**
+     * An HTML view of the current registration.
+     * What is shown is controlled in the template itself. Check registrationVars for
+     * what is sent.
+     *
+     * The 'supplementAllowed' tag will be false if signup has expired.
+     * @param int $registrationId
+     * @param int $visitorId
+     * @param bool $buttons
+     * @return string
+     */
     public function view(int $registrationId, int $visitorId,
             bool $buttons = true): string
     {
