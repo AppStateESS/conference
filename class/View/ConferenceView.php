@@ -78,7 +78,12 @@ class ConferenceView extends AbstractView
         $registrationFactory = new RegistrationFactory;
         $supplementFactory = new SupplementFactory;
         $vars['supplement'] = null;
-        $vars['registrations'] = $registrationListing = $registrationFactory->listing(['conferenceId' => $conferenceId, 'includeSession' => true, 'visitorId' => $visitorId]);
+        $options = [
+            'conferenceId' => $conferenceId,
+            'upcomingOnly' => true,
+            'includeSession' => true,
+            'visitorId' => $visitorId];
+        $vars['registrations'] = $registrationListing = $registrationFactory->listing($options);
 
         if (count($registrationListing)) {
             $supplement = $supplementFactory->loadByVisitorId(VisitorFactory::getCurrentId());
