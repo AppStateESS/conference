@@ -6,13 +6,13 @@ import Tickets from './Tickets'
 import Visitor from './Visitor'
 import Complete from './Complete'
 import Guest from './Guest'
-import ConferenceQuestion from './ConferenceQuestion'
+import ParentInfo from './ParentInfo'
 import Review from './Review'
 import SessionChange from '../Shared/SessionChange'
 
 import '../Shared/style.css'
 
-/* global $, session, studentId, registrationId, onsite */
+/* global $, session, studentId, registrationId, onsite, newRegistration */
 
 export default class SessionSignup extends Component {
   constructor(props) {
@@ -34,8 +34,7 @@ export default class SessionSignup extends Component {
       student: null,
       signupAllowed: true,
       guests: [],
-      newRegistration: true,
-      visitorInfo: null,
+      newRegistration: props.newRegistration,
       visitor: {firstName: '', lastName: ''},
       stage: 'start',
       errorMessage: false,
@@ -47,17 +46,16 @@ export default class SessionSignup extends Component {
         phone: false,
         zip: false,
       },
+      parentInfoComplete: false,
       proceed: true,
     }
     this.updateVisitor = this.updateVisitor.bind(this)
     this.updateRegistration = this.updateRegistration.bind(this)
-    this.updateInfo = this.updateInfo.bind(this)
     this.forward = this.forward.bind(this)
     this.totalCost = this.totalCost.bind(this)
     this.checkContact = this.checkContact.bind(this)
     this.saveContact = this.saveContact.bind(this)
     this.saveRegistration = this.saveRegistration.bind(this)
-    this.checkInfo = this.checkInfo.bind(this)
     this.updateGuest = this.updateGuest.bind(this)
     this.saveGuests = this.saveGuests.bind(this)
     this.changeSession = this.changeSession.bind(this)
@@ -67,10 +65,8 @@ export default class SessionSignup extends Component {
     this.loadVisitor().then(() => {
       this.loadRegistration().then(() => {
         this.loadStudent().then(() => {
-          this.loadVisitorInfo().then(() => {
-            this.loadGuests().then(() => {
-              this.determineStage()
-            })
+          this.loadGuests().then(() => {
+            this.determineStage()
           })
         })
       })
@@ -84,8 +80,14 @@ export default class SessionSignup extends Component {
     } else {
       if (!this.visitorDemographicsComplete()) {
         stage = 'contact'
-      } else if (!this.questionsComplete()) {
-        stage = 'conferenceQuestion'
+      } else if (!this.state.parentInfoComplete) {
+        stage = 'parentInfo'
+      } else if (
+        this.state.newRegistration ||
+        parseInt(this.state.registration.guestCount) === 0
+      ) {
+        stage = 'tickets'
+        this.setState({newRegistration: false})
       } else if (!this.guestsComplete()) {
         stage = 'guest'
       }
@@ -96,24 +98,29 @@ export default class SessionSignup extends Component {
 
   guestsComplete() {
     const guestCount = parseInt(this.state.registration.guestCount)
-    return (
-      guestCount === 0 ||
-      (guestCount == this.state.guests.length &&
-        this.state.guests[0].firstName.length > 0)
-    )
-  }
+    const guests = this.state.guests
 
-  loadVisitorInfo() {
-    return $.ajax({
-      url: 'conference/Visitor/VisitorInfo/',
-      data: {registrationId: this.state.registration.id},
-      dataType: 'json',
-      type: 'get',
-      success: (data) => {
-        this.setState({visitorInfo: data.listing})
-      },
-      error: () => {},
-    })
+    let guestComplete = true
+
+    if (guestCount === 0) {
+      guestComplete = false
+    } else {
+      if (guestCount != guests.length) {
+        guestComplete = false
+      }
+      for (let i = 0; i < guests.length; i++) {
+        const g = guests[i]
+        if (
+          g.firstName.length === 0 ||
+          g.lastName.length === 0 ||
+          g.email.length === 0
+        ) {
+          guestComplete = false
+          break
+        }
+      }
+      return guestComplete
+    }
   }
 
   loadStudent() {
@@ -128,6 +135,16 @@ export default class SessionSignup extends Component {
     })
   }
 
+  checkParentInfoComplete() {
+    const {visitor} = this.state
+
+    const check =
+      visitor.hometown.length > 0 &&
+      visitor.employer.length > 0 &&
+      visitor.position.length > 0
+    this.setState({parentInfoComplete: check})
+  }
+
   loadVisitor() {
     return $.ajax({
       url: 'conference/Visitor/Visitor/current',
@@ -135,7 +152,7 @@ export default class SessionSignup extends Component {
       dataType: 'json',
       type: 'get',
       success: (data) => {
-        this.setState({visitor: data})
+        this.setState({visitor: data}, this.checkParentInfoComplete)
       },
       error: () => {
         this.setState({errorMessage: true})
@@ -182,6 +199,10 @@ export default class SessionSignup extends Component {
                 firstName: '',
                 lastName: '',
                 email: '',
+                relationship: 'Parent',
+                employer: '',
+                position: '',
+                hometown: '',
                 registrationId: id,
                 complete: false,
               })
@@ -219,20 +240,6 @@ export default class SessionSignup extends Component {
     return registration.completed === 1
   }
 
-  questionsComplete() {
-    const {visitorInfo} = this.state
-    if (visitorInfo === null) {
-      return true
-    }
-    let questionsComplete = true
-    visitorInfo.forEach((value) => {
-      if (value.answer === null || value.answer.length === 0) {
-        questionsComplete = false
-      }
-    })
-    return questionsComplete
-  }
-
   saveGuests() {
     $.ajax({
       url: 'conference/Visitor/Guest/',
@@ -250,46 +257,6 @@ export default class SessionSignup extends Component {
     })
   }
 
-  checkInfo() {
-    const {visitorInfo} = this.state
-    let errorFound = false
-    visitorInfo.forEach((question) => {
-      if (
-        question.type === 'text' &&
-        question.required === 1 &&
-        question.answer.length === 0
-      ) {
-        question.error = true
-        errorFound = true
-      } else {
-        question.error = false
-      }
-    })
-    this.setState({visitorInfo})
-    if (!errorFound) {
-      this.saveInfo()
-    }
-  }
-
-  saveInfo() {
-    $.ajax({
-      url: 'conference/Visitor/VisitorInfo',
-      data: {
-        info: this.state.visitorInfo,
-        registrationId: this.state.registration.id,
-        conferenceId: this.state.registration.conferenceId,
-      },
-      dataType: 'json',
-      type: 'post',
-      success: () => {
-        this.setState({stage: 'tickets'})
-      },
-      error: () => {
-        alert('Could not save your information.')
-      },
-    })
-  }
-
   buildGuests(count) {
     let guests = []
     for (let i = 0; i < count; i++) {
@@ -298,6 +265,7 @@ export default class SessionSignup extends Component {
         firstName: '',
         lastName: '',
         email: '',
+        relationship: 'Parent',
         complete: false,
       }
     }
@@ -354,10 +322,12 @@ export default class SessionSignup extends Component {
       type: 'put',
       success: () => {
         let stage
-        if (this.questionsComplete()) {
+        if (this.guestsComplete()) {
           stage = this.lastStage === 'review' ? 'review' : 'tickets'
+        } else if (this.state.parentInfoComplete) {
+          stage = 'tickets'
         } else {
-          stage = 'conferenceQuestion'
+          stage = 'parentInfo'
         }
         this.setState({stage})
       },
@@ -376,7 +346,7 @@ export default class SessionSignup extends Component {
         }
         break
 
-      case 'conferenceQuestion':
+      case 'parentInfo':
         this.lastStage = 'tickets'
         this.setState({stage: 'tickets'})
         break
@@ -445,12 +415,6 @@ export default class SessionSignup extends Component {
     return cost.toFixed(2)
   }
 
-  updateInfo(key, value) {
-    const {visitorInfo} = this.state
-    visitorInfo[key].answer = value
-    this.setState({visitorInfo})
-  }
-
   previousSummary() {
     return (
       <div className="alert alert-secondary">
@@ -467,7 +431,6 @@ export default class SessionSignup extends Component {
   updateGuest(count, property, value) {
     const {guests} = this.state
     const guest = guests[count]
-
     guest[property] = value
     guest.complete =
       guest.firstName.length > 0 &&
@@ -514,7 +477,7 @@ export default class SessionSignup extends Component {
         } else {
           content = (
             <Tickets
-              back={() => this.setState({stage: 'conferenceQuestion'})}
+              back={() => this.setState({stage: 'parentInfo'})}
               questions={this.questions}
               save={this.saveRegistration}
               totalCost={this.totalCost}
@@ -527,13 +490,15 @@ export default class SessionSignup extends Component {
         }
         break
 
-      case 'conferenceQuestion':
+      case 'parentInfo':
         content = (
-          <ConferenceQuestion
-            visitorInfo={this.state.visitorInfo}
-            checkInfo={this.checkInfo}
-            update={this.updateInfo}
-            save={this.forward}
+          <ParentInfo
+            visitor={this.state.visitor}
+            update={this.updateVisitor}
+            save={() => {
+              this.setState({parentInfoComplete: true})
+              this.saveContact()
+            }}
           />
         )
         break
@@ -541,6 +506,7 @@ export default class SessionSignup extends Component {
       case 'guest':
         content = (
           <Guest
+            addGuest={this.addGuest}
             guests={this.state.guests}
             update={this.updateGuest}
             registration={this.state.registration}
@@ -600,6 +566,7 @@ SessionSignup.propTypes = {
   studentId: PropTypes.number,
   visitorId: PropTypes.number,
   onsite: PropTypes.bool,
+  newRegistration: PropTypes.bool,
   registrationId: PropTypes.number,
 }
 
@@ -608,6 +575,7 @@ ReactDOM.render(
     session={session}
     studentId={studentId}
     onsite={onsite}
+    newRegistration={newRegistration}
     registrationId={registrationId}
   />,
   document.getElementById('SessionSignup')
