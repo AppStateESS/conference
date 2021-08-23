@@ -75,7 +75,7 @@ class VisitorResource extends AbstractResource
         $this->city = new \phpws2\Variable\TextOnly(null, 'city');
         $this->city->setLimit(100);
         $this->city->allowNull(true);
-        $this->state = new \phpws2\Variable\TextOnly(null, 'state');
+        $this->state = new \phpws2\Variable\TextOnly('', 'state');
         $this->state->allowNull(true);
         $this->state->setLimit(2);
         $this->zip = new \phpws2\Variable\TextOnly(null, 'zip');
@@ -96,6 +96,14 @@ class VisitorResource extends AbstractResource
         $this->gradYear->allowNull(true);
         $this->hometown = new \phpws2\Variable\TextOnly(null, 'hometown');
         $this->hometown->allowNull(true);
+        $this->defaultState();
+    }
+
+    public function defaultState()
+    {
+        if (empty($this->state->get())) {
+            $this->state->set(CONFERENCE_DEFAULTS['state']);
+        }
     }
 
     public function stamp(int $hours = 2)
