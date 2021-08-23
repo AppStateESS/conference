@@ -315,6 +315,54 @@ class ConferenceUpdate
         $notes->add();
     }
 
+    private static function addRelationship($tbl)
+    {
+        $relationship = $tbl->addDataType('relationship', 'varchar');
+        $relationship->setSize(20);
+        $relationship->add();
+    }
+
+    private static function addEmployer($tbl)
+    {
+        $employer = $tbl->addDataType('employer', 'varchar');
+        $employer->setSize(50);
+        $employer->setIsNull(true);
+        $employer->add();
+    }
+
+    private static function addPosition($tbl)
+    {
+
+        $position = $tbl->addDataType('position', 'varchar');
+        $position->setSize(25);
+        $position->setIsNull(true);
+        $position->add();
+    }
+
+    private static function addAlum($tbl)
+    {
+
+        $alum = $tbl->addDataType('alum', 'boolean');
+        $alum->setDefault(0);
+        $alum->add();
+    }
+
+    private static function addGradYear($tbl)
+    {
+        $gradYear = $tbl->addDataType('gradYear', 'smallint');
+        $gradYear->setDefault(0);
+        $gradYear->setSize(25);
+        $gradYear->add();
+    }
+
+    private static function addHometown($tbl)
+    {
+        $hometown = $tbl->addDataType('hometown', 'varchar');
+        $hometown->setSize(60);
+        $hometown->setIsNull(true);
+        $hometown->add();
+    }
+
     private function v160()
     {
         $db = Database::getDB();
@@ -323,34 +371,25 @@ class ConferenceUpdate
         $altPhone->setIsNull(true);
         $altPhone->setSize(25);
         $altPhone->add();
+        self::addRelationship($tbl);
+        self::addEmployer($tbl);
+        self::addPosition($tbl);
+        self::addAlum($tbl);
+        self::addGradYear($tbl);
+        self::addHometown($tbl);
 
-        $relationship = $tbl->addDataType('relationship', 'varchar');
-        $relationship->setSize(20);
-        $relationship->add();
+        $tbl2 = $db->addTable('conf_guest');
+        $visitorId = $tbl2->addDataType('visitorId', 'int');
+        $visitorId->setDefault(0);
+        $visitorId->add();
+        self::addRelationship($tbl2);
+        self::addEmployer($tbl2);
+        self::addPosition($tbl2);
+        self::addAlum($tbl2);
+        self::addGradYear($tbl2);
+        self::addHometown($tbl2);
 
-        $employer = $tbl->addDataType('employer', 'varchar');
-        $employer->setSize(50);
-        $employer->setIsNull(true);
-        $employer->add();
-
-        $position = $tbl->addDataType('position', 'varchar');
-        $position->setSize(25);
-        $position->setIsNull(true);
-        $position->add();
-
-        $alum = $tbl->addDataType('alum', 'boolean');
-        $alum->setDefault(0);
-        $alum->add();
-
-        $gradYear = $tbl->addDataType('gradYear', 'smallint');
-        $gradYear->setDefault(0);
-        $gradYear->setSize(25);
-        $gradYear->add();
-
-        $hometown = $tbl->addDataType('hometown', 'varchar');
-        $hometown->setSize(60);
-        $hometown->setIsNull(true);
-        $hometown->add();
+        $db->exec('update conf_guest as g set g.visitorId = (select r.visitorId from conf_registration as r where r.id=g.registrationId)');
     }
 
 }
