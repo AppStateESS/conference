@@ -166,39 +166,4 @@ class RegistrationView extends AbstractView
         return $template->get();
     }
 
-    /**
-     * A visitor view of previous registrations
-     * @param integer visitorId
-     */
-    public function listPreviousRegistrations(int $visitorId): string
-    {
-        $regFactory = new RegistrationFactory;
-        $options['visitorId'] = $visitorId;
-        $options['includeSession'] = true;
-        $options['priorOnly'] = true;
-        $registrations = $regFactory->listing($options);
-        if (empty($registrations)) {
-            return '';
-        }
-        $suppFactory = new SupplementFactory;
-        if ($supplement = $suppFactory->loadByVisitorId($visitorId)) {
-            foreach ($registrations as $key => $value) {
-                if ($supplement->registrationId == $value['id']) {
-                    $value['supplement'] = $supplement->getStringVars();
-                }
-            }
-        }
-        foreach ($registrations as &$reg) {
-            $reg['allowSignup'] = !SessionFactory::signupPassed($reg['sessionId']);
-        }
-        $vars['registrations'] = $registrations;
-
-        if (!empty($supplement)) {
-            $vars['supplement'] = $supplement->getStringVars();
-        }
-        $template = new Template($vars);
-        $template->setModuleTemplate('conference', 'Registration/Previous.html');
-        return $template->get();
-    }
-
 }
