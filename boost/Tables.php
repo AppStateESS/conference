@@ -88,20 +88,6 @@ class Tables
         return $sessionTable;
     }
 
-    public function createConferenceQuestion()
-    {
-        $db = Database::getDB();
-        $conferenceQuestion = new \conference\Resource\ConferenceQuestionResource;
-        $conferenceQuestionTable = $conferenceQuestion->createTable($db);
-
-        $conferenceTable = $db->addTable('conf_conference');
-        $conferenceId = $conferenceQuestionTable->getDataType('conferenceId');
-        $foreign = new ForeignKey($conferenceId,
-                $conferenceTable->getDataType('id'), ForeignKey::CASCADE);
-        $foreign->add();
-        return $conferenceQuestionTable;
-    }
-
     public function createLocation()
     {
         $db = Database::getDB();
@@ -131,13 +117,6 @@ class Tables
         $db = Database::getDB();
         $visitor = new \conference\Resource\VisitorResource;
         return $visitor->createTable($db);
-    }
-
-    public function createVisitorInfo()
-    {
-        $db = Database::getDB();
-        $visitorInfo = new \conference\Resource\VisitorInfoResource;
-        return $visitorInfo->createTable($db);
     }
 
     public function createPayment()

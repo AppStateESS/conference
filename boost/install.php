@@ -24,14 +24,12 @@ function conference_install(&$content)
         $account = $tables->createAccount();
         $location = $tables->createLocation();
         $conference = $tables->createConference();
-        $conferenceQuestion = $tables->createConferenceQuestion();
         $session = $tables->createSession();
         $registration = $tables->createRegistration();
         $guest = $tables->createGuest();
         $payment = $tables->createPayment();
         $student = $tables->createStudent();
         $visitor = $tables->createVisitor();
-        $visitorInfo = $tables->createVisitorInfo();
         $supplement = $tables->createSupplement();
         $log = $tables->createLog();
         $refund = $tables->createRefund();
@@ -42,9 +40,6 @@ function conference_install(&$content)
             $refund->drop(true);
         }
 
-        if (isset($visitorInfo)) {
-            $visitorInfo->drop(true);
-        }
         if (isset($visitor)) {
             $visitor->drop(true);
         }
@@ -62,9 +57,6 @@ function conference_install(&$content)
         }
         if (isset($session)) {
             $session->drop(true);
-        }
-        if (isset($conferenceQuestion)) {
-            $conferenceQuestion->drop(true);
         }
         if (isset($conference)) {
             $conference->drop(true);
