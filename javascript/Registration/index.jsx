@@ -41,15 +41,27 @@ export default class Registration extends Listing {
       const registrationId = this.state.listing[key].id
       const registration = this.state.listing[key]
       const cancelOrRefund = () => {
-        if (registration.completed && registration.totalCost > 0) {
-          return (
-            <a
-              href={`conference/Admin/Refund/?registrationId=${registrationId}`}
-              className="dropdown-item">
-              <i className="fas fa-cash-register" />
-              &nbsp;Refund
-            </a>
-          )
+        if (registration.completed) {
+          if (registration.totalCost > 0) {
+            return (
+              <a
+                href={`conference/Admin/Refund/?registrationId=${registrationId}`}
+                className="dropdown-item">
+                <i className="fas fa-cash-register" />
+                &nbsp;Refund
+              </a>
+            )
+          } else {
+            return (
+              <a
+                href="#"
+                className="dropdown-item pointer"
+                onClick={this.cancel.bind(this, key)}>
+                <i className="fas fa-ban text-danger" />
+                &nbsp;Cancel
+              </a>
+            )
+          }
         } else {
           return (
             <a
