@@ -34,7 +34,8 @@ class Reports extends SubController
     {
         // Performs a clean up of non-activated users.
         // Triggered when admins view reports, which should be infrequently.
-        $this->factory->clearNotActivated();
+        $visitorFactory = new \conference\Factory\VisitorFactory;
+        $visitorFactory->clearNotActivated();
         return $this->view->scriptView('Reports');
     }
 
