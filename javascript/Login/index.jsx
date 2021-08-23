@@ -182,6 +182,7 @@ export default class Login extends Component {
           <input
             type="text"
             name="email"
+            autoComplete="off"
             className="form-control"
             value={this.state.email}
             onChange={this.updateEmail}
