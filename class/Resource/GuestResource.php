@@ -20,6 +20,18 @@ class GuestResource extends AbstractResource
     protected $lastName;
     protected $registrationId;
     protected $supplementId;
+
+    /**
+     * Id of the visitor associated with guest
+     * @var \phpws2\Variable\IntegerVar
+     */
+    protected $visitorId;
+    protected $relationship;
+    protected $employer;
+    protected $position;
+    protected $alum;
+    protected $gradYear;
+    protected $hometown;
     protected $table = 'conf_guest';
 
     public function __construct()
@@ -36,6 +48,18 @@ class GuestResource extends AbstractResource
         $this->registrationId = new \phpws2\Variable\IntegerVar(0,
                 'registrationId');
         $this->supplementId = new \phpws2\Variable\IntegerVar(0, 'supplementId');
+        $this->visitorId = new \phpws2\Variable\IntegerVar(0, 'visitorId');
+        $this->relationship = new \phpws2\Variable\TextOnly(null, 'relationship');
+        $this->relationship->allowNull(true);
+        $this->employer = new \phpws2\Variable\TextOnly(null, 'employer');
+        $this->employer->allowNull(true);
+        $this->position = new \phpws2\Variable\TextOnly(null, 'position');
+        $this->position->allowNull(true);
+        $this->alum = new \phpws2\Variable\BooleanVar(false, 'alum');
+        $this->gradYear = new \phpws2\Variable\NumberString(null, 'gradYear');
+        $this->gradYear->allowNull(true);
+        $this->hometown = new \phpws2\Variable\TextOnly(null, 'hometown');
+        $this->hometown->allowNull(true);
     }
 
 }
