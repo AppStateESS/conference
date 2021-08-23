@@ -61,6 +61,7 @@ class Session extends SubController
         if (\conference\Factory\SettingsFactory::getDisabled()) {
             return \conference\View\SettingsView::disabled();
         }
+        $newRegistration = false;
         $regFactory = new RegistrationFactory;
         $visitorId = VisitorFactory::getCurrentId();
         $studentId = $request->pullGetInteger('studentId');
@@ -68,9 +69,10 @@ class Session extends SubController
         if (empty($registration) || $registration->cancelled) {
             $registration = $regFactory->createRegistration($visitorId,
                     $this->id, $studentId);
+            $newRegistration = true;
         }
 
-        return $this->view->signup($this->id, $registration->id, $studentId);
+        return $this->view->signup($this->id, $registration->id, $studentId, $newRegistration);
     }
 
     /**
@@ -99,9 +101,6 @@ class Session extends SubController
         $response['visitor'] = $visitor->getInfo();
         $session = $this->factory->load($this->id);
         $response['signupAllowed'] = Factory::signupAllowed($session);
-
-        $visitorInfoFactory = new \conference\Factory\VisitorInfoFactory;
-        $response['visitorInfo'] = $visitorInfoFactory->visitorListing($registration->id);
         return $response;
     }
 
