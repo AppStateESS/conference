@@ -18,7 +18,7 @@ export default class Guest extends Component {
 
   isComplete() {
     let allComplete = true
-    this.props.guests.forEach(element => {
+    this.props.guests.forEach((element) => {
       if (element.complete == false) {
         allComplete = false
       }
@@ -27,7 +27,12 @@ export default class Guest extends Component {
   }
 
   update(count, property, event) {
-    const {value} = event.target
+    let value
+    if (typeof event === 'object') {
+      value = event.target.value
+    } else {
+      value = event
+    }
     this.props.update(count, property, value)
   }
 
@@ -48,6 +53,7 @@ export default class Guest extends Component {
     return (
       <div>
         <h4>Please enter guest information below.</h4>
+        <p>List only people accompanying you to the orientation.</p>
         {guestList}
         <div className="mt-2 text-center">
           <button
@@ -67,5 +73,5 @@ Guest.propTypes = {
   update: PropTypes.func,
   guests: PropTypes.array,
   save: PropTypes.func,
-  error: PropTypes.func
+  error: PropTypes.func,
 }
