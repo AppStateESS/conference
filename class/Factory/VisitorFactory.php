@@ -65,7 +65,12 @@ class VisitorFactory extends BaseFactory
         }
 
         $result = $db->selectInto($visitor);
-        return $result ? $visitor : false;
+        if ($result) {
+            $visitor->defaultState();
+            return $visitor;
+        } else {
+            return false;
+        }
     }
 
     public function post(Request $request)
