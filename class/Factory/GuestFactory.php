@@ -48,7 +48,7 @@ class GuestFactory extends BaseFactory
             array $guests)
     {
         $guestCount = count($guests);
-        $this->saveGuests($guests, $guestCount, $registration->id);
+        $this->saveGuests($guests, $guestCount, $registration->id, $registration->visitorId);
     }
 
     /**
@@ -67,7 +67,7 @@ class GuestFactory extends BaseFactory
             throw new \Exception('Guest count does not match submitted guests.');
         }
         $this->deleteByRegistrationId($registration->id);
-        $this->saveGuests($guests, $guestCount, $registration->id);
+        $this->saveGuests($guests, $guestCount, $registration->id, $registration->visitorId);
     }
 
     /**
@@ -79,7 +79,7 @@ class GuestFactory extends BaseFactory
     public function saveSupplement(SupplementResource $supplement, array $guests)
     {
         $guestCount = $supplement->newGuests;
-        $this->saveGuests($guests, $guestCount, $supplement->registrationId,
+        $this->saveGuests($guests, $guestCount, $supplement->registrationId, $supplement->visitorId,
                 $supplement->id);
     }
 
@@ -92,19 +92,31 @@ class GuestFactory extends BaseFactory
      * @throws \Exception
      */
     private function saveGuests(array $guests, int $guestCount,
-            int $registrationId, int $supplementId = 0)
+            int $registrationId, int $visitorId, int $supplementId = 0)
     {
         $db = Database::getDB();
         try {
             if (!empty($guests)) {
                 for ($i = 0; $i < $guestCount; $i++) {
                     $guestData = $guests[$i];
+                    if (empty($guestData['firstName']) || empty($guestData['lastName']) || empty($guestData['email'])) {
+                        throw new \Exception('Missing guest information');
+                    }
                     $guestResource = $this->build();
                     $guestResource->firstName = $guestData['firstName'];
                     $guestResource->lastName = $guestData['lastName'];
-                    $guestResource->email = $guestData['email'];
+                    $guestResource->email = strtolower($guestData['email']);
                     $guestResource->supplementId = $supplementId;
                     $guestResource->registrationId = $registrationId;
+                    $guestResource->visitorId = $visitorId;
+                    $guestResource->relationship = $guestData['relationship'];
+
+                    $guestResource->employer = $guestData['employer'] ?? '';
+                    $guestResource->position = $guestData['position'] ?? '';
+                    $guestResource->alum = $guestData['alum'] ?? false;
+                    $guestResource->gradYear = $guestData['gradYear'] ?? '0';
+                    $guestResource->hometown = $guestData['hometown'] ?? '';
+
                     $this->save($guestResource);
                 }
             }
