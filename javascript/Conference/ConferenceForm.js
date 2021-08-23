@@ -1,7 +1,6 @@
 'use strict'
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import ConferenceQuestion from './ConferenceQuestion'
 import Editor from '../Shared/Editor'
 
 class ConferenceForm extends Component {
@@ -61,7 +60,6 @@ class ConferenceForm extends Component {
       addInfo,
       updateInfo,
       dropInfo,
-      conferenceQuestion,
     } = this.props
     const disableSave = this.disableSave()
     const titleClass = this.state.titleError
@@ -134,19 +132,6 @@ class ConferenceForm extends Component {
             </select>
           </div>
         </div>
-        <div className="d-flex justify-content-start mb-4">
-          <h4>Extra Visitor information</h4>
-          <button className="ml-4 btn btn-success btn-sm" onClick={addInfo}>
-            <i className="fas fa-plus" /> Add question
-          </button>
-        </div>
-        <div className="mb-4">
-          <ConferenceQuestion
-            conferenceQuestion={conferenceQuestion}
-            dropInfo={dropInfo}
-            updateInfo={updateInfo}
-          />
-        </div>
         <div className="text-center">
           <button
             className="btn btn-primary"
@@ -164,12 +149,8 @@ ConferenceForm.propTypes = {
   resource: PropTypes.object,
   update: PropTypes.func,
   locations: PropTypes.array,
-  dropInfo: PropTypes.func,
   services: PropTypes.array,
   save: PropTypes.func,
-  addInfo: PropTypes.func,
-  updateInfo: PropTypes.func,
-  conferenceQuestion: PropTypes.array,
 }
 
 export default ConferenceForm

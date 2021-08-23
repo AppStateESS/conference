@@ -32,13 +32,6 @@ class Conference extends Listing {
     this.defaultInfo = Object.assign({}, defaultInfo)
     this.locations = null
 
-    this.state.conferenceQuestion = []
-
-    this.addInfo = this.addInfo.bind(this)
-    this.updateInfo = this.updateInfo.bind(this)
-    this.dropInfo = this.dropInfo.bind(this)
-    this.loadConferenceQuestion = this.loadConferenceQuestion.bind(this)
-
     const titleCallback = (val) => {
       return (
         <a href={`./conference/Admin/Session/?conferenceId=${val.id}`}>
@@ -147,7 +140,6 @@ class Conference extends Listing {
 
   loadResource(key) {
     super.loadResource(key)
-    this.loadConferenceQuestion(key)
   }
 
   loadServices() {
@@ -163,19 +155,6 @@ class Conference extends Listing {
     })
   }
 
-  loadConferenceQuestion(key) {
-    const conferenceId = this.state.listing[key].id
-    $.ajax({
-      url: 'conference/Admin/ConferenceQuestion/conference',
-      data: {id: conferenceId},
-      dataType: 'json',
-      type: 'get',
-      success: (data) => {
-        this.setState({conferenceQuestion: data.conferenceQuestion})
-      },
-      error: () => {},
-    })
-  }
 
   deletePrompt(key, e) {
     e.preventDefault()
@@ -200,43 +179,6 @@ class Conference extends Listing {
     })
   }
 
-  addInfo() {
-    const {conferenceQuestion} = this.state
-    const info = Object.assign({}, this.defaultInfo)
-    if (conferenceQuestion.length > 0) {
-      info.sort = String(
-        parseInt(conferenceQuestion[conferenceQuestion.length - 1].sort) + 1
-      )
-    }
-    conferenceQuestion.push(info)
-    this.setState({conferenceQuestion})
-  }
-
-  dropInfo(key) {
-    const {conferenceQuestion} = this.state
-    const info = conferenceQuestion[key]
-    conferenceQuestion.splice(key, 1)
-    this.setState({conferenceQuestion})
-    if (info.id) {
-      $.ajax({
-        url: 'conference/Admin/ConferenceQuestion/' + info.id,
-        data: {},
-        dataType: 'json',
-        type: 'delete',
-        success: () => {},
-        error: () => {
-          this.setMessage('Could not delete extra info')
-        },
-      })
-    }
-  }
-
-  updateInfo(value, section, key) {
-    const {conferenceQuestion} = this.state
-    conferenceQuestion[key][section] = value
-    this.setState({conferenceQuestion})
-  }
-
   form(overlay) {
     if (!overlay) {
       return <div></div>
@@ -244,10 +186,6 @@ class Conference extends Listing {
       return (
         <ConferenceForm
           services={this.state.services}
-          conferenceQuestion={this.state.conferenceQuestion}
-          updateInfo={this.updateInfo}
-          dropInfo={this.dropInfo}
-          addInfo={this.addInfo}
           save={this.save}
           close={this.finish}
           resource={this.state.resource}
@@ -260,7 +198,6 @@ class Conference extends Listing {
 
   success(data) {
     if (data.success) {
-      this.saveConferenceQuestion(data.id)
       this.load()
       this.setMessage(
         <div>
@@ -283,24 +220,6 @@ class Conference extends Listing {
 
   reset() {
     super.reset()
-    this.setState({conferenceQuestion: []})
-  }
-
-  saveConferenceQuestion(conferenceId) {
-    const {conferenceQuestion} = this.state
-    if (conferenceQuestion.length === 0) {
-      return
-    }
-    $.ajax({
-      url: 'conference/Admin/ConferenceQuestion/',
-      data: {conferenceQuestion, conferenceId},
-      dataType: 'json',
-      type: 'post',
-      success: () => {},
-      error: () => {
-        this.setMessage('Could not save extra information data.')
-      },
-    })
   }
 
   title() {
