@@ -81,6 +81,7 @@ class Visitor extends Listing {
           width: '10%',
         },
       },
+      {column: 'id', label: 'ID'},
       {
         column: 'activated',
         label: 'Activated',
@@ -126,7 +127,7 @@ class Visitor extends Listing {
     return null
   }
 
-  loadResource(key, callback = null) {
+  loadResource(key) {
     super.loadResource(key, () => {
       const {resource} = this.state
       resource.password = ''
