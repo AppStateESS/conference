@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import StateDropdown from '@essappstate/react-state-dropdown'
 
 const Visitor = ({visitor, update, errors, check, save}) => {
-  const errorMessage = value => {
+  const errorMessage = (value) => {
     if (errors[value]) {
       if (value === 'phone') {
         return (
@@ -20,7 +20,13 @@ const Visitor = ({visitor, update, errors, check, save}) => {
     }
   }
 
-  const updatePhone = e => {
+  const updateAltPhone = (e) => {
+    let value = e.target.value
+    value = value.replace(/[^\.\-\d]/, '')
+    update('altPhone', value)
+  }
+
+  const updatePhone = (e) => {
     let value = e.target.value
     value = value.replace(/[^\.\-\d]/, '')
     update('phone', value)
@@ -134,6 +140,19 @@ const Visitor = ({visitor, update, errors, check, save}) => {
           />
           <div>{errorMessage('phone')}</div>
         </div>
+        <div className="col-sm-6">
+          <label>Alternate phone number</label>
+          <input
+            type="text"
+            name="altPhone"
+            placeholder="Office phone, mobile, etc."
+            className="form-control"
+            onChange={updateAltPhone}
+            onBlur={() => check('altPhone')}
+            value={visitor.altPhone}
+          />
+          <div>{errorMessage('phone')}</div>
+        </div>
       </div>
       <div className="mt-3 text-center">
         <button className="btn btn-primary" onClick={save}>
@@ -149,7 +168,7 @@ Visitor.propTypes = {
   save: PropTypes.func,
   update: PropTypes.func,
   errors: PropTypes.object,
-  check: PropTypes.func
+  check: PropTypes.func,
 }
 
 export default Visitor
