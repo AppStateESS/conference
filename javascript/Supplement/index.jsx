@@ -20,7 +20,7 @@ export default class Supplement extends Component {
         id: 0,
         newGuests: 0,
         newMeals: 0,
-        newVeggie: 0
+        newVeggie: 0,
       },
       totalGuests: 0,
       totalMeals: 0,
@@ -29,15 +29,19 @@ export default class Supplement extends Component {
       totalMealCost: 0,
       guests: [],
       errorScreen: false,
-      guestScreen: false
+      guestScreen: false,
     }
     this.defaultGuest = {
-      id: '0',
-      email: '',
       firstName: '',
       lastName: '',
-      registrationId: '0',
-      supplementId: '0'
+      email: '',
+      relationship: 'Other',
+      employer: '',
+      position: '',
+      hometown: '',
+      id: 0,
+      registrationId: 0,
+      supplementId: 0,
     }
     this.increaseMeals = this.increaseMeals.bind(this)
     this.decreaseMeals = this.decreaseMeals.bind(this)
@@ -57,10 +61,16 @@ export default class Supplement extends Component {
     this.load()
   }
 
-  updateGuest(count, property, value) {
+  updateGuest(count, property, event) {
+    let value
+    if (typeof event === 'object') {
+      value = event.target.value
+    } else {
+      value = event
+    }
     const {guests} = this.state
     const guest = guests[count]
-    guest[property] = value.target.value
+    guest[property] = value
     guest.complete =
       guest.firstName.length > 0 &&
       guest.lastName.length > 0 &&
@@ -83,7 +93,7 @@ export default class Supplement extends Component {
         },
         error: () => {
           this.setState({errorScreen: true})
-        }
+        },
       })
     } else {
       window.location.href =
@@ -97,7 +107,7 @@ export default class Supplement extends Component {
       data: {registrationId: this.props.registrationId},
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         const {registration, session, supplement, guests} = data
         const totalGuests =
           parseInt(supplement.newGuests) + parseInt(registration.guestCount)
@@ -124,12 +134,12 @@ export default class Supplement extends Component {
           totalMeals,
           totalVeggie,
           totalMealCost,
-          totalGuestCost
+          totalGuestCost,
         })
       },
       error: () => {
         this.setState({errorScreen: true})
-      }
+      },
     })
   }
 
@@ -148,17 +158,17 @@ export default class Supplement extends Component {
         newGuests: supplement.newGuests,
         newMeals: supplement.newMeals,
         newVeggie: supplement.newVeggie,
-        guests
+        guests,
       },
       dataType: 'json',
       type,
-      success: data => {
+      success: (data) => {
         window.location.href =
           'conference/Visitor/Supplement/' + data.id + '/complete'
       },
       error: () => {
         alert('Server error prevented registration update.')
-      }
+      },
     })
   }
 
@@ -177,13 +187,8 @@ export default class Supplement extends Component {
 
   decreaseMeals() {
     if (this.state.supplement.newMeals > 0) {
-      let {
-        supplement,
-        session,
-        totalMeals,
-        totalMealCost,
-        totalVeggie
-      } = this.state
+      let {supplement, session, totalMeals, totalMealCost, totalVeggie} =
+        this.state
       const {mealCost} = session
       supplement.newMeals--
       if (supplement.newVeggie > supplement.newMeals) {
@@ -198,7 +203,7 @@ export default class Supplement extends Component {
         supplement,
         totalMeals,
         totalMealCost,
-        totalVeggie
+        totalVeggie,
       })
     }
   }
@@ -331,7 +336,7 @@ export default class Supplement extends Component {
     $.ajax({
       url: `conference/Visitor/Registration/${registration.id}/changeSession`,
       data: {
-        sessionId: sessionId
+        sessionId: sessionId,
       },
       dataType: 'json',
       type: 'patch',
@@ -340,7 +345,7 @@ export default class Supplement extends Component {
       },
       error: () => {
         this.setState({errorScreen: true})
-      }
+      },
     })
   }
 
@@ -390,7 +395,7 @@ export default class Supplement extends Component {
       totalMealCost,
       totalGuests,
       totalMeals,
-      totalVeggie
+      totalVeggie,
     } = this.state
 
     const mealMessage = () => {
@@ -520,7 +525,7 @@ export default class Supplement extends Component {
 }
 
 Supplement.propTypes = {
-  registrationId: PropTypes.number
+  registrationId: PropTypes.number,
 }
 
 ReactDOM.render(
