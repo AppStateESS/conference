@@ -17,6 +17,7 @@ export default class Signup extends Component {
       parentEmail: '',
     }
     this.setStatus = this.setStatus.bind(this)
+    this.setError = this.setError.bind(this)
     this.setParentEmail = this.setParentEmail.bind(this)
   }
 
@@ -24,6 +25,10 @@ export default class Signup extends Component {
     this.setState({
       toggleShow: !this.state.toggleShow,
     })
+  }
+
+  setError(error) {
+    this.setState({error})
   }
 
   setParentEmail(parentEmail) {
@@ -35,7 +40,7 @@ export default class Signup extends Component {
     this.setState({status})
   }
 
-  success() {
+  success(parentEmail) {
     return (
       <div>
         <h4>Almost done!</h4>
@@ -46,7 +51,12 @@ export default class Signup extends Component {
             <br /> click the authorization link we sent you.
           </strong>
         </div>
-        <p>Once you have verified your account, you can log in.</p>
+        <p>
+          Once you have verified your account,{' '}
+          <a href={`./conference/User/Visitor/login?email=${parentEmail}`}>
+            you can log in.
+          </a>
+        </p>
       </div>
     )
   }
@@ -54,7 +64,7 @@ export default class Signup extends Component {
   error() {
     return (
       <div>
-        <p>Error: {this.state.error}</p>
+        <p className="alert alert-danger">Error: {this.state.error}</p>
         <p>
           <a href="./conference/User/Visitor/signup">Go back to signup</a>
         </p>
@@ -63,17 +73,24 @@ export default class Signup extends Component {
   }
 
   getStatusRender() {
+    console.log(
+      'this.state.status:',
+      this.state.status,
+      `[${typeof this.state.status}]`
+    )
     switch (this.state.status) {
       case 'form':
         return (
           <Form
             setStatus={this.setStatus}
             parentEmail={this.state.parentEmail}
+            setParentEmail={this.setParentEmail}
+            setError={this.setError}
           />
         )
 
       case 'success':
-        return this.success()
+        return this.success(this.state.parentEmail)
 
       case 'student':
         return (
