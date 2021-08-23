@@ -1,12 +1,16 @@
-export const relationships = [
+const relationships = [
+  'Parent',
   'Mother',
   'Father',
-  'Parent',
   'Grandfather',
   'Grandmother',
   'Grandparent',
-  'Inlaw',
-  'Step-parent',
+  'In-law',
+  'Stepparent',
   'Guardian',
-  'Other'
+  'Sibling',
+  'Friend',
+  'Other',
 ]
+
+export {relationships}
