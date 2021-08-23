@@ -173,7 +173,7 @@ class Visitor extends SubController
                 Server::forward('conference/User/Visitor/passwordFailed');
             }
         } catch (\Exception $e) {
-            \phpws2\Error::log($e->getMessage());
+            \phpws2\Error::log($e);
             Server::forward('conference/User/Visitor/passwordFailed');
         }
     }
