@@ -4,30 +4,34 @@ import PropTypes from 'prop-types'
 
 /* global $ */
 
-const SessionChange = props => {
+const SessionChange = (props) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
   const [sessionList, setSessionList] = useState([])
   const [changeSessionId, setChangeSession] = useState(0)
 
   useEffect(() => {
+    let mounted = true
     $.ajax({
       url: 'conference/Visitor/Session/change',
       data: {
-        registrationId: props.registrationId
+        registrationId: props.registrationId,
       },
       dataType: 'json',
       type: 'get',
-      success: data => {
-        if (data.length) {
-          setSessionList(data)
+      success: (data) => {
+        if (mounted) {
+          if (data.length) {
+            setSessionList(data)
+          }
+          setLoading(false)
         }
-        setLoading(false)
       },
       error: () => {
         setError(true)
-      }
+      },
     })
+    return () => (mounted = false)
   }, [])
 
   if (loading) {
@@ -72,7 +76,7 @@ const SessionChange = props => {
           <div className="col-9">
             <select
               className="form-control"
-              onChange={e => setChangeSession(e.target.value)}
+              onChange={(e) => setChangeSession(e.target.value)}
               value={changeSessionId}>
               <option disabled defaultChecked value={0}>
                 Prefer to change your session? Pick a different date below.
@@ -102,7 +106,7 @@ const SessionChange = props => {
 SessionChange.propTypes = {
   registrationId: PropTypes.number,
   completed: PropTypes.oneOfType([PropTypes.bool, PropTypes.number]),
-  changeSession: PropTypes.func
+  changeSession: PropTypes.func,
 }
 
 export default SessionChange
