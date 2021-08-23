@@ -181,13 +181,9 @@ class ReportView extends AbstractView
             throw new \Exception('No registrations found for session #' . $session->id);
         }
 
-        $answers = $factory->getVisitorInfo($session->conferenceId, $registrations);
         $csv = array();
 
         $csvRow[0] = '"created","updated", "cancelled", "cancel date","cancelled by","visitor", "email", "guest count","extra meals","vegetarian","total cost","paid", "discount", "completed", "refund amount", "arrived", "arrival time"';
-        if (!empty($answers)) {
-            $csvRow[0] .= ', "' . implode('", "', array_keys(current($answers))) . '"';
-        }
 
         foreach ($registrations as $reg) {
             $sub = [];
@@ -208,11 +204,6 @@ class ReportView extends AbstractView
             $sub[] = '$' . number_format($reg['refundAmount'], 2, '.', ',');
             $sub[] = $reg['arrived'] ? 'yes' : 'no';
             $sub[] = $reg['arrivalTime'] ? strftime('%c', $reg['arrivalTime']) : '';
-            if (!empty($answers)) {
-                foreach ($answers[$reg['id']] as $a) {
-                    $sub[] = $a;
-                }
-            }
             $csvRow[] = '"' . implode('","', $sub) . '"';
         }
         $content = implode("\n", $csvRow);
