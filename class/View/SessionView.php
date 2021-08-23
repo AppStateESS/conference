@@ -66,7 +66,7 @@ class SessionView extends AbstractView
         return $template->get();
     }
 
-    public function signup(int $sessionId, int $registrationId, int $studentId)
+    public function signup(int $sessionId, int $registrationId, int $studentId, bool $newRegistration = false)
     {
         $now = time();
         $studentFactory = new StudentFactory;
@@ -89,6 +89,7 @@ class SessionView extends AbstractView
                             $session->signupEnd);
         } else {
             $vars['session'] = $session->getStringVars();
+            $vars['newRegistration'] = $newRegistration;
             $vars['studentId'] = $student->id;
             $vars['onsite'] = \conference\Factory\LockedFactory::isLocked();
             $vars['registrationId'] = $registrationId;
