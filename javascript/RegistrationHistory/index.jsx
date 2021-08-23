@@ -26,6 +26,8 @@ export default class RegistrationHistory extends React.Component {
     }
     this.changeSession = this.changeSession.bind(this)
     this.updateSession = this.updateSession.bind(this)
+    this.cancelOrRefund = this.cancelOrRefund.bind(this)
+    this.cancel = this.cancel.bind(this)
   }
   componentDidMount() {
     this.load()
@@ -110,6 +112,49 @@ export default class RegistrationHistory extends React.Component {
     })
   }
 
+  cancel(key, e) {
+    e.preventDefault()
+    const registration = this.state.listing[key]
+    if (
+      prompt(
+        'You sure you want to cancel this registration? If so type CANCEL below.'
+      ) === 'CANCEL'
+    ) {
+      $.ajax({
+        url: `conference/Admin/Registration/${registration.id}/cancel`,
+        dataType: 'json',
+        type: 'patch',
+        success: () => {
+          this.load()
+        },
+        error: () => {},
+      })
+    }
+  }
+
+  cancelOrRefund(registration, key) {
+    if (registration.completed && registration.totalCost > 0) {
+      return (
+        <a
+          href={`conference/Admin/Refund/?registrationId=${registration.id}`}
+          className="dropdown-item">
+          <i className="fas fa-cash-register" />
+          &nbsp;Refund
+        </a>
+      )
+    } else {
+      return (
+        <a
+          href="#"
+          className="dropdown-item pointer"
+          onClick={this.cancel.bind(this, key)}>
+          <i className="fas fa-ban text-danger" />
+          &nbsp;Cancel
+        </a>
+      )
+    }
+  }
+
   getListing() {
     let content = this.state.listing.map((value, key) => {
       return (
@@ -167,6 +212,7 @@ export default class RegistrationHistory extends React.Component {
                   <i className="fas fa-clipboard-list"></i>
                   &nbsp;Log
                 </a>
+                {this.cancelOrRefund(value, key)}
               </div>
             </div>
           </td>
