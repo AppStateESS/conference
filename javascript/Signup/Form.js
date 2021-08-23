@@ -5,7 +5,7 @@ import {getPasswordMessage} from '../Shared/Password'
 
 /* global $ */
 
-const Form = ({setStatus}) => {
+const Form = ({setStatus, setParentEmail, setError}) => {
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState(false)
   const [password, setPassword] = useState('')
@@ -43,16 +43,10 @@ const Form = ({setStatus}) => {
       )
     } else if (duplicate) {
       return (
-        <div className="d-block text-center text-danger">
-          This email address is already in use. You can
-          <br />
-          <a href="./conference/User/Visitor/login" className="text-primary">
-            login
-          </a>{' '}
-          or{' '}
-          <a
-            href="./conference/User/Visitor/forgotPassword"
-            className="text-primary">
+        <div className="d-block alert alert-danger text-center">
+          This email address is already in use. You may either{' '}
+          <a href="./conference/User/Visitor/login">login</a> or{' '}
+          <a href="./conference/User/Visitor/forgotPassword">
             reset your password
           </a>
         </div>
@@ -80,6 +74,7 @@ const Form = ({setStatus}) => {
       type: 'post',
       success: (data) => {
         if (data.success) {
+          setParentEmail(email)
           setStatus('success')
         } else {
           setStatus('error')
@@ -123,8 +118,9 @@ const Form = ({setStatus}) => {
           setDuplicate(true)
         }
       },
-      error: () => {
+      error: (e) => {
         setStatus('error')
+        setError(e.responseJSON.exception.message)
       },
     })
   }
@@ -175,9 +171,9 @@ const Form = ({setStatus}) => {
         />
         <div className="text-center">
           <button
-            disabled={!allowSave || emailError}
             className="btn btn-success mt-3"
-            onClick={createAccount}>
+            onClick={createAccount}
+            disabled={!allowSave || emailError}>
             Create my account
           </button>
         </div>
@@ -188,6 +184,8 @@ const Form = ({setStatus}) => {
 
 Form.propTypes = {
   setStatus: PropTypes.func,
+  setParentEmail: PropTypes.func,
+  setError: PropTypes.func,
 }
 
 export default Form
