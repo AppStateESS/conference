@@ -1,37 +1,39 @@
 <div class="row">
   <div class="col-md-8 mx-auto">
-<?php if (!empty($registrations)):?>
-<div class="card mb-4">
-  <div class="card-header bg-primary">
-    <h3 class="m-0 text-white">Previous registrations</h3>
-  </div>
-  <div class="card-body">
-    <table class="table table-striped mb-0">
-      <tbody>
-        <?php foreach($registrations as $reg):?>
-        <tr>
-          <td><?=$reg['sessionTitle']?></td>
-          <td><?=strftime('%B %e, %Y', $reg['eventDate'])?></td>
-          <td>
-            <?php if ($reg['completed']):?>
-            <a href="conference/Visitor/Registration/<?=$reg['id']?>" class="btn btn-primary">View completed</a>
-            <?php else:?>
-            <a class="btn btn-info" href="conference/Visitor/Registration/<?=$reg['id']?>">Unpaid</a>
-            <?php endif;?>
-          </td>
-        </tr>
-        <?php endforeach;?>
-      </tbody>
-    </table>
-    <?php if ($supplement):?>
-    <div class="alert alert-success">
-      You have an incomplete supplement. Would you <a href="./conference/Visitor/Supplement/?registrationId=<?=$supplement['registrationId']?>">complete this transaction?</a>
+    <?php if (!empty($registrations)):?>
+    <div class="card mb-4">
+      <div class="card-header bg-primary">
+        <h3 class="m-0 text-white">Previous registrations</h3>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped mb-0">
+          <tbody>
+            <?php foreach($registrations as $reg):?>
+            <tr>
+              <td><?=$reg['sessionTitle']?></td>
+              <td><?=strftime('%B %e, %Y', $reg['eventDate'])?></td>
+              <td>
+                <?php if ($reg['completed']):?>
+                <a href="conference/Visitor/Registration/<?=$reg['id']?>" class="btn btn-primary">View completed</a>
+                <?php else:?>
+                <a class="btn btn-info" href="conference/Visitor/Session/<?=$reg['sessionId']?>/signup?studentId=<?=$reg['studentId']?>">Incomplete</a>
+                <?php endif;?>
+              </td>
+            </tr>
+            <?php endforeach;?>
+          </tbody>
+        </table>
+        <?php if ($supplement):?>
+        <div class="alert alert-success">
+          You have an incomplete supplement. Would you <a
+            href="./conference/Visitor/Supplement/?registrationId=<?=$supplement['registrationId']?>">complete this
+            transaction?</a>
+        </div>
+        <?php endif;?>
+      </div>
     </div>
-    <?php endif;?>
-  </div>
-</div>
-<?php endif;// empty registrations?>
-<div class="mb-4"><?=$form?></div>
+    <?php endif;// empty registrations?>
+    <div class="mb-4"><?=$form?></div>
     <h2><?=$title?></h2>
     <div class="mb-3"><?=$description?></div>
     <p><strong>Location:</strong> <a href="conference/User/Location/<?=$location['id']?>"><?=$location['title']?></a>
