@@ -206,27 +206,6 @@ class RegistrationFactory extends BaseFactory
         }
     }
 
-    public function getVisitorInfo(int $conferenceId, array $registrations)
-    {
-        $questionFactory = new ConferenceQuestionFactory;
-        $questions = $questionFactory->listing(['conferenceId' => $conferenceId]);
-        if (empty($questions)) {
-            return;
-        }
-        $visitorInfoFactory = new VisitorInfoFactory;
-        $answers = $visitorInfoFactory->listing(['conferenceId' => $conferenceId]);
-        $indexedAnswers = $visitorInfoFactory->indexByRegistration($answers);
-        $regAnswers = [];
-        foreach ($registrations as $reg) {
-            foreach ($questions as $q) {
-                $qInx = 'q' . $q['sort'] . '-' . addslashes(substr($q['question'],
-                                        0, 20));
-                $regAnswers[$reg['id']][$qInx] = $indexedAnswers[$reg['id']][$q['id']] ?? '';
-            }
-        }
-        return $regAnswers;
-    }
-
     /**
      * Completes a registration if it is determined to be in a free session.
      *
