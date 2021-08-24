@@ -104,6 +104,7 @@ class Conference extends Listing {
           width: '10%',
         },
       },
+      {column: 'id', label: 'ID'},
       {
         column: 'title',
         label: 'Title',
@@ -154,7 +155,6 @@ class Conference extends Listing {
       error: () => {},
     })
   }
-
 
   deletePrompt(key, e) {
     e.preventDefault()

@@ -216,8 +216,8 @@ export default class RegistrationHistory extends React.Component {
               </div>
             </div>
           </td>
+          <td>{value.id}</td>
           <td>{value.completed === 1 ? 'Completed' : 'Incomplete'}</td>
-
           <td>
             {dateString(value.eventDate)} &ndash; {value.sessionTitle}
           </td>
@@ -231,6 +231,7 @@ export default class RegistrationHistory extends React.Component {
         <tbody>
           <tr>
             <th>&nbsp;</th>
+            <th>ID</th>
             <th>Status</th>
             <th>Session</th>
             <th>Cost</th>

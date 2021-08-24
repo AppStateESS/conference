@@ -129,7 +129,7 @@ export default class Registration extends Listing {
           return dropdown(key, row.id)
         },
       },
-      {column: 'id', label: 'Id'},
+      {column: 'id', label: 'ID'},
       {
         column: 'lastName',
         callback: (row) => {

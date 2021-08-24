@@ -131,6 +131,7 @@ export default class Session extends Listing {
           width: '10%',
         },
       },
+      {column: 'id', label: 'ID'},
       {
         column: 'title',
         label: 'Title',

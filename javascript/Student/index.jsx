@@ -80,6 +80,7 @@ export default class Student extends Listing {
           )
         },
       },
+      {column: 'id', label: 'Key ID'},
       {column: 'bannerId', label: 'Banner ID'},
       {
         column: 'lastName',
