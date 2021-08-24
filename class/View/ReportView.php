@@ -52,6 +52,7 @@ class ReportView extends AbstractView
         $db->joinResources($regTable, $guestTable, $cond2, 'left');
         $regTable->addFieldConditional('completed', 1);
         $regTable->addFieldConditional('cancelled', 0);
+
         return $db->select();
     }
 
@@ -84,7 +85,6 @@ class ReportView extends AbstractView
 
     private function siftRegistrationEmail($result)
     {
-
         if (empty($result)) {
             return 'No registrations found for session #' . $session->id;
         }
@@ -93,26 +93,27 @@ class ReportView extends AbstractView
         $csvRow[0] = '"firstName","lastName","email","is guest"';
         $visitors = array();
         foreach ($result as $row) {
-
-            if (!in_array($row['vemail'], $visitors)) {
+            $vemail = strtolower($row['vemail']);
+            $gemail = strtolower($row['gemail']);
+            if (!in_array($vemail, $visitors)) {
                 $sub = [];
-                $visitors[] = $row['vemail'];
+                $visitors[] = $vemail;
                 $sub[] = $row['vfn'];
                 $sub[] = $row['vln'];
-                $sub[] = $row['vemail'];
+                $sub[] = $vemail;
                 $sub[] = 'no';
-                $csvRow[] = '"' . implode('","', $sub) . '"';
+                $csvRow[$vemail] = '"' . implode('","', $sub) . '"';
             }
-            if (!empty($row['gemail']) && !in_array($row['gemail'], $visitors)) {
+            if (!empty($gemail) && !in_array($gemail, $visitors)) {
                 $sub = [];
                 $sub[] = $row['gfn'];
                 $sub[] = $row['gln'];
-                $sub[] = $row['gemail'];
+                $sub[] = $gemail;
                 $sub[] = 'yes';
-                $csvRow[] = '"' . implode('","', $sub) . '"';
+                $csvRow[$gemail] = '"' . implode('","', $sub) . '"';
             }
         }
-
+        \ksort($csvRow);
         $content = implode("\n", $csvRow);
         return $content;
     }
@@ -176,6 +177,7 @@ class ReportView extends AbstractView
         $factory = new \conference\Factory\RegistrationFactory;
         $options['sessionId'] = $session->id;
         $options['visitorName'] = true;
+
         $registrations = $factory->listing($options);
         if (empty($registrations)) {
             throw new \Exception('No registrations found for session #' . $session->id);
