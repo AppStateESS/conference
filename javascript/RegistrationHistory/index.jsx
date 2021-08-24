@@ -245,7 +245,6 @@ export default class RegistrationHistory extends React.Component {
 
   render() {
     let message
-    const {newSessionId} = this.state
     if (this.state.message !== null) {
       message = (
         <div className="alert alert-danger">
@@ -289,8 +288,10 @@ export default class RegistrationHistory extends React.Component {
     return (
       <div>
         <h2>
-          Registrations for {this.state.visitor.firstName}{' '}
-          {this.state.visitor.lastName}
+          Registrations for{' '}
+          <a href={`mailto:${this.state.visitor.email}`}>
+            {this.state.visitor.firstName} {this.state.visitor.lastName}
+          </a>
         </h2>
         {message}
         <div>{content}</div>
