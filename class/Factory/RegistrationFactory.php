@@ -233,11 +233,13 @@ class RegistrationFactory extends BaseFactory
         $search = preg_replace('/[^\w\s]/', '', $search);
         $firstName = $tbl->getField('firstName');
         $lastName = $tbl->getField('lastName');
+        $email = $tbl->getField('email');
         $cond1 = $db->createConditional($firstName, $search . '%', 'like');
         $cond2 = $db->createConditional($lastName, $search . '%', 'like');
-        $cond3 = $db->createConditional($cond1, $cond2, 'or');
-        return $cond3;
-        //$db->addConditional($cond3);
+        $cond3 = $db->createConditional($email, '%' . $search . '%', 'like');
+        $cond4 = $db->createConditional($cond1, $cond2, 'or');
+        $cond5 = $db->createConditional($cond3, $cond4, 'or');
+        return $cond5;
     }
 
     /**
