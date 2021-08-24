@@ -9,6 +9,9 @@ const relOptions = () => {
   return options
 }
 
+/**
+ * @augments {React.Component<Props>}
+ */
 const RelationshipSelect = ({relation, update}) => {
   return (
     <select
