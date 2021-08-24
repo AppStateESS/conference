@@ -67,6 +67,13 @@ class Registration extends SubController
                         ['sessionId' => $request->pullGetInteger('sessionId')]);
     }
 
+    protected function studentJson(Request $request)
+    {
+        $studentId = $request->pullGetInteger('studentId');
+        $listing = $this->factory->listing(['studentId' => $studentId, 'visitorName' => true]);
+        return ['success' => true, 'listing' => $listing];
+    }
+
     protected function listJson(Request $request)
     {
         $sessionId = $request->pullGetInteger('sessionId');

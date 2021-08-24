@@ -77,6 +77,10 @@ class RegistrationFactory extends BaseFactory
             $tbl->addFieldConditional('sessionId', $options['sessionId']);
         }
 
+        if (!empty($options['studentId'])) {
+            $tbl->addFieldConditional('studentId', $options['studentId']);
+        }
+
         if (!empty($options['conferenceId'])) {
             $tbl->addFieldConditional('conferenceId', $options['conferenceId']);
         }

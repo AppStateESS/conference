@@ -10,7 +10,12 @@ import dayjs from 'dayjs'
 import Create from './Create'
 import {NavbarButton} from '@essappstate/react-navbar'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faFileImport, faLock, faUnlock} from '@fortawesome/free-solid-svg-icons'
+import {
+  faFileImport,
+  faLock,
+  faUnlock,
+  faSearch,
+} from '@fortawesome/free-solid-svg-icons'
 
 /* global $ */
 
@@ -56,11 +61,34 @@ export default class Student extends Listing {
     this.changeStartDate = this.changeStartDate.bind(this)
     this.discountOverlay = this.discountOverlay.bind(this)
     this.startDateOverlay = this.startDateOverlay.bind(this)
+    this.state.studentRegistrations = <div>Loading...</div>
 
     this.columns = [
+      {
+        column: 'id',
+        label: 'Reg.',
+        callback: (row, key) => {
+          return (
+            <button
+              className="btn btn-sm btn-outline-dark"
+              onClick={() => {
+                this.showRegistrations(key)
+              }}
+              type="button">
+              <FontAwesomeIcon icon={faSearch} />
+            </button>
+          )
+        },
+      },
       {column: 'bannerId', label: 'Banner ID'},
-      {column: 'firstName', label: 'First'},
-      {column: 'lastName', label: 'Last', sort: true},
+      {
+        column: 'lastName',
+        label: 'Last Name, First',
+        sort: true,
+        callback: (e) => {
+          return `${e.lastName}, ${e.firstName}`
+        },
+      },
       {column: 'username', label: 'Username', sort: true},
       {
         column: 'protected',
@@ -134,6 +162,42 @@ export default class Student extends Listing {
   finishOverlay() {
     this.overlayOff()
     this.load()
+  }
+
+  loadRegistrations(studentId) {
+    $.ajax({
+      url: `conference/Admin/Registration/student/?studentId=${studentId}`,
+      data: {},
+      dataType: 'json',
+      type: 'get',
+      success: (response) => {
+        let content
+        if (response.listing.length === 0) {
+          content = (
+            <p>This student does not have any associated registrations.</p>
+          )
+        } else {
+          content = response.listing.map((value) => {
+            return (
+              <li key={`registration-${value.id}`}>
+                <a
+                  href={`./conference/Admin/Payment/?registrationId=${value.id}`}>
+                  {value.firstName} {value.lastName} ({value.email})
+                </a>
+              </li>
+            )
+          })
+          content = <ul>{content}</ul>
+        }
+        this.setState({studentRegistrations: content})
+      },
+      error: () => {},
+    })
+  }
+
+  showRegistrations(key) {
+    this.loadRegistrations(this.state.listing[key].id)
+    this.setState({overlay: true, overlayType: 'showReg'})
   }
 
   changeDiscount(key) {
@@ -241,6 +305,18 @@ export default class Student extends Listing {
     }
   }
 
+  showReg() {
+    return {
+      content: <div>{this.state.studentRegistrations}</div>,
+      width: '60%',
+      title: 'View registrations',
+      close: () => {
+        this.setState({studentRegistrations: <div>Loading...</div>})
+        this.overlayOff()
+      },
+    }
+  }
+
   revealOverlay() {
     return {
       width: '500px',
@@ -282,6 +358,9 @@ export default class Student extends Listing {
 
       case 'reveal':
         return this.revealOverlay()
+
+      case 'showReg':
+        return this.showReg()
 
       case 'discount':
         return this.discountOverlay()
