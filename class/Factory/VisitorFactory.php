@@ -285,7 +285,10 @@ class VisitorFactory extends BaseFactory
             $offset = $options['offset'] ?? 0;
             $db->setLimit($limitPlus, $offset * $options['limit']);
         }
-        $columns = ['id', 'email', 'activated', 'firstName', 'lastName', 'address1', 'address2', 'city', 'state', 'zip', 'phone'];
+        $columns = ['id', 'email', 'activated', 'firstName', 'lastName',
+            'address1', 'address2', 'city', 'state', 'zip', 'phone',
+            'altPhone', 'relationship', 'employer', 'position',
+            'alum', 'gradYear', 'hometown'];
         foreach ($columns as $c) {
             $tbl->addField($c);
         }
@@ -297,7 +300,24 @@ class VisitorFactory extends BaseFactory
                 array_pop($listing);
             }
         }
+
+        /**
+         * This prevents null values
+         */
+        $noNull = function ($value) {
+
+            if (is_null($value)) {
+                return '';
+            } else {
+                return $value;
+            }
+        };
+
+        foreach ($listing as $key => $value) {
+            $listing[$key] = array_map($noNull, $value);
+        }
         $result['listing'] = $listing;
+
         return $result;
     }
 
