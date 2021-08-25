@@ -48,7 +48,7 @@ class Conference extends SubController
     protected function listJson(Request $request)
     {
         $options = $this->factory->listingOptions($request);
-        $options['includeDeleted'] = $request->pullGetBoolean('includeDeleted', false);
+        $options['includeDeleted'] = $request->pullGetBoolean('includeDeleted', true);
         return ['listing' => $this->factory->listing($options)];
     }
 
