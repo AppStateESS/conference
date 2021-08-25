@@ -43,7 +43,7 @@ export default class GuestForm extends Component {
     error[errorName] = errorFound
     if (errorName === 'email' && !error.email) {
       error.badEmail =
-        value.match(/^[\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,32}$/) === null
+        value.match(/^[\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,32}$/i) === null
       if (error.badEmail) {
         errorFound = true
       }
