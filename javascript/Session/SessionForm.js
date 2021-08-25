@@ -92,14 +92,8 @@ class SessionForm extends Component {
       startTime: null,
       signupDate: null,
     }
-    const {
-      title,
-      eventDate,
-      startTime,
-      endTime,
-      signupStart,
-      signupEnd,
-    } = this.props.resource
+    const {title, eventDate, startTime, endTime, signupStart, signupEnd} =
+      this.props.resource
     if (title.length === 0) {
       errors.title = 'Title may not be empty'
       errorFound = true
@@ -476,7 +470,7 @@ class SessionForm extends Component {
             </div>
             <div className="row">
               <div className="col-sm-6">
-                <label className="mt-3">Attendance cap</label>
+                <label className="mt-3">Guest attendance cap</label>
                 <InputField
                   name="attendanceCap"
                   size="4"
@@ -498,7 +492,7 @@ class SessionForm extends Component {
             </div>
             <div className="row">
               <div className="col-12">
-                <label>Notes</label>
+                <label>Registration notes (shown when completed)</label>
                 <textarea
                   name="notes"
                   className="form-control"
