@@ -60,4 +60,11 @@ abstract class AbstractResource extends \phpws2\Resource
         return strip_tags($text, $allowed);
     }
 
+    public function stripBadChars(array $varArray)
+    {
+        foreach ($varArray as $valName) {
+            $this->$valName->set(\preg_replace('/[!@#$%^&*()_=+\[\]\\\|<>,?;:"\'{}]/', '', $this->$valName->get()));
+        }
+    }
+
 }

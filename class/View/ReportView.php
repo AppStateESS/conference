@@ -52,7 +52,6 @@ class ReportView extends AbstractView
         $db->joinResources($regTable, $guestTable, $cond2, 'left');
         $regTable->addFieldConditional('completed', 1);
         $regTable->addFieldConditional('cancelled', 0);
-
         return $db->select();
     }
 
@@ -93,6 +92,7 @@ class ReportView extends AbstractView
         $csvRow[0] = '"firstName","lastName","email","is guest"';
         $visitors = array();
         foreach ($result as $row) {
+            $row = str_replace('"', '', $row);
             $vemail = strtolower($row['vemail']);
             $gemail = strtolower($row['gemail']);
             if (!in_array($vemail, $visitors)) {
@@ -188,6 +188,7 @@ class ReportView extends AbstractView
         $csvRow[0] = '"created","updated", "cancelled", "cancel date","cancelled by","visitor", "email", "guest count","extra meals","vegetarian","total cost","paid", "discount", "completed", "refund amount", "arrived", "arrival time"';
 
         foreach ($registrations as $reg) {
+            $reg = str_replace('"', '', $reg);
             $sub = [];
             $sub[] = strftime('%c', $reg['createDate']);
             $sub[] = strftime('%c', $reg['updateDate']);
@@ -225,6 +226,7 @@ class ReportView extends AbstractView
         $csv = array();
         $csvRow[] = '"payerName","amount","paymentType","cardType","receipt", "datePaid", "checkNumber"';
         foreach ($listing as $payment) {
+            $payment = str_replace('"', '', $payment);
             $sub = [];
             $sub[] = $payment['payerName'];
             $sub[] = '$' . number_format($payment['amount'], 2, '.', ',');

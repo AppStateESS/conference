@@ -116,7 +116,7 @@ class GuestFactory extends BaseFactory
                     $guestResource->alum = $guestData['alum'] ?? false;
                     $guestResource->gradYear = $guestData['gradYear'] ?? '0';
                     $guestResource->hometown = $guestData['hometown'] ?? '';
-
+                    $guestResource->stripBadChars(['firstName', 'lastName']);
                     $this->save($guestResource);
                 }
             }

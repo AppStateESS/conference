@@ -83,6 +83,7 @@ class VisitorFactory extends BaseFactory
         $password = $request->pullPostString('password');
         $visitor->hashPassword($password);
         $visitor->stamp(12);
+        $visitor->stripBadChars(['firstName', 'lastName']);
         return $visitor;
     }
 
@@ -91,6 +92,7 @@ class VisitorFactory extends BaseFactory
         $visitor = $this->load($id);
         $visitor->loadPutByType($request,
                 ['password', 'activateDeadline', 'hash', 'activated']);
+        $visitor->stripBadChars(['firstName', 'lastName']);
         return $visitor;
     }
 
