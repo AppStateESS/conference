@@ -109,8 +109,8 @@ class GuestFactory extends BaseFactory
                     $guestResource->supplementId = $supplementId;
                     $guestResource->registrationId = $registrationId;
                     $guestResource->visitorId = $visitorId;
+                    $guestResource->phone = $guestData['phone'];
                     $guestResource->relationship = $guestData['relationship'] ?? 'Other';
-
                     $guestResource->employer = $guestData['employer'] ?? '';
                     $guestResource->position = $guestData['position'] ?? '';
                     $guestResource->alum = $guestData['alum'] ?? false;
