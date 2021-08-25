@@ -26,6 +26,7 @@ class GuestResource extends AbstractResource
      * @var \phpws2\Variable\IntegerVar
      */
     protected $visitorId;
+    protected $phone;
     protected $relationship;
     protected $employer;
     protected $position;
@@ -56,8 +57,10 @@ class GuestResource extends AbstractResource
         $this->position = new \phpws2\Variable\TextOnly(null, 'position');
         $this->position->allowNull(true);
         $this->alum = new \phpws2\Variable\BooleanVar(false, 'alum');
-        $this->gradYear = new \phpws2\Variable\NumberString(null, 'gradYear');
+        $this->gradYear = new \phpws2\Variable\NumberString('0', 'gradYear');
         $this->gradYear->allowNull(true);
+        $this->phone = new \phpws2\Variable\PhoneNumber(null, 'phone');
+        $this->phone->allowNull(true);
         $this->hometown = new \phpws2\Variable\TextOnly(null, 'hometown');
         $this->hometown->allowNull(true);
     }
