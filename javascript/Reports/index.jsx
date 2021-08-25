@@ -2,6 +2,7 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import dayjs from 'dayjs'
+import BigCheckBox from '@essappstate/canopy-react-bigcheckbox'
 
 /* global $ */
 
@@ -16,6 +17,7 @@ export default class Reports extends Component {
       currentConference: {title: 'n/a'},
       currentSession: {title: 'n/a'},
       registrationCount: 0,
+      showDeletedConferences: false,
     }
     this.setConference = this.setConference.bind(this)
     this.setSession = this.setSession.bind(this)
@@ -25,13 +27,22 @@ export default class Reports extends Component {
     this.loadConferences()
   }
 
+  resetAll() {
+    this.setState({conferences: null, sessions: null})
+    this.resetConference()
+    this.resetSession()
+    this.loadConferences()
+  }
+
   loadConferences() {
+    const data = {includeDeleted: this.state.showDeletedConferences}
     $.ajax({
-      url: 'conference/Admin/Conference',
+      url: 'conference/Admin/Conference/',
+      data,
       dataType: 'json',
       type: 'get',
-      success: (data) => {
-        this.setState({conferences: data.listing})
+      success: (response) => {
+        this.setState({conferences: response.listing})
       },
       error: () => {},
     })
@@ -259,10 +270,20 @@ export default class Reports extends Component {
   }
 
   render() {
-    const {currentSession, currentConference, registrationCount} = this.state
+    const {showDeletedConferences} = this.state
     return (
       <div>
         <h2>Reports</h2>
+        <BigCheckBox
+          label="Show deleted conferences"
+          checked={showDeletedConferences}
+          handle={() => {
+            this.setState(
+              {showDeletedConferences: !showDeletedConferences},
+              this.resetAll
+            )
+          }}
+        />
         <div className="mb-5">{this.conferenceList()}</div>
         <div className="mb-5">{this.sessionList()}</div>
       </div>
