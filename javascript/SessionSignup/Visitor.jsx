@@ -151,11 +151,21 @@ const Visitor = ({visitor, update, errors, check, save}) => {
             onBlur={() => check('altPhone')}
             value={visitor.altPhone}
           />
-          <div>{errorMessage('phone')}</div>
+          <div>{errorMessage('altPhone')}</div>
         </div>
       </div>
       <div className="mt-3 text-center">
-        <button className="btn btn-primary" onClick={save}>
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            check('firstName')
+            check('lastName')
+            check('address1')
+            check('city')
+            check('zip')
+            check('phone')
+            save()
+          }}>
           Save my contact information
         </button>
       </div>
