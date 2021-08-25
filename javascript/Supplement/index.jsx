@@ -420,6 +420,15 @@ export default class Supplement extends Component {
         </div>
       )
     }
+
+    let guestAlert
+    if (this.state.registration.guestCount >= session.attendanceCap) {
+      guestAlert = (
+        <div className="alert alert-danger">
+          Sorry, no additional guests are permitted.
+        </div>
+      )
+    }
     return (
       <div>
         <h2>{conference.title}</h2>
@@ -427,12 +436,7 @@ export default class Supplement extends Component {
           {session.title} - {session.eventDateRange}
         </h3>
         {sessionChange}
-        {this.state.registration.guestCount >= session.attendanceCap ? (
-          <div className="alert alert-danger">
-            Sorry, no additional guests are permitted.
-          </div>
-        ) : null}
-        {this.setState()}
+        {guestAlert}
         <table className="table table-striped">
           <tbody>
             <tr>
