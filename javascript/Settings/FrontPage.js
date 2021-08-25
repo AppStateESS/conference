@@ -15,9 +15,13 @@ const FrontPage = ({}) => {
       url: 'conference/Admin/Settings/defaultConference',
       dataType: 'json',
       type: 'get',
-      success: data => {
-        setDefaultConference(data.defaultConference)
-      }
+      success: (data) => {
+        if (conferences.length === 0) {
+          setDefaultConference(0)
+        } else {
+          setDefaultConference(data.defaultConference)
+        }
+      },
     })
   }, [])
 
@@ -26,15 +30,15 @@ const FrontPage = ({}) => {
       url: 'conference/Admin/Conference',
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         setConferences(data.listing)
       },
-      error: () => {}
+      error: () => {},
     })
   }, [])
 
   const options = () => {
-    const confArray = conferences.map(value => {
+    const confArray = conferences.map((value) => {
       return (
         <option key={value.id} value={value.id}>
           {value.title}
@@ -42,7 +46,7 @@ const FrontPage = ({}) => {
       )
     })
     confArray.unshift(
-      <option value="0" key="0">
+      <option value="0" key="0" onClick={() => console.log('hi')}>
         Show all conferences on front page.
       </option>
     )
@@ -57,7 +61,7 @@ const FrontPage = ({}) => {
       type: 'post',
       success: () => {
         setSaved(true)
-      }
+      },
     })
   }
 
@@ -88,7 +92,7 @@ const FrontPage = ({}) => {
       <select
         value={defaultConference}
         className="form-control"
-        onChange={e => setDefaultConference(e.target.value)}>
+        onChange={(e) => setDefaultConference(e.target.value)}>
         {options()}
       </select>
       {saveButton()}
