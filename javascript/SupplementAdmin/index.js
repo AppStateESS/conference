@@ -4,13 +4,14 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import GuestList from './GuestList'
 
-/* global registrationId, mealCost, guestCost, mealService, registerCost */
+/* global registrationId, mealCost, guestCost, mealService, registerCost, attendanceCap */
 
 const SupplementAdmin = ({
   registrationId,
   mealCost,
   guestCost,
   mealService,
+  attendanceCap,
 }) => {
   const defaultGuest = {
     email: '',
@@ -64,7 +65,7 @@ const SupplementAdmin = ({
   }
 
   const disableGuestPlus = () => {
-    return newGuests > 10
+    return newGuests >= attendanceCap
   }
 
   const updateGuests = (key, varname, value) => {
@@ -230,6 +231,8 @@ SupplementAdmin.propTypes = {
   registrationId: PropTypes.number,
   mealCost: PropTypes.number,
   guestCost: PropTypes.number,
+  attendanceCap: PropTypes.number,
+  mealService: PropTypes.number,
 }
 
 export default SupplementAdmin
@@ -240,6 +243,7 @@ ReactDOM.render(
     mealCost={mealCost}
     guestCost={guestCost}
     mealService={mealService}
+    attendanceCap={attendanceCap}
   />,
   document.getElementById('SupplementAdmin')
 )

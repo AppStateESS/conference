@@ -71,6 +71,7 @@ class SupplementView extends AbstractView
         $guestCost = $vars['session']['guestCost'];
         $vars['script'] = $this->scriptView('SupplementAdmin',
                 ['registrationId' => $registrationId,
+                    'attendanceCap' => $session->attendanceCap - $registration->guestCount - 1,
                     'mealCost' => $mealCost,
                     'guestCost' => $guestCost,
                     'registerCost' => $session->registerCost,
