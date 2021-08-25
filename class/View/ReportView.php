@@ -133,6 +133,7 @@ class ReportView extends AbstractView
         $refundTable->addField('username');
 
         $regTable = $db->addTable('conf_registration');
+        $regTable->addField('visitorId');
         $regTable->addField('cancelled');
 
         $visitorTable = $db->addTable('conf_visitor');
@@ -146,7 +147,7 @@ class ReportView extends AbstractView
         $cond2 = $db->createConditional($regTable->getField('visitorId'),
                 $visitorTable->getField('id'));
         $db->joinResources($refundTable, $regTable, $cond, 'left');
-        $db->joinResources($regTable, $visitorTable, $cond, 'left');
+        $db->joinResources($regTable, $visitorTable, $cond2, 'left');
         $db->setGroupBy($refundTable->getField('id'));
         $refunds = $db->select();
         if (empty($refunds)) {
@@ -162,8 +163,8 @@ class ReportView extends AbstractView
             $sub[] = strftime('%c', $reg['dateRefunded']);
             $sub[] = $reg['username'];
             $sub[] = $reg['cancelled'] ? 'Yes' : 'No';
-            $sub[] = $reg['firstName'];
-            $sub[] = $reg['lastName'];
+            $sub[] = $reg['vfn'];
+            $sub[] = $reg['vln'];
             $sub[] = $reg['email'];
 
             $csvRow[] = '"' . implode('","', $sub) . '"';
