@@ -444,7 +444,12 @@ class SessionForm extends Component {
                   <BigCheckbox
                     label="Guest signup allowed"
                     checked={allowGuest}
-                    handle={this.allowGuest}
+                    handle={(e) => {
+                      if (e && attendanceCap == '0') {
+                        update('attendanceCap', 1)
+                      }
+                      this.allowGuest(e)
+                    }}
                   />
                 </div>
                 <div
@@ -476,7 +481,11 @@ class SessionForm extends Component {
                   size="4"
                   maxLength="4"
                   value={attendanceCap}
-                  change={update.bind(null, 'attendanceCap')}
+                  change={(e) => {
+                    if (e.target.value != '0' || !allowGuest) {
+                      update('attendanceCap', e)
+                    }
+                  }}
                 />
               </div>
               <div className="col-sm-6">

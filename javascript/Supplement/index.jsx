@@ -427,6 +427,12 @@ export default class Supplement extends Component {
           {session.title} - {session.eventDateRange}
         </h3>
         {sessionChange}
+        {this.state.registration.guestCount >= session.attendanceCap ? (
+          <div className="alert alert-danger">
+            Sorry, no additional guests are permitted.
+          </div>
+        ) : null}
+        {this.setState()}
         <table className="table table-striped">
           <tbody>
             <tr>

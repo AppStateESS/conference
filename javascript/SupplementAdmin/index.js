@@ -1,5 +1,5 @@
 'use strict'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import GuestList from './GuestList'
@@ -24,6 +24,16 @@ const SupplementAdmin = ({
   const [totalCost, setTotalCost] = useState(0)
   const [error, setError] = useState(null)
   const formRef = React.createRef()
+
+  useEffect(() => {
+    if (attendanceCap <= 0) {
+      setError(
+        <div className="alert alert-danger">
+          Session attendance cap prevents any new guests
+        </div>
+      )
+    }
+  }, [])
 
   const decreaseMeals = () => {
     if (newMeals >= 0) {
@@ -158,7 +168,7 @@ const SupplementAdmin = ({
       </button>
     )
   }
-
+  console.log(attendanceCap)
   return (
     <div>
       {error}
