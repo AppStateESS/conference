@@ -508,8 +508,23 @@ export default class Payment extends Component {
         </tr>
       )
     }
-    const sessionDay = dayjs(session.eventDate * 1000).format('MM-DD-YYYY')
-    const today = dayjs().format('MM-DD-YYYY')
+    // const sessionDay = dayjs(session.eventDate * 1000).format('MM-DD-YYYY')
+    // const today = dayjs().format('MM-DD-YYYY')
+    let guestList = <div>No registered guests</div>
+    if (guests.length > 0) {
+      guestList = (
+        <ul>
+          {guests.map((value) => {
+            return (
+              <li key={`guest-${value.id}`}>
+                {value.firstName} {value.lastName} -{' '}
+                <a href={`mailto:${value.email}`}>{value.email}</a>
+              </li>
+            )
+          })}
+        </ul>
+      )
+    }
 
     return (
       <div>
@@ -542,7 +557,7 @@ export default class Payment extends Component {
         </h4>
         <h4>
           Student: {student.firstName} {student.lastName} - {student.bannerId} -{' '}
-          {student.username}
+          <a href={`mailto:${student.email}`}>{student.username}</a>
         </h4>
         {registration.cancelledBy.length > 0 ? (
           <div className="alert alert-danger">
@@ -550,6 +565,9 @@ export default class Payment extends Component {
             {registration.cancelledBy}
           </div>
         ) : null}
+        <h4>Guests:</h4>
+        {guestList}
+        <hr />
         <table className="table table-striped">
           <tbody>
             <tr>
