@@ -12,11 +12,16 @@ const Guest = ({registrationId}) => {
     id: 0,
     firstName: '',
     lastName: '',
-    email: ''
+    email: '',
+    phone: '',
+    hometown: '',
+    alum: 0,
+    gradYear: 0,
+    employer: '',
+    position: '',
   }
   const [guestList, setGuestList] = useState([])
   const [loading, setloading] = useState(true)
-  const [registration, setRegistration] = useState({})
   const [session, setSession] = useState({})
   const [visitor, setVisitor] = useState({})
   const [showOverlay, setShowOverlay] = useState(false)
@@ -24,7 +29,7 @@ const Guest = ({registrationId}) => {
   const [currentGuest, setCurrentGuest] = useState(emptyGuest)
 
   useEffect(() => {
-    loadRegistration().then(data => {
+    loadRegistration().then((data) => {
       loadSession(data.sessionId)
       loadVisitor(data.visitorId)
       loadGuests()
@@ -49,34 +54,32 @@ const Guest = ({registrationId}) => {
       url: 'conference/Admin/Registration/' + registrationId,
       dataType: 'json',
       type: 'get',
-      success: data => {
-        setRegistration(data)
-      },
-      error: () => {}
+      success: () => {},
+      error: () => {},
     })
   }
 
-  const loadVisitor = visitorId => {
+  const loadVisitor = (visitorId) => {
     return $.ajax({
       url: 'conference/Admin/Visitor/' + visitorId,
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         setVisitor(data)
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
-  const loadSession = sessionId => {
+  const loadSession = (sessionId) => {
     return $.ajax({
       url: 'conference/Admin/Session/' + sessionId,
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         setSession(data)
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -86,11 +89,11 @@ const Guest = ({registrationId}) => {
       data: {registrationId},
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         setGuestList(data)
         setloading(false)
       },
-      error: () => {}
+      error: () => {},
     })
   }
   if (loading) {
@@ -109,7 +112,6 @@ const Guest = ({registrationId}) => {
           setShowOverlay(false)
           resetGuest()
         }}
-        width="500px"
         title="Update Guest Information">
         <GuestForm
           guest={currentGuest}
@@ -140,6 +142,7 @@ const Guest = ({registrationId}) => {
             </button>
           </td>
           <td>{guestName}</td>
+          <td>{value.relationship}</td>
           <td>
             <a href="mailto:{value.email}">{value.email}</a>
           </td>
@@ -156,8 +159,16 @@ const Guest = ({registrationId}) => {
           </a>
         </h3>
         <div>
-          <table className="table">
-            <tbody>{listing}</tbody>
+          <table className="table table-striped">
+            <tbody>
+              <tr>
+                <th>&nbsp;</th>
+                <th>Name</th>
+                <th>Relationship</th>
+                <th>Email</th>
+              </tr>
+              {listing}
+            </tbody>
           </table>
         </div>
       </div>
@@ -166,7 +177,7 @@ const Guest = ({registrationId}) => {
 }
 
 Guest.propTypes = {
-  registrationId: PropTypes.number
+  registrationId: PropTypes.number,
 }
 
 export default Guest
