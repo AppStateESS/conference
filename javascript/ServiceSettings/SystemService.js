@@ -9,7 +9,7 @@ const SystemService = ({service}) => {
         <h4>No service set</h4>
         <p>
           To use online billing, you will need to specify a payment service in
-          the <code>conf\defines.php</code> file.
+          the <code>config/defines.php</code> file.
         </p>
       </div>
     )
