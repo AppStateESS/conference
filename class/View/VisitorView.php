@@ -24,13 +24,6 @@ class VisitorView extends AbstractView
         $this->factory = new VisitorFactory;
     }
 
-    public function login()
-    {
-        $template = new Template;
-        $template->setModuleTemplate('conference', 'Visitor/Login.html');
-        return $template->get();
-    }
-
     public function notActivated()
     {
         $template = new Template;
