@@ -2,6 +2,8 @@
 import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import StateDropdown from '@essappstate/react-state-dropdown'
+import RelationshipSelect from '../Shared/RelationshipSelect'
+import yearOptions from '../Shared/YearOptions'
 
 /* global $ */
 
@@ -165,36 +167,108 @@ const VisitorForm = ({update, resource, save}) => {
               </div>
             </div>
             <div className="col-sm-6">
-              <label>State</label>
-              <StateDropdown
-                value={resource.state}
-                handle={update.bind(null, 'state')}
-              />
+              <div className="form-group">
+                <label>State</label>
+                <StateDropdown
+                  value={resource.state}
+                  handle={update.bind(null, 'state')}
+                />
+              </div>
+            </div>
+            <div className="col-sm-6">
+              <div className="form-group">
+                <label>Zip</label>
+                <input
+                  id="zip"
+                  type="text"
+                  className="form-control"
+                  name="zip"
+                  value={resource.zip}
+                  onChange={update.bind(null, 'zip')}
+                />
+              </div>
+            </div>
+            <div className="col-sm-6">
+              <div className="form-group">
+                <label>Phone</label>
+                <input
+                  id="phone"
+                  type="text"
+                  className="form-control"
+                  name="phone"
+                  value={resource.phone}
+                  onChange={update.bind(null, 'phone')}
+                />
+              </div>
+            </div>
+            <div className="col-sm-6">
+              <div className="form-group">
+                <label>Alternate phone</label>
+                <input
+                  id="altPhone"
+                  type="text"
+                  className="form-control"
+                  name="altPhone"
+                  value={resource.altPhone}
+                  onChange={update.bind(null, 'altPhone')}
+                />
+              </div>
             </div>
           </div>
-          <div className="row">
-            <div className="col-sm-6">
-              <label>Zip</label>
+        </div>
+      </div>
+      <hr />
+      <div className="row">
+        <div className="col-sm-6">
+          <label>Relationship</label>
+          <RelationshipSelect
+            relation={resource.relation}
+            update={(e) => update('relation', e)}
+          />
+        </div>
+        <div className="col-sm-6">
+          <div className="form-group">
+            <label htmlFor="employer">Employer</label>
+            <input
+              type="text"
+              className="form-control"
+              name="employer"
+              value={resource.employer}
+              onChange={update.bind(null, 'employer')}
+            />
+          </div>
+        </div>
+        <div className="col-sm-6">
+          <div className="form-group">
+            <label htmlFor="position">Position title</label>
+            <input
+              type="text"
+              className="form-control"
+              name="position"
+              value={resource.position}
+              onChange={update.bind(null, 'position')}
+            />
+          </div>
+        </div>
+        <div className="col-sm-6">
+          <div className="form-group">
+            <label>
               <input
-                id="zip"
-                type="text"
-                className="form-control"
-                name="zip"
-                value={resource.zip}
-                onChange={update.bind(null, 'zip')}
-              />
-            </div>
-            <div className="col-sm-6">
-              <label>Phone</label>
-              <input
-                id="phone"
-                type="text"
-                className="form-control"
-                name="phone"
-                value={resource.phone}
-                onChange={update.bind(null, 'phone')}
-              />
-            </div>
+                type="checkbox"
+                value="1"
+                name="alum"
+                onChange={() => update('alum', resource.alum === 1 ? 0 : 1)}
+                checked={resource.alum === 1}
+              />{' '}
+              Is alum
+            </label>
+            <select
+              name="gradYear"
+              className="form-control"
+              value={resource.gradYear}
+              onChange={(e) => update('gradYear', e)}>
+              {yearOptions()}
+            </select>
           </div>
         </div>
       </div>

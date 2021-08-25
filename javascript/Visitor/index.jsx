@@ -23,7 +23,12 @@ class Visitor extends Listing {
       state: '',
       zip: '',
       phone: '',
+      altPhone: '',
+      employer: '',
+      position: '',
+      alum: false,
       activated: 0,
+      relationship: 'Parent',
     }
 
     const dropdown = (key) => {
