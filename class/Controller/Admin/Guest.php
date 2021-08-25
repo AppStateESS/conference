@@ -47,6 +47,13 @@ class Guest extends SubController
         $guest->firstName = $request->pullPutString('firstName');
         $guest->lastName = $request->pullPutString('lastName');
         $guest->email = $request->pullPutString('email');
+        $guest->phone = $request->pullPutString('phone');
+        $guest->relationship = $request->pullPutString('relationship');
+        $guest->hometown = $request->pullPutString('hometown');
+        $guest->employer = $request->pullPutString('employer');
+        $guest->position = $request->pullPutString('position');
+        $guest->gradYear = (string) (int) $request->pullPutString('gradYear');
+        $guest->alum = $request->pullPutBoolean('alum');
         $this->factory->save($guest);
         return ['success' => 1];
     }
