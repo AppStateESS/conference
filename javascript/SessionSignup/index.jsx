@@ -291,7 +291,8 @@ export default class SessionSignup extends Component {
       errors.lastName ||
       errors.address1 ||
       errors.city ||
-      errors.zip
+      errors.zip ||
+      errors.phone
     this.setState({errors})
     return !errorFound
   }
