@@ -20,6 +20,13 @@ export default class GuestForm extends Component {
     this.updateRelationship(this.props.guest.relationship, this.props.count)
   }
 
+  updatePhone(count, e) {
+    const phone = e.target.value
+    if (phone.match(/^[0-9\.-]*$/)) {
+      this.props.update(count, 'phone', phone)
+    }
+  }
+
   updateRelationship(value, count) {
     switch (value) {
       case 'Mother':
@@ -66,6 +73,42 @@ export default class GuestForm extends Component {
             <div className="col-sm-6 mb-3">
               <div className="card">
                 <div className="card-body">
+                  <div className="form-group">
+                    <label htmlFor="phone">Phone number</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="phone"
+                      value={guest.phone}
+                      onChange={(e) => this.updatePhone(count, e)}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="col-sm-6 mb-3">
+              <div className="card">
+                <div className="card-body">
+                  <div className="form-group">
+                    <label htmlFor="hometown">Guest&apos;s hometown</label>
+                    <input
+                      type="text"
+                      placeholder="City, State"
+                      className="form-control"
+                      name="hometown"
+                      value={guest.hometown}
+                      onChange={(e) =>
+                        update(count, 'hometown', e.target.value)
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-sm-6 mb-3">
+              <div className="card">
+                <div className="card-body">
                   <BigCheckbox
                     label="Is this guest an alum of this university?"
                     checked={guest.alum === 1}
@@ -106,6 +149,7 @@ export default class GuestForm extends Component {
                 </div>
               </div>
             </div>
+
             <div className="col-sm-6 mb-3">
               <div className="card">
                 <div className="card-body">
@@ -134,25 +178,6 @@ export default class GuestForm extends Component {
                       value={guest.position}
                       onChange={(e) =>
                         update(count, 'position', e.target.value)
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="col-sm-6 mb-3">
-              <div className="card">
-                <div className="card-body">
-                  <div className="form-group">
-                    <label htmlFor="hometown">Guest&apos;s hometown</label>
-                    <input
-                      type="text"
-                      placeholder="City, State"
-                      className="form-control"
-                      name="hometown"
-                      value={guest.hometown}
-                      onChange={(e) =>
-                        update(count, 'hometown', e.target.value)
                       }
                     />
                   </div>

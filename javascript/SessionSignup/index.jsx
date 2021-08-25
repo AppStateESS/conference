@@ -203,6 +203,7 @@ export default class SessionSignup extends Component {
                 employer: '',
                 position: '',
                 hometown: '',
+                phone: '',
                 registrationId: id,
                 complete: false,
               })
@@ -265,8 +266,13 @@ export default class SessionSignup extends Component {
         firstName: '',
         lastName: '',
         email: '',
+        phone: '',
         relationship: 'Parent',
         complete: false,
+        hometown: '',
+        gradYear: '0',
+        employer: '',
+        position: '',
       }
     }
     return guests
