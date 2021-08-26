@@ -101,9 +101,12 @@ class Onsite extends SubController
 
     protected function checkEmailJson(Request $request)
     {
-        $email = $request->pullGetString('email');
+        $email = strtolower($request->pullGetString('email'));
         $visitorFactory = new VisitorFactory;
         $visitor = $visitorFactory->loadByEmail($email);
+        if ($visitor == false) {
+            return ['found' => false];
+        }
         $visitorValues = $visitor->getStringVars();
         unset($visitorValues['password']);
         return ['found' => (bool) $visitor, 'visitor' => $visitorValues];
