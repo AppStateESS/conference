@@ -1,6 +1,5 @@
 'use strict'
 import React, {useState, useRef} from 'react'
-import ChooseParent from './ChooseParent'
 import PropTypes from 'prop-types'
 
 /* global $ */
@@ -8,7 +7,6 @@ import PropTypes from 'prop-types'
 const StudentLogin = ({goBack, topStatus}) => {
   const [matchBannerId, setMatchBannerId] = useState('')
   const [bannerUsername, setBannerUsername] = useState('')
-  const [parents, setParents] = useState([])
   const [status, setStatus] = useState('form')
 
   const usernameRef = useRef()
@@ -22,7 +20,6 @@ const StudentLogin = ({goBack, topStatus}) => {
       type: 'get',
       success: (data) => {
         if (data.success == true) {
-          setParents(data.parents)
           setStatus('choose')
         } else {
           setStatus('duplicate')
@@ -128,16 +125,6 @@ const StudentLogin = ({goBack, topStatus}) => {
   switch (status) {
     case 'form':
       return form()
-
-    case 'choose':
-      return (
-        <ChooseParent
-          parents={parents}
-          goBack={goBack}
-          setStatus={topStatus}
-          matchBannerId={matchBannerId}
-        />
-      )
 
     case 'notfound':
     case 'missing':
