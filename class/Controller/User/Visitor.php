@@ -44,7 +44,7 @@ class Visitor extends SubController
 
     protected function checkEmailJson(Request $request)
     {
-        $email = $request->pullGetString('email');
+        $email = strtolower($request->pullGetString('email'));
         $visitor = $this->factory->loadByEmail($email);
         return ['found' => !empty($visitor->id)];
     }
@@ -55,6 +55,9 @@ class Visitor extends SubController
      */
     protected function loginHtml(Request $request)
     {
+        if (\conference\Factory\LockedFactory::isLocked()) {
+            Server::forward('./');
+        }
         if ($this->factory->isLoggedIn()) {
             return $this->view->alreadyLoggedIn();
         } else {
@@ -117,12 +120,12 @@ class Visitor extends SubController
 
     protected function activatedHtml(Request $request)
     {
-        return $this->view->activated($request->pullGetString('email'));
+        return $this->view->activated(strtolower($request->pullGetString('email')));
     }
 
     protected function activateHtml(Request $request)
     {
-        $email = $request->pullGetString('email');
+        $email = strtolower($request->pullGetString('email'));
         $hash = $request->pullGetString('hash');
 
         if ($this->factory->activateAccount($email, $hash)) {
@@ -155,7 +158,7 @@ class Visitor extends SubController
     protected function forgotPost(Request $request)
     {
         try {
-            if ($this->factory->sendForgot($request->pullPostString('email'))) {
+            if ($this->factory->sendForgot(strtolower($request->pullPostString('email')))) {
                 Server::forward('conference/User/Visitor/sentPassword');
             } else {
                 Server::forward('conference/User/Visitor/passwordFailed');
