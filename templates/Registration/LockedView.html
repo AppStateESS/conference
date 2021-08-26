@@ -1,0 +1,26 @@
+<div id="registration-info">
+  <h2 class="mb-2"><?=$conference['title']?></h2>
+  <h3>Session: <?=$session['title']?></h3>
+  <h4>Student: <?=$student['firstName'], ' ', $student['lastName']?></h4>
+  <table class="table table-striped">
+    <tbody>
+      <tr>
+        <th>Guests</th>
+        <td>
+          <?php if (!empty($guests)):foreach ($guests as $g): extract($g);?>
+          <?=$firstName, ' ', $lastName, ' - ', $email?><br />
+          <?php endforeach; else:?>
+          <em>None</em>
+          <?php endif;?>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="my-4">Your onsite registration is complete. You will be logged out automatically or you can logout below.</div>
+<a href="./conference/Visitor/Visitor/logout" class="btn btn-primary btn-lg btn-block">Log out of system</a>
+<script>
+    let timed = window.setTimeout(()=>{
+        location.href= "./conference/Visitor/Visitor/logout"
+    }, 5000)
+</script>
