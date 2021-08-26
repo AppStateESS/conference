@@ -12,6 +12,8 @@
 
 namespace conference\Resource;
 
+require_once PHPWS_SOURCE_DIR . 'mod/conference/config/defines.php';
+
 class VisitorResource extends AbstractResource
 {
 
@@ -163,6 +165,24 @@ class VisitorResource extends AbstractResource
     public function resetHash()
     {
         $this->hash->sha1Random();
+    }
+
+    public function setFirstName($name)
+    {
+        if (ctype_upper($name)) {
+            $this->firstName->set(ucwords(strtolower($name)));
+        } else {
+            $this->firstName->set($name);
+        }
+    }
+
+    public function setLastName($name)
+    {
+        if (ctype_upper($name)) {
+            $this->lastName->set(ucwords(strtolower($name)));
+        } else {
+            $this->lastName->set($name);
+        }
     }
 
 }
