@@ -28,7 +28,7 @@
     "@babel/runtime": "^7.14.6",
     "@ckeditor/ckeditor5-build-classic": "^28.0.0",
     "@ckeditor/ckeditor5-react": "^3.0.2",
-    "@essappstate/canopy-listing": "^1.2.1",
+    "@essappstate/canopy-listing": "^1.2.2",
     "@essappstate/canopy-react-bigcheckbox": "^0.3.0",
     "@essappstate/canopy-react-buttongroup": "^0.2.4",
     "@essappstate/canopy-react-inputfield": "^0.2.3",
