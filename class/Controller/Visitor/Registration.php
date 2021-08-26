@@ -146,13 +146,19 @@ class Registration extends SubController
             if ($registration->completed == 0 && $registration->totalCost == 0) {
                 $this->factory->completeFree($registration);
             }
-            return $this->view->view($this->id, VisitorFactory::getCurrentId());
+            if (LockedFactory::isLocked()) {
+                return $this->view->lockedComplete($this->id, VisitorFactory::getCurrentId());
+            } else {
+                return $this->view->view($this->id, VisitorFactory::getCurrentId());
+            }
         }
     }
 
     protected function viewHtml(Request $request)
     {
-        if ($request->pullGetBoolean('print', true)) {
+        if (LockedFactory::isLocked()) {
+            return $this->view->lockedComplete($this->id, VisitorFactory::getCurrentId());
+        } elseif ($request->pullGetBoolean('print', true)) {
             $this->view->print($this->id, VisitorFactory::getCurrentId());
         } else {
             return $this->view->view($this->id, VisitorFactory::getCurrentId());
