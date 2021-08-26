@@ -56,7 +56,6 @@ class VisitorFactory extends BaseFactory
     public function loadByEmail(string $email, bool $activatedOnly = false)
     {
         $email = strtolower($email);
-        $visitor = $this->build();
         $db = Database::getDB();
         $tbl = $db->addTable('conf_visitor');
         $tbl->addFieldConditional('email', $email);
@@ -64,8 +63,10 @@ class VisitorFactory extends BaseFactory
             $tbl->addFieldConditional('activated', 1);
         }
 
-        $result = $db->selectInto($visitor);
+        $result = $db->selectOneRow();
         if ($result) {
+            $visitor = $this->build();
+            $visitor->setVars($result);
             $visitor->defaultState();
             return $visitor;
         } else {
@@ -76,7 +77,7 @@ class VisitorFactory extends BaseFactory
     public function post(Request $request)
     {
         $visitor = $this->build();
-        $visitor->email = $request->pullPostString('email');
+        $visitor->email = strtolower($request->pullPostString('email'));
         if ($visitor->isEmpty('email')) {
             throw new \Exception('Missing email');
         }
