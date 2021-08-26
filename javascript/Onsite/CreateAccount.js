@@ -22,11 +22,11 @@ const CreateAccount = ({setStage, setVisitor}) => {
       data: {email},
       dataType: 'json',
       type: 'post',
-      success: data => {
+      success: (data) => {
         setVisitor(data.visitor)
         setStage('startRegistration')
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -36,14 +36,15 @@ const CreateAccount = ({setStage, setVisitor}) => {
       data: {email},
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         if (data.found) {
-          setError('This email address is already in use.')
+          setVisitor(data.visitor)
+          setStage('login')
         } else {
           createQuickVisitor()
         }
       },
-      error: () => {}
+      error: () => {},
     })
   }
 
@@ -56,11 +57,9 @@ const CreateAccount = ({setStage, setVisitor}) => {
           type="text"
           value={email}
           name="email"
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
         />
-        {error.length > 0 ? (
-          <div className="badge badge-danger">{error}</div>
-        ) : null}
+        {error != '' ? <div className="badge badge-danger">{error}</div> : null}
       </div>
 
       <button
@@ -69,13 +68,6 @@ const CreateAccount = ({setStage, setVisitor}) => {
           saveAccount()
         }}>
         Create my account
-      </button>
-      <button
-        className="btn btn-info"
-        onClick={() => {
-          setStage('chooseParent')
-        }}>
-        Back to parent selection
       </button>
     </div>
   )
