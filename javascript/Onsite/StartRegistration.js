@@ -17,6 +17,9 @@ const StartRegistration = ({sessionId, studentId}) => {
   )
 }
 
-StartRegistration.propTypes = {}
+StartRegistration.propTypes = {
+  sessionId: PropTypes.number,
+  studentId: PropTypes.number,
+}
 
 export default StartRegistration
