@@ -267,15 +267,21 @@ class VisitorFactory extends BaseFactory
         $tbl = $db->addTable('conf_visitor');
 
         if (!empty($options['search'])) {
-            $cond1 = new Database\Conditional($db, 'firstName',
-                    '%' . $options['search'] . '%', 'like');
-            $cond2 = new Database\Conditional($db, 'lastName',
-                    '%' . $options['search'] . '%', 'like');
-            $cond3 = new Database\Conditional($db, 'email',
-                    '%' . $options['search'] . '%', 'like');
-            $cond4 = new Database\Conditional($db, $cond1, $cond2, 'or');
-            $cond5 = new Database\Conditional($db, $cond3, $cond4, 'or');
-            $db->addConditional($cond5);
+            if (is_numeric($options['search'])) {
+                $cond = new Database\Conditional($db, 'id',
+                        $options['search'], '=');
+                $db->addConditional($cond);
+            } else {
+                $cond1 = new Database\Conditional($db, 'firstName',
+                        '%' . $options['search'] . '%', 'like');
+                $cond2 = new Database\Conditional($db, 'lastName',
+                        '%' . $options['search'] . '%', 'like');
+                $cond3 = new Database\Conditional($db, 'email',
+                        '%' . $options['search'] . '%', 'like');
+                $cond4 = new Database\Conditional($db, $cond1, $cond2, 'or');
+                $cond5 = new Database\Conditional($db, $cond3, $cond4, 'or');
+                $db->addConditional($cond5);
+            }
         }
 
         if (!empty($options['sortBy']) && !empty($options['sortByDir'])) {
