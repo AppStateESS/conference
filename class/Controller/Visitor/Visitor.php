@@ -39,10 +39,14 @@ class Visitor extends \conference\Controller\User\Visitor
         return ['success' => true];
     }
 
-    protected function logoutHtml()
+    protected function logoutHtml(Request $request)
     {
         VisitorFactory::clearCurrent();
-        Server::forward('./conference/User/Visitor/loggedout');
+        if (\conference\Factory\LockedFactory::isLocked()) {
+            Server::forward('./');
+        } else {
+            Server::forward('./conference/User/Visitor/loggedout');
+        }
     }
 
     protected function currentJson()
