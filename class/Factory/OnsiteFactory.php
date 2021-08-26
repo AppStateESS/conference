@@ -17,20 +17,20 @@ use Canopy\Request;
 class OnsiteFactory
 {
 
-    public function createVisitor($visitor, Request $request)
+    public function createVisitor(\conference\Resource\VisitorResource $visitor, Request $request)
     {
         $visitorFactory = new VisitorFactory;
-        $visitor->email = $request->pullPostString('email');
+        $visitor->email = strtolower($request->pullPostString('email'));
         $visitor->firstName = $request->pullPostString('firstName', true) ?: '';
         $visitor->lastName = $request->pullPostString('lastName', true) ?: '';
         $visitor->address1 = $request->pullPostString('address1', true) ?: null;
         $visitor->address2 = $request->pullPostString('address2', true) ?: null;
         $visitor->city = $request->pullPostString('city', true) ?: null;
-        $visitor->state = $request->pullPostString('state', true) ?: null;
+        $visitor->state = $request->pullPostString('state', true) ?: CONFERENCE_DEFAULTS['state'];
         $visitor->zip = $request->pullPostString('zip', true) ?: null;
         $visitor->phone = $request->pullPostString('phone', true) ?: null;
         $visitor->altPhone = $request->pullPostString('altPhone', true) ?: null;
-        $visitor->relationship = $request->pullPostString('relationship', true) ?: null;
+        $visitor->relationship = $request->pullPostString('relationship', true) ?: 'Parent';
         $visitor->employer = $request->pullPostString('employer', true) ?: null;
         $visitor->position = $request->pullPostString('position', true) ?: null;
         $visitor->activated = 1;
