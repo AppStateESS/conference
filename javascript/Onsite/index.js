@@ -4,99 +4,20 @@ import ReactDOM from 'react-dom'
 import StartRegistration from './StartRegistration'
 import CreateAccount from './CreateAccount'
 import StudentSignin from './StudentSignin'
-import ChooseParent from './ChooseParent'
 import StudentInfo from './StudentInfo'
 import Login from './Login'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner} from '@fortawesome/free-solid-svg-icons'
 
-/* global $, sessionId */
+/* global sessionId */
 
 const Onsite = () => {
   const [stage, setStage] = useState('studentSignin')
   const [student, setStudent] = useState({id: 0})
   const [visitor, setVisitor] = useState({})
-  const [parents, setParents] = useState([])
   const [loading, setLoading] = useState(false)
-  const [hasRegistration, setHasRegistration] = useState({id: 0})
+  const [hasRegistration, setHasRegistration] = useState({id: 0, completed: 0})
   const [loadingMessage, setLoadingMessage] = useState('Loading...')
-
-  // const emptyVisitor = {
-  //   firstName: '',
-  //   lastName: '',
-  //   email: '',
-  //   phone: ''
-  // }
-
-  let resetTimeout
-
-  const resetTimer = () => {
-    clearTimeout(resetTimeout)
-    resetTimeout = setTimeout(() => {
-      resetLoading()
-      setStudent({id: 0})
-      setVisitor({})
-      setParents([])
-      logout()
-      setStage('studentSignin')
-    }, 8000)
-  }
-
-  const logout = () => {
-    $.ajax({
-      url: 'conference/Visitor/Onsite/Logout',
-      dataType: 'json',
-      type: 'get',
-    })
-  }
-
-  const resetLoading = () => {
-    setLoading(false)
-    setLoadingMessage('Loading...')
-  }
-
-  const setParent = (parentKey) => {
-    if (parentKey == -1) {
-      setStage('createAccount')
-      return
-    }
-    setLoading(true)
-    setLoadingMessage('Creating new account')
-    const parent = parents[parentKey]
-    const newVisitor = {
-      firstName: parent.prefFirstName ?? parent.firstName,
-      lastName: parent.lastName,
-      email: parent.emailAddress,
-      address1: parent.streetLine1 ?? '',
-      address2: parent.streetLine2 ?? '',
-      city: parent.city ?? '',
-      state: parent.stateCode ?? '',
-      zip: parent.zip ?? '',
-      phone: (parent.phoneArea ?? '') + parent.phoneNumber ?? '',
-      studentId: student.id,
-      sessionId,
-    }
-    $.ajax({
-      url: 'conference/User/Onsite/createVisitor',
-      data: newVisitor,
-      dataType: 'json',
-      type: 'post',
-      success: (data) => {
-        setVisitor(data.visitor)
-        if (data['found']) {
-          setStage('login')
-          setHasRegistration(data.hasRegistration)
-        } else {
-          setStage('startRegistration')
-        }
-        resetLoading()
-      },
-      error: () => {
-        setStage('error')
-        resetTimer()
-      },
-    })
-  }
 
   const getStage = () => {
     switch (stage) {
@@ -105,7 +26,7 @@ const Onsite = () => {
           <StudentSignin
             setStage={setStage}
             setStudent={setStudent}
-            setParents={setParents}
+            sessionId={sessionId}
             student={student}
           />
         )
@@ -113,12 +34,10 @@ const Onsite = () => {
       case 'createAccount':
         return <CreateAccount setStage={setStage} setVisitor={setVisitor} />
 
-      case 'chooseParent':
-        return <ChooseParent setParent={setParent} parents={parents} />
-
       case 'login':
         return (
           <Login
+            sessionId={sessionId}
             setStage={setStage}
             email={visitor.email}
             hasRegistration={hasRegistration}
