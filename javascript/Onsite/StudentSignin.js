@@ -75,9 +75,19 @@ const StudentSignin = ({setStage, setStudent}) => {
           </div>
         </div>
       </div>
-      <button className="btn btn-primary btn-block" onClick={pullStudent}>
+      <button className="btn btn-primary btn-block mb-3" onClick={pullStudent}>
         Search for my student
       </button>
+      <div className="text-center">
+        <button
+          className="btn btn-outline-danger"
+          onClick={() => {
+            setBannerId('')
+            setBannerUsername('')
+          }}>
+          Clear Info
+        </button>
+      </div>
     </div>
   )
 }
