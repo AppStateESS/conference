@@ -175,7 +175,7 @@ export default class SessionSignup extends Component {
   }
 
   loadGuests() {
-    const {guestCount, id} = this.state.registration
+    const {guestCount} = this.state.registration
     return $.ajax({
       url: 'conference/Visitor/Guest/',
       data: {registrationId: this.state.registration.id},
@@ -194,20 +194,7 @@ export default class SessionSignup extends Component {
           })
           const guestPad = guestCount - guestLength
           if (guestPad > 0) {
-            for (let i = 0; i < guestPad; i++) {
-              guests.push({
-                firstName: '',
-                lastName: '',
-                email: '',
-                relationship: 'Parent',
-                employer: '',
-                position: '',
-                hometown: '',
-                phone: '',
-                registrationId: id,
-                complete: false,
-              })
-            }
+            guests = this.padGuests(guests, guestPad, registrationId)
           }
         } else {
           guests = this.buildGuests(this.state.registration.guestCount)
@@ -317,8 +304,42 @@ export default class SessionSignup extends Component {
       value = value.target.value
     }
     const {registration} = this.state
+    if (varname == 'guestCount') {
+      if (registration.guestCount > value) {
+        const guests = [...this.state.guests]
+        for (let i = value; i < registration.guestCount; i++) {
+          guests.pop()
+        }
+        this.setState({guests})
+      } else if (registration.guestCount < value) {
+        const guests = this.padGuests(
+          [...this.state.guests],
+          value - registration.guestCount,
+          registration.id
+        )
+        this.setState({guests})
+      }
+    }
     registration[varname] = value
     this.setState({registration})
+  }
+
+  padGuests(guests, guestPad, registrationId) {
+    for (let i = 0; i < guestPad; i++) {
+      guests.push({
+        firstName: '',
+        lastName: '',
+        email: '',
+        relationship: 'Other',
+        employer: '',
+        position: '',
+        hometown: '',
+        phone: '',
+        registrationId,
+        complete: false,
+      })
+    }
+    return guests
   }
 
   saveContact() {
@@ -443,7 +464,7 @@ export default class SessionSignup extends Component {
       guest.firstName.length > 0 &&
       guest.lastName.length > 0 &&
       guest.email.length > 0 &&
-      guest.email.match(/^[\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/) !== null
+      guest.email.match(/^[\w.%+-]+@[a-z0-9.-]+\.[a-z]{2,64}$/i) !== null
     this.setState({guests})
   }
 
@@ -517,6 +538,7 @@ export default class SessionSignup extends Component {
             guests={this.state.guests}
             update={this.updateGuest}
             registration={this.state.registration}
+            goBack={() => this.setState({stage: 'tickets'})}
             save={this.saveGuests}
           />
         )
