@@ -65,7 +65,7 @@ class Visitor extends SubController
 
     protected function checkEmailJson(Request $request)
     {
-        $email = $request->pullGetString('email');
+        $email = strtolower($request->pullGetString('email'));
         $id = $request->pullGetInteger('id');
         $visitor = $this->factory->loadByEmail($email);
         return ['allow' => $visitor === false || $visitor->id == $id];

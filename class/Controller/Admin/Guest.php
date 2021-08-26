@@ -46,7 +46,7 @@ class Guest extends SubController
         $guest = $this->factory->load($this->id);
         $guest->firstName = $request->pullPutString('firstName');
         $guest->lastName = $request->pullPutString('lastName');
-        $guest->email = $request->pullPutString('email');
+        $guest->email = strtolower($request->pullPutString('email'));
         $guest->phone = $request->pullPutString('phone');
         $guest->relationship = $request->pullPutString('relationship');
         $guest->hometown = $request->pullPutString('hometown');
