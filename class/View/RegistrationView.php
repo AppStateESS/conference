@@ -166,4 +166,20 @@ class RegistrationView extends AbstractView
         return $template->get();
     }
 
+    public function lockedComplete(int $registrationId, int $visitorId)
+    {
+        $registration = $this->factory->load($registrationId);
+        if (!$visitorId || $registration->visitorId !== $visitorId) {
+            return $this->registrationNotFound();
+        }
+
+        $tpl = $this->factory->registrationVars($registration);
+        $contact = \conference\Factory\SettingsFactory::getContact();
+        $tpl['contactEmail'] = $contact['contactEmail'];
+
+        $template = new Template($tpl);
+        $template->setModuleTemplate('conference', 'Registration/LockedView.html');
+        return $template->get();
+    }
+
 }
