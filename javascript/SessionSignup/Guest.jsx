@@ -56,12 +56,19 @@ export default class Guest extends Component {
         <p>List only people accompanying you to the orientation.</p>
         {guestList}
         <div className="mt-2 text-center">
-          <button
-            className="btn btn-primary"
-            disabled={!this.isComplete()}
-            onClick={this.save}>
-            Save guests and continue
-          </button>
+          <p>
+            <button
+              className="btn btn-primary"
+              disabled={!this.isComplete()}
+              onClick={this.save}>
+              Save guests and continue
+            </button>
+          </p>
+          <p>
+            <button className="btn btn-danger" onClick={this.props.goBack}>
+              Cancel guest entry
+            </button>
+          </p>
         </div>
       </div>
     )
@@ -74,4 +81,5 @@ Guest.propTypes = {
   guests: PropTypes.array,
   save: PropTypes.func,
   error: PropTypes.func,
+  goBack: PropTypes.func,
 }
