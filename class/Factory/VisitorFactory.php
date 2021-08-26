@@ -96,45 +96,6 @@ class VisitorFactory extends BaseFactory
         return $visitor;
     }
 
-    public function apiCreate(int $bannerId, int $parentKey,
-            string $emailAddress)
-    {
-        $emailAddress = strtolower($emailAddress);
-        $studentFactory = new StudentFactory();
-        $student = $studentFactory->importBannerAPIStudent($bannerId);
-        if (empty($student)) {
-            throw new \Exception('Student not found');
-        }
-        $parent = $student->parents[$parentKey] ?? false;
-        if (!$parent) {
-            throw new \Exception('Parent not found');
-        }
-        if ($parent->emailAddress !== $emailAddress) {
-            throw new \Exception('Parent email address does not match');
-        }
-        if ($this->loadByEmail($emailAddress)) {
-            return false;
-        }
-
-        $visitor = $this->build();
-        $visitor->email = $parent->emailAddress;
-        $visitor->firstName = $parent->prefFirstName ?? $parent->firstName;
-        $visitor->lastName = $parent->lastName;
-        $visitor->address1 = $parent->streetLine1;
-        $visitor->address2 = $parent->streetLine2;
-        $visitor->city = $parent->city;
-        $visitor->state = $parent->stateCode;
-        $visitor->zip = $parent->zip;
-        $visitor->phone = $parent->phoneArea . $parent->phoneNumber;
-        $password = $visitor->createRandomPassword();
-        $visitor->hashPassword($password);
-        $visitor->stamp(12);
-
-        $this->save($visitor);
-        $this->sendActivationEmail($visitor, $password);
-        return true;
-    }
-
     public function clearNotActivated()
     {
         $db = Database::getDB();
