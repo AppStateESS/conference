@@ -382,7 +382,7 @@ class ConferenceUpdate
         $visitorId = $tbl2->addDataType('visitorId', 'int');
         $visitorId->setDefault(0);
         $visitorId->add();
-        $phone = $tbl->addDataType('phone', 'varchar');
+        $phone = $tbl2->addDataType('phone', 'varchar');
         $phone->setIsNull(true);
         $phone->setSize(25);
         $phone->add();
