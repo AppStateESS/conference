@@ -70,8 +70,8 @@ class ConferenceFactory extends BaseFactory
             $this->addSearch($options['search'], ['title'], $db, $tbl);
         }
         if (empty($sortBy)) {
-            $sortBy = 'title';
-            $sortByDir = 'asc';
+            $sortBy = 'id';
+            $sortByDir = 'desc';
         }
         $db->setGroupBy($tbl->getField('id'));
         $tbl->addOrderBy($sortBy, $sortByDir);
