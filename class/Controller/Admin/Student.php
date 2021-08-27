@@ -48,7 +48,16 @@ class Student extends SubController
     protected function listJson(Request $request)
     {
         $options = $this->factory->listingOptions($request);
-        return $this->factory->listing($options);
+        $checkImport = $request->pullGetBoolean('checkImport', true);
+
+        $listing = $this->factory->listing($options);
+        if (empty($listing['listing'])) {
+            $import = $this->factory->bannerListing(['search' => $options['search'], 'limit' => 5, 'nodupes' => true]);
+            if (!empty($import['banner'])) {
+                $listing['import'] = $import['banner'];
+            }
+        }
+        return $listing;
     }
 
     protected function hidePatch(Request $request)

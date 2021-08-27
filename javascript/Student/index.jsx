@@ -62,6 +62,7 @@ export default class Student extends Listing {
     this.discountOverlay = this.discountOverlay.bind(this)
     this.startDateOverlay = this.startDateOverlay.bind(this)
     this.state.studentRegistrations = <div>Loading...</div>
+    this.state.bannerStudents = []
 
     this.columns = [
       {
@@ -160,6 +161,16 @@ export default class Student extends Listing {
     ]
   }
 
+  load() {
+    super.load({checkImport: true}, (data) => {
+      if (data.import) {
+        this.setState({bannerStudents: data.import})
+      } else {
+        this.setState({bannerStudents: []})
+      }
+    })
+  }
+
   finishOverlay() {
     this.overlayOff()
     this.load()
@@ -220,8 +231,62 @@ export default class Student extends Listing {
     this.setState({overlay: true, overlayType: 'reveal'})
   }
 
+  importStudentByBannerID(bannerId) {
+    $.ajax({
+      url: 'conference/Admin/Student/import',
+      data: {importList: [bannerId]},
+      dataType: 'json',
+      type: 'post',
+      success: () => {
+        this.load()
+      },
+      error: () => {},
+    })
+  }
+
   title() {
-    return <h2>Students</h2>
+    let importStudents
+
+    if (this.state.bannerStudents.length > 0) {
+      importStudents = (
+        <div className="alert alert-info">
+          <p>These matching Banner students may be imported.</p>
+          <table className="table">
+            <tbody>
+              <tr>
+                <th>First</th>
+                <th>Last</th>
+                <th>Banner ID</th>
+                <th></th>
+              </tr>
+              {this.state.bannerStudents.map((value) => {
+                return (
+                  <tr key={`banner-${value.banner_id}`}>
+                    <td>{value.first_name}</td> <td>{value.last_name}</td>
+                    <td>{value.banner_id}</td>
+                    <td>
+                      <button
+                        className="btn btn-sm btn-success"
+                        onClick={() => {
+                          this.importStudentByBannerID(value.banner_id)
+                        }}>
+                        Import
+                      </button>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      )
+    }
+    return (
+      <div>
+        <h2>Students</h2>
+        {importStudents}
+      </div>
+    )
   }
 
   unlockDate(id) {
