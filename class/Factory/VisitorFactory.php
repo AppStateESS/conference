@@ -109,9 +109,7 @@ class VisitorFactory extends BaseFactory
     public function sendActivationEmail(Resource $visitor, $password = null)
     {
         $siteTitle = \Layout::getPageTitle(true);
-        $transport = self::getSwiftTransport();
         $subject = 'Activate your new account at ' . $siteTitle;
-        $from = SettingsFactory::getSwiftMailReply();
         $vars['hostName'] = $siteTitle;
         $vars['deadline'] = $visitor->formatActivateDeadline();
         $activateLink = Server::getSiteUrl() . 'conference/User/Visitor/activate/?email=' . $visitor->email . '&amp;hash=' . $visitor->hash;
@@ -121,13 +119,7 @@ class VisitorFactory extends BaseFactory
         $template->setModuleTemplate('conference', 'Email/Activate.html');
         $content = $template->get();
 
-        $message = new \Swift_Message();
-        $message->setSubject($subject);
-        $message->setFrom($from);
-        $message->setTo($visitor->email);
-        $message->setBody($content, 'text/html');
-        $mailer = new \Swift_Mailer($transport);
-        $mailer->send($message);
+        $this->sendEmail($subject, $visitor->email, $content);
         LogFactory::log('Activation email sent to visitor.', $visitor);
     }
 
@@ -202,10 +194,8 @@ class VisitorFactory extends BaseFactory
     public function sendOnsiteEmail(Resource $visitor, $password)
     {
         $siteTitle = \Layout::getPageTitle(true);
-        $transport = self::getSwiftTransport();
 
         $subject = 'New account created at ' . $siteTitle;
-        $from = SettingsFactory::getSwiftMailReply();
         $vars['hostName'] = $siteTitle;
         $vars['password'] = $password;
         $vars['email'] = $visitor->email;
@@ -213,13 +203,7 @@ class VisitorFactory extends BaseFactory
         $template->setModuleTemplate('conference', 'Email/OnsiteCreation.html');
         $content = $template->get();
 
-        $message = new \Swift_Message;
-        $message->setSubject($subject);
-        $message->setFrom($from);
-        $message->setTo($visitor->email);
-        $message->setBody($content, 'text/html');
-        $mailer = new \Swift_Mailer($transport);
-        $mailer->send($message);
+        $this->sendEmail($subject, $visitor->email, $content);
         LogFactory::log('Onsite activation email sent to visitor.', $visitor);
     }
 
@@ -328,23 +312,14 @@ class VisitorFactory extends BaseFactory
         $this->save($visitor);
 
         $siteTitle = \Layout::getPageTitle(true);
-        $transport = self::getSwiftTransport();
         $subject = 'Password change request from ' . $siteTitle;
-        $from = SettingsFactory::getSwiftMailReply();
         $vars['hostName'] = $siteTitle;
         $vars['forgotLink'] = Server::getSiteUrl() . 'conference/User/Visitor/reset/?id=' . $visitor->id . '&amp;hash=' . $visitor->hash;
         $vars['deadline'] = $visitor->formatActivateDeadline();
         $template = new Template($vars);
         $template->setModuleTemplate('conference', 'Email/Forgot.html');
         $content = $template->get();
-
-        $message = new \Swift_Message;
-        $message->setSubject($subject);
-        $message->setFrom($from);
-        $message->setTo($visitor->email);
-        $message->setBody($content, 'text/html');
-        $mailer = new \Swift_Mailer($transport);
-        $mailer->send($message);
+        $this->sendEmail($subject, $visitor->email, $content);
         LogFactory::log('Forgot password email sent.', $visitor);
         return true;
     }
