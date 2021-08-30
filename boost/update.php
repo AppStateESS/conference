@@ -313,6 +313,7 @@ class ConferenceUpdate
                 $this->content[] = 'Changed: conference listing titles link to session list.';
 
                 $this->content[] = '- Added additional visitor/guest demographic information.';
+                $this->content[] = '+++++++++++++++++++++ UPDATE YOUR sendmail.php config file!! ++++++++++++++++';
                 $this->content[] = '</pre>';
         }
         return $this->content;
