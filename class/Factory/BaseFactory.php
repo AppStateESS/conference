@@ -17,6 +17,10 @@ use Canopy\Request;
 
 require_once PHPWS_SOURCE_DIR . 'mod/conference/config/sendmail.php';
 
+if (!defined('CONFERENCE_SWIFT_OLD_VERSION')) {
+    define('CONFERENCE_SWIFT_OLD_VERSION', false);
+}
+
 /**
  *
  * @author Matthew McNaney <mcnaneym@appstate.edu>
@@ -50,11 +54,6 @@ abstract class BaseFactory extends \phpws2\ResourceFactory
         return $resource;
     }
 
-    public static function getSwiftTransport()
-    {
-        return new \Swift_SendmailTransport(CONFERENCE_SENDMAIL_COMMAND);
-    }
-
     public function save(\phpws2\Resource $resource)
     {
         return self::saveResource($resource);
@@ -85,10 +84,15 @@ abstract class BaseFactory extends \phpws2\ResourceFactory
         return $options;
     }
 
-    protected function sendEmail($subject, array $from, $to, $content)
+    protected function sendEmail($subject, $from, $to, $content)
     {
-        $transport = new \Swift_SendmailTransport(CONFERENCE_SENDMAIL_COMMAND);
-        $message = new \Swift_Message;
+        if (CONFERENCE_SWIFT_OLD_VERSION) {
+            $transport = \Swift_SendmailTransport::newInstance(CONFERENCE_SENDMAIL_COMMAND);
+            $message = \Swift_Message::newInstance();
+        } else {
+            $transport = new \Swift_SendmailTransport(CONFERENCE_SENDMAIL_COMMAND);
+            $message = new \Swift_Message;
+        }
         $message->setSubject($subject);
         $message->setFrom($from);
         $message->setTo($to);
