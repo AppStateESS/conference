@@ -78,15 +78,15 @@ class SettingsFactory
     public static function getSwiftMailReply(bool $onlyNoReply = false)
     {
         $contact = self::getContact();
-        if ($onlyNoReply || empty($contact['email'])) {
+        if ($onlyNoReply || empty($contact['contactEmail'])) {
             $contact['email'] = 'noreply@' . \Canopy\Server::getSiteUrl(false,
                             false, false);
         }
 
-        if ($onlyNoReply || empty($contact['name'])) {
-            return [$contact['email']];
+        if ($onlyNoReply || empty($contact['contactName'])) {
+            return [$contact['contactEmail']];
         } else {
-            return [$contact['email'] => $contact['name']];
+            return [$contact['contactEmail'] => $contact['contactName']];
         }
     }
 
