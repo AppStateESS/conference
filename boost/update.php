@@ -289,6 +289,7 @@ class ConferenceUpdate
                 $this->content[] = 'Fixed: Bugs with previous registration listing.';
                 $this->content[] = 'Fixed: Better progress logic.';
                 $this->content[] = 'Fixed: Refund report.';
+                $this->content[] = 'Fixed: Contact name and address not sent in email.';
 
                 $this->content[] = 'Added: Check for orientation Banner Table.';
                 $this->content[] = 'Added: Hash check on password change.';
@@ -301,6 +302,7 @@ class ConferenceUpdate
                 $this->content[] = 'Added: Key IDs in listings.';
                 $this->content[] = 'Added: Ability to view registrations assigned to students.';
                 $this->content[] = 'Added: Can now search registration by parent email.';
+                $this->content[] = 'Added: Deleted conferences not listed on report screen unless requested.';
 
                 $this->content[] = 'Removed: Onsite parent Banner requests.';
                 $this->content[] = 'Removed: Conference questions.';
