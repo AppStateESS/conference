@@ -38,7 +38,6 @@ class RefundFactory extends BaseFactory
         } else {
             $vars['contactEmail'] = SettingsFactory::getEmailAddressOnly();
         }
-        $from = SettingsFactory::getSwiftMailReply();
         $template = new \phpws2\Template($vars);
 
         if ($complete) {
@@ -55,7 +54,7 @@ class RefundFactory extends BaseFactory
         }
         $content = $template->get();
 
-        $this->sendEmail($vars['subject'], $from, $vars['visitor']['email'],
+        $this->sendEmail($vars['subject'], $vars['visitor']['email'],
                 $content);
         LogFactory::log('System emailed refund details', $registration);
     }

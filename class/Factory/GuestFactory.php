@@ -167,7 +167,6 @@ class GuestFactory extends BaseFactory
         $registrationVars['loginUrl'] = \Canopy\Server::getSiteUrl() . 'conference/User/Visitor/login';
         $registrationVars['conferenceUrl'] = \Canopy\Server::getSiteUrl() . 'conference/User/Conference/' . $registrationVars['conference']['id'];
         $registrationVars['registrationUrl'] = \Canopy\Server::getSiteUrl() . 'conference/Visitor/Registration/' . $registrationVars['registration']['id'];
-        $from = SettingsFactory::getSwiftMailReply();
         $subject = $registrationVars['conference']['title'] . ' guest registration complete';
         foreach ($rows as $guest) {
             $registrationVars['guest'] = $guest;
@@ -175,7 +174,7 @@ class GuestFactory extends BaseFactory
             $template->setModuleTemplate('conference',
                     'Email/GuestRegistrationInfo.html');
             $content = $template->get();
-            $this->sendEmail($subject, $from, $guest['email'], $content);
+            $this->sendEmail($subject, $guest['email'], $content);
         }
     }
 

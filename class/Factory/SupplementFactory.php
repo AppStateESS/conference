@@ -251,12 +251,11 @@ class SupplementFactory extends BaseFactory
         $vars['subject'] = $subject = $vars['conference']['title'] . ': ' . $vars['session']['title'] . ' information';
         $vars['locationUrl'] = \Canopy\Server::getSiteUrl() . 'conference/User/Location/' . $vars['location']['id'];
 
-        $from = SettingsFactory::getSwiftMailReply();
         $template = new \phpws2\Template($vars);
         $template->setModuleTemplate('conference', 'Email/SupplementInfo.html');
         $content = $template->get();
 
-        $this->sendEmail($subject, $from, $vars['visitor']['email'], $content);
+        $this->sendEmail($subject, $vars['visitor']['email'], $content);
         LogFactory::log('Emailed supplement details', $registration);
     }
 

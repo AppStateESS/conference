@@ -84,7 +84,7 @@ abstract class BaseFactory extends \phpws2\ResourceFactory
         return $options;
     }
 
-    protected function sendEmail($subject, $from, $to, $content)
+    protected function sendEmail($subject, $to, $content)
     {
         if (CONFERENCE_SWIFT_OLD_VERSION) {
             $transport = \Swift_SendmailTransport::newInstance(CONFERENCE_SENDMAIL_COMMAND);
@@ -93,6 +93,7 @@ abstract class BaseFactory extends \phpws2\ResourceFactory
             $transport = new \Swift_SendmailTransport(CONFERENCE_SENDMAIL_COMMAND);
             $message = new \Swift_Message;
         }
+        $from = SettingsFactory::getSwiftMailReply();
         $message->setSubject($subject);
         $message->setFrom($from);
         $message->setTo($to);

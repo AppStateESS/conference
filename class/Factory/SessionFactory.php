@@ -326,8 +326,7 @@ class SessionFactory extends BaseFactory
         $template = new \phpws2\Template($vars);
         $template->setModuleTemplate('conference', 'Email/SoftCapWarning.html');
         $content = $template->get();
-        $this->sendEmail($subject, SettingsFactory::getSwiftMailReply(true),
-                \phpws2\Settings::get('conference', 'contactEmail'), $content);
+        $this->sendEmail($subject, \phpws2\Settings::get('conference', 'contactEmail'), $content);
         $session->capWarningSent = true;
         $this->save($session);
     }

@@ -337,12 +337,11 @@ class RegistrationFactory extends BaseFactory
         $vars['conferenceUrl'] = \Canopy\Server::getSiteUrl() . 'conference/User/Conference/' . $vars['conference']['id'];
         $vars['registrationUrl'] = \Canopy\Server::getSiteUrl() . 'conference/Visitor/Registration/' . $vars['registration']['id'];
 
-        $from = SettingsFactory::getSwiftMailReply();
         $template = new \phpws2\Template($vars);
         $template->setModuleTemplate('conference', 'Email/RegistrationInfo.html');
         $content = $template->get();
 
-        $this->sendEmail($vars['subject'], $from, $vars['visitor']['email'],
+        $this->sendEmail($vars['subject'], $vars['visitor']['email'],
                 $content);
         $this->emailGuestNewRegistration($vars);
         $this->emailStudentRegistration($vars);
@@ -355,14 +354,13 @@ class RegistrationFactory extends BaseFactory
         $conference = [];
         $student = [];
         extract($registrationVars);
-        $from = SettingsFactory::getSwiftMailReply();
 
         $subject = $conference['title'] . ' parent registration complete';
         $template = new \phpws2\Template($registrationVars);
         $template->setModuleTemplate('conference',
                 'Email/StudentRegistrationInfo.html');
         $content = $template->get();
-        $this->sendEmail($subject, $from, $student['email'], $content);
+        $this->sendEmail($subject, $student['email'], $content);
     }
 
     private function emailGuestNewRegistration(array $registrationVars)
@@ -376,7 +374,6 @@ class RegistrationFactory extends BaseFactory
         if (empty($guests)) {
             return;
         }
-        $from = SettingsFactory::getSwiftMailReply();
 
         $subject = $conference['title'] . ' guest registration complete';
 
@@ -386,7 +383,7 @@ class RegistrationFactory extends BaseFactory
             $template->setModuleTemplate('conference',
                     'Email/GuestRegistrationInfo.html');
             $content = $template->get();
-            $this->sendEmail($subject, $from, $guest['email'], $content);
+            $this->sendEmail($subject, $guest['email'], $content);
         }
     }
 
@@ -573,11 +570,10 @@ class RegistrationFactory extends BaseFactory
         $vars['subject'] = $subject = $vars['conference']['title'] . ': ' . $vars['session']['title'] . ' session change';
         $vars['locationUrl'] = \Canopy\Server::getSiteUrl() . 'conference/User/Location/' . $vars['location']['id'];
 
-        $from = SettingsFactory::getSwiftMailReply();
         $template = new \phpws2\Template($vars);
         $template->setModuleTemplate('conference', 'Email/SessionChanged.html');
         $content = $template->get();
-        $this->sendEmail($subject, $from, $vars['visitor']['email'], $content);
+        $this->sendEmail($subject, $vars['visitor']['email'], $content);
         LogFactory::log('Emailed session change details', $registration);
     }
 
