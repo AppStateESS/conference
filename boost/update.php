@@ -276,6 +276,40 @@ class ConferenceUpdate
                 $this->content[] = '<pre>';
                 $this->content[] = '1.6.0';
                 $this->content[] = '------------------------';
+                $this->content[] = 'Fixed: Old registrations pulled up from previous conferences.';
+                $this->content[] = 'Fixed: Deleting station lock no removes locked session.';
+                $this->content[] = 'Fixed: JSON get error returning HTML. Now throws exception.';
+                $this->content[] = 'Fixed: Updated SwiftMailer calls.';
+                $this->content[] = 'Fixed: All email addresses forced to lower case.';
+                $this->content[] = 'Fixed: Empty Visitor accounts created.';
+                $this->content[] = 'Fixed: Locked session only working on correct date.';
+                $this->content[] = 'Fixed: WYSIWYG editor.';
+                $this->content[] = 'Fixed: Cancellation only allowed if totalCost is 0.';
+                $this->content[] = 'Fixed: Canceled registrations do not prevent new registrations.';
+                $this->content[] = 'Fixed: Bugs with previous registration listing.';
+                $this->content[] = 'Fixed: Better progress logic.';
+                $this->content[] = 'Fixed: Refund report.';
+
+                $this->content[] = 'Added: Check for orientation Banner Table.';
+                $this->content[] = 'Added: Hash check on password change.';
+                $this->content[] = 'Added: Visitor and Guest extra information';
+                $this->content[] = 'Added: Email passed through creation process.';
+                $this->content[] = 'Added: Student locking has session listing.';
+                $this->content[] = 'Added: Default state on visitor form.';
+                $this->content[] = 'Added: Cancel option on zero cost registrations.';
+                $this->content[] = 'Added: Access to admin actions on other screens.';
+                $this->content[] = 'Added: Key IDs in listings.';
+                $this->content[] = 'Added: Ability to view registrations assigned to students.';
+                $this->content[] = 'Added: Can now search registration by parent email.';
+
+                $this->content[] = 'Removed: Onsite parent Banner requests.';
+                $this->content[] = 'Removed: Conference questions.';
+
+                $this->content[] = 'Changed: Print button only shown on complete registrations';
+                $this->content[] = 'Changed: Account creation prompt higher on page.';
+                $this->content[] = 'Changed: Better wording for parents.';
+                $this->content[] = 'Changed: conference listing titles link to session list.';
+
                 $this->content[] = '- Added additional visitor/guest demographic information.';
                 $this->content[] = '</pre>';
         }
