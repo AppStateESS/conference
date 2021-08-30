@@ -148,7 +148,6 @@ const Visitor = ({visitor, update, errors, check, save}) => {
             placeholder="Office phone, mobile, etc."
             className="form-control"
             onChange={updateAltPhone}
-            onBlur={() => check('altPhone')}
             value={visitor.altPhone}
           />
           <div>{errorMessage('altPhone')}</div>
