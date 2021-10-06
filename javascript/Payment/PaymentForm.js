@@ -12,7 +12,7 @@ const PaymentForm = ({payment, update, save}) => {
   const buttons = [
     {value: 'cash', label: 'Cash'},
     {value: 'cc', label: 'Credit/Debit Card'},
-    {value: 'check', label: 'Check'}
+    {value: 'check', label: 'Check'},
   ]
 
   let paymentDetails
@@ -57,7 +57,7 @@ const PaymentForm = ({payment, update, save}) => {
             name="paymentType"
             buttons={buttons}
             match={payment.paymentType}
-            handle={update.bind(null, 'paymentType')}
+            handle={(e) => update('paymentType', e)}
             activeColor="primary"
             color="outline-primary"
           />
@@ -72,7 +72,7 @@ PaymentForm.propTypes = {
   payment: PropTypes.object,
   update: PropTypes.func,
   registration: PropTypes.object,
-  save: PropTypes.func
+  save: PropTypes.func,
 }
 
 PaymentForm.defaultProps = {}
