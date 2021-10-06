@@ -13,26 +13,26 @@
     "url": "https://github.com/AppStateESS/conference/issues"
   },
   "dependencies": {
-    "core-js": "^3.16.3",
-    "immutable": "^4.0.0-rc.14"
+    "core-js": "^3.18.2",
+    "immutable": "^4.0.0-rc.15"
   },
   "scripts": {
     "dev": "webpack --mode development --watch",
     "build": "rm -rf ./javascript/build && webpack --mode production"
   },
   "devDependencies": {
-    "@babel/core": "^7.15.0",
+    "@babel/core": "^7.15.5",
     "@babel/plugin-transform-runtime": "^7.15.0",
-    "@babel/preset-env": "^7.15.0",
+    "@babel/preset-env": "^7.15.6",
     "@babel/preset-react": "^7.14.5",
-    "@babel/runtime": "^7.15.3",
-    "@ckeditor/ckeditor5-build-classic": "^29.1.0",
-    "@ckeditor/ckeditor5-react": "^3.0.2",
+    "@babel/runtime": "^7.15.4",
+    "@ckeditor/ckeditor5-build-classic": "^30.0.0",
+    "@ckeditor/ckeditor5-react": "^3.0.3",
     "@essappstate/canopy-listing": "^1.2.3",
     "@essappstate/canopy-react-bigcheckbox": "^0.3.0",
     "@essappstate/canopy-react-buttongroup": "^0.2.6",
     "@essappstate/canopy-react-inputfield": "^0.2.4",
-    "@essappstate/canopy-react-overlay": "^0.2.10",
+    "@essappstate/canopy-react-overlay": "^0.3.1",
     "@essappstate/react-navbar": "^1.1.4",
     "@essappstate/react-state-dropdown": "^1.0.3",
     "@essappstate/react-waiting": "^1.0.7",
@@ -43,17 +43,17 @@
     "babel-loader": "^8.2.2",
     "browser-sync": "^2.27.5",
     "browser-sync-webpack-plugin": "^2.3.0",
-    "css-loader": "^6.2.0",
-    "dayjs": "^1.10.6",
+    "css-loader": "^6.3.0",
+    "dayjs": "^1.10.7",
     "es6-promise": "^4.2.8",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-datepicker": "^4.2.1",
     "react-dom": "^17.0.2",
-    "style-loader": "^3.2.1",
-    "terser": "^5.7.2",
-    "terser-webpack-plugin": "^5.1.4",
-    "webpack": "^5.51.1",
+    "style-loader": "^3.3.0",
+    "terser": "^5.9.0",
+    "terser-webpack-plugin": "^5.2.4",
+    "webpack": "^5.57.1",
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.8.0"
   }
