@@ -315,6 +315,13 @@ class ConferenceUpdate
                 $this->content[] = '- Added additional visitor/guest demographic information.';
                 $this->content[] = '+++++++++++++++++++++ UPDATE YOUR sendmail.php config file!! ++++++++++++++++';
                 $this->content[] = '</pre>';
+
+            case $this->compare('1.6.1'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.6.1';
+                $this->content[] = '------------------------';
+                $this->content[] = '- Fixed bug with admin payment screen.';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
