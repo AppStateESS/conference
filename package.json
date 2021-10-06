@@ -35,7 +35,7 @@
     "@essappstate/canopy-react-overlay": "^0.3.1",
     "@essappstate/react-navbar": "^1.1.4",
     "@essappstate/react-state-dropdown": "^1.0.3",
-    "@essappstate/react-waiting": "^1.0.7",
+    "@essappstate/react-waiting": "^1.0.8",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@fortawesome/react-fontawesome": "^0.1.15",
