@@ -1,5 +1,5 @@
 'use strict'
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, Fragment} from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import Overlay from '@essappstate/canopy-react-overlay'
@@ -27,6 +27,7 @@ const Guest = ({registrationId}) => {
   const [showOverlay, setShowOverlay] = useState(false)
   const [guestKey, setGuestKey] = useState(-1)
   const [currentGuest, setCurrentGuest] = useState(emptyGuest)
+  const [registration, setRegistration] = useState({completed: null})
 
   useEffect(() => {
     loadRegistration().then((data) => {
@@ -44,6 +45,26 @@ const Guest = ({registrationId}) => {
     }
   }, [guestKey])
 
+  const confirmGuestDeletion = (guestId) => {
+    if (registration.completed === 0 || registration.totalCost === 0) {
+      if (
+        confirm(
+          'Are you certain you wish to remove this guest from this registration?'
+        )
+      ) {
+        $.ajax({
+          url: `conference/Admin/Registration/${registration.id}/removeGuest`,
+          data: {guestId},
+          dataType: 'json',
+          type: 'patch',
+          success: () => {
+            loadGuests()
+          },
+        })
+      }
+    }
+  }
+
   const resetGuest = () => {
     setCurrentGuest(Object.assign(emptyGuest, {}))
     setGuestKey(-1)
@@ -54,7 +75,9 @@ const Guest = ({registrationId}) => {
       url: 'conference/Admin/Registration/' + registrationId,
       dataType: 'json',
       type: 'get',
-      success: () => {},
+      success: (data) => {
+        setRegistration(data)
+      },
       error: () => {},
     })
   }
@@ -96,11 +119,41 @@ const Guest = ({registrationId}) => {
       error: () => {},
     })
   }
+
+  const headerInfo = (
+    <Fragment>
+      <h3>
+        <a
+          href={`./conference/Admin/Payment/?registrationId=${registration.id}`}>
+          Registration
+        </a>{' '}
+        guests of{' '}
+        <a
+          href={`./conference/Admin/Registration/visitor?visitorId=${visitor.id}`}>
+          {visitor.firstName} {visitor.lastName}
+        </a>{' '}
+        at session{' '}
+        <a href={`conference/Admin/Registration/?sessionId=${session.id}`}>
+          {session.title}
+        </a>
+      </h3>
+      <p>
+        Registration is currently{' '}
+        {registration.completed === 1 ? (
+          <span className="text-success">complete.</span>
+        ) : (
+          <span className="text-warning">incomplete.</span>
+        )}
+      </p>
+    </Fragment>
+  )
+
   if (loading) {
     return <p>Loading guests</p>
   } else if (guestList.length === 0) {
     return (
       <div>
+        {headerInfo}
         No guests found for {visitor.firstName} {visitor.lastName}
       </div>
     )
@@ -123,6 +176,10 @@ const Guest = ({registrationId}) => {
         />
       </Overlay>
     )
+
+    let allowRemove =
+      registration.completed === 0 || registration.totalCost === 0
+
     const listing = guestList.map((value, key) => {
       const guestName = (
         <span>
@@ -131,15 +188,24 @@ const Guest = ({registrationId}) => {
       )
       return (
         <tr key={value.id}>
-          <td style={{width: '100px'}}>
+          <td>
             <button
-              className="btn btn-primary btn-sm"
+              className="btn btn-primary btn-sm mr-1"
               onClick={() => {
                 setShowOverlay(true)
                 setGuestKey(key)
               }}>
               <i className="fas fa-edit"></i>&nbsp; Edit
             </button>
+            {allowRemove ? (
+              <button
+                className="btn btn-danger btn-sm"
+                onClick={() => {
+                  confirmGuestDeletion(value.id)
+                }}>
+                <i className="fas fa-user-alt-slash"></i>&nbsp;Remove
+              </button>
+            ) : null}
           </td>
           <td>{guestName}</td>
           <td>{value.relationship}</td>
@@ -152,12 +218,7 @@ const Guest = ({registrationId}) => {
     return (
       <div>
         {overlay}
-        <h3>
-          Guests of {visitor.firstName} {visitor.lastName} at session{' '}
-          <a href={`conference/Admin/Registration/?sessionId=${session.id}`}>
-            {session.title}
-          </a>
-        </h3>
+        {headerInfo}
         <div>
           <table className="table table-striped">
             <tbody>
