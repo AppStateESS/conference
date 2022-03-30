@@ -3,6 +3,8 @@ import React, {useState, useEffect} from 'react'
 import dayjs from 'dayjs'
 import PropTypes from 'prop-types'
 
+/* global $ */
+
 const Refunds = ({registrationId}) => {
   const [refunds, setRefunds] = useState([])
 
@@ -12,10 +14,10 @@ const Refunds = ({registrationId}) => {
       data: {registrationId},
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         setRefunds(data)
       },
-      error: () => {}
+      error: () => {},
     })
   }, [])
 
@@ -24,7 +26,7 @@ const Refunds = ({registrationId}) => {
   }
 
   const refundListing = () => {
-    return refunds.map(value => {
+    return refunds.map((value) => {
       return (
         <tr key={value.id}>
           <td>
