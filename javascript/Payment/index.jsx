@@ -564,7 +564,13 @@ export default class Payment extends Component {
             {registration.cancelledBy}
           </div>
         ) : null}
-        <h4>Guests:</h4>
+        <h4>
+          <a
+            href={`./conference/Admin/Guest/?registrationId=${this.state.registration.id}`}>
+            Guests
+          </a>
+          :
+        </h4>
         {guestList}
         <hr />
         <table className="table table-striped">
