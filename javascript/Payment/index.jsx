@@ -7,7 +7,6 @@ import PaymentForm from './PaymentForm'
 import RefundInformation from './RefundInformation'
 import totalCost from '../Shared/totalCost'
 import Refunds from './Refunds'
-import dayjs from 'dayjs'
 
 /* global $, registrationId */
 
