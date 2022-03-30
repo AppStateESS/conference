@@ -16,6 +16,8 @@ use Canopy\Request;
 use conference\Controller\SubController;
 use conference\Factory\RegistrationFactory as Factory;
 use conference\View\RegistrationView as View;
+use conference\Factory\GuestFactory;
+use conference\Factory\PaymentFactory;
 
 class Registration extends SubController
 {
@@ -43,7 +45,7 @@ class Registration extends SubController
     public function visitorHtml(Request $request)
     {
         return $this->view->scriptView('RegistrationHistory',
-                        ['visitorId' => $request->pullGetString('visitorId')]);
+                ['visitorId' => $request->pullGetString('visitorId')]);
     }
 
     protected function visitorJson(Request $request)
@@ -64,7 +66,7 @@ class Registration extends SubController
     protected function listHtml(Request $request)
     {
         return $this->view->scriptView('Registration',
-                        ['sessionId' => $request->pullGetInteger('sessionId')]);
+                ['sessionId' => $request->pullGetInteger('sessionId')]);
     }
 
     protected function studentJson(Request $request)
@@ -79,7 +81,7 @@ class Registration extends SubController
         $sessionId = $request->pullGetInteger('sessionId');
         $options = $this->factory->listingOptions($request);
         $options = $options + ['sessionId' => $sessionId, 'studentName' => true, 'visitorName' => true, 'search' => $request->pullGetString('search',
-                    true), 'useLimit' => true];
+                true), 'useLimit' => true];
 
         return $this->factory->listing($options);
     }
@@ -159,6 +161,26 @@ class Registration extends SubController
         }
 
         return ['success' => true];
+    }
+
+    protected function removeGuestPatch(Request $request)
+    {
+        $registration = $this->factory->load($this->id);
+        $guestFactory = new GuestFactory;
+        $paymentFactory = new PaymentFactory;
+        $guest = $guestFactory->load($request->pullPatchInteger('guestId'));
+        if (!$registration->completed || (int) $registration->totalCost === 0) {
+            $guestFactory->deleteById($guest->id);
+            if ($registration->guestCount > 0) {
+                $registration->guestCount = (int) $registration->guestCount - 1;
+                $this->factory->processTotalCost($registration);
+                $this->factory->save($registration);
+                $payment = $paymentFactory->getCurrentRegistrationPayment($registration);
+                $paymentFactory->updateAmountDue($registration);
+            }
+        } else {
+            throw new \Exception('Can not remove a guest from a complete, non-free registration.');
+        }
     }
 
 }
