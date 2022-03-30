@@ -2,6 +2,8 @@
 import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 
+/* global $ */
+
 const RefundInformation = ({refundId}) => {
   const [refund, setRefund] = useState({})
   useEffect(() => {
@@ -9,10 +11,10 @@ const RefundInformation = ({refundId}) => {
       url: `conference/Admin/Refund/${refundId}`,
       dataType: 'json',
       type: 'get',
-      success: data => {
+      success: (data) => {
         setRefund(data)
       },
-      error: () => {}
+      error: () => {},
     })
   }, [refundId])
   return (
@@ -37,7 +39,7 @@ const RefundInformation = ({refundId}) => {
   )
 }
 
-RefundInformation.propTypes = {}
+RefundInformation.propTypes = {refundId: PropTypes.number}
 
 RefundInformation.defaultProps = {}
 export default RefundInformation
