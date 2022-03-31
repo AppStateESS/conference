@@ -1,8 +1,9 @@
 'use strict'
 import React, {useState, useEffect} from 'react'
 import BigCheckbox from '@essappstate/canopy-react-bigcheckbox'
-
 import PropTypes from 'prop-types'
+
+/* global $ */
 
 const BannerStudent = ({bannerApiSetting}) => {
   const [bannerApi, setBannerApi] = useState(bannerApiSetting)
