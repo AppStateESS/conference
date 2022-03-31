@@ -7,8 +7,9 @@ import FrontPage from './FrontPage'
 import BannerStudent from './BannerStudent'
 import Disable from './Disable'
 import dayjs from 'dayjs'
+import FutureSession from './FutureSession'
 
-/* global $, bannerApiSetting */
+/* global $, bannerApiSetting, futureSessionSelection */
 
 export default class Settings extends Component {
   constructor(props) {
@@ -158,7 +159,7 @@ export default class Settings extends Component {
     if (sessions.length === 0) {
       return <div>No upcoming sessions</div>
     }
-    const options = sessions.map((value, key) => {
+    const options = sessions.map((value) => {
       return (
         <option key={value.id} value={value.id}>
           {dayjs(value.eventDate * 1000).format('MM-DD-YYYY')} - {value.title}
@@ -211,6 +212,7 @@ export default class Settings extends Component {
         <h2>Settings</h2>
         {this.getError()}
         <Disable />
+        <FutureSession futureSessionSelectionSetting={futureSessionSelection} />
         <Contact />
         <FrontPage />
         <BannerStudent bannerApiSetting={bannerApiSetting} />

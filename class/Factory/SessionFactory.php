@@ -55,24 +55,24 @@ class SessionFactory extends BaseFactory
         if (!empty($options['registrationCount'])) {
             $regTbl = $db->addTable('conf_registration');
             $count = new \phpws2\Database\Expression('count(' . $regTbl->getField('id') . ')',
-                    'registrationCount');
+                'registrationCount');
             $regTbl->addField($count);
             $cond = $db->createConditional($sessionTbl->getField('id'),
-                    $regTbl->getField('sessionId'));
+                $regTbl->getField('sessionId'));
             $cond2 = $db->createConditional($regTbl->getField('cancelled'), 0);
             $cond3 = $db->createConditional($regTbl->getField('completed'), 1);
             $cond4 = $db->createConditional($cond2, $cond3);
             $cond5 = $db->createConditional($cond, $cond4);
             $db->joinResources($sessionTbl, $regTbl, $cond5
-                    , 'left');
+                , 'left');
 
             if (!empty($options['guestCount'])) {
                 $guestTbl = $db->addTable('conf_guest');
                 $count2 = new \phpws2\Database\Expression('count(' . $guestTbl->getField('id') . ')',
-                        'guestCount');
+                    'guestCount');
                 $guestTbl->addField($count2);
                 $gcond = $db->createConditional($regTbl->getField('id'),
-                        $guestTbl->getField('registrationId'));
+                    $guestTbl->getField('registrationId'));
                 $db->joinResources($regTbl, $guestTbl, $gcond, 'left');
             }
             $db->setGroupBy($sessionTbl->getField('id'));
@@ -115,7 +115,7 @@ class SessionFactory extends BaseFactory
             } else {
                 $searchQuery = '%' . strip_tags($options['search']) . '%';
                 $cond2 = new \phpws2\Database\Conditional($db, $sessionTbl->getField('title'),
-                        $searchQuery, 'like');
+                    $searchQuery, 'like');
                 $db->addConditional($cond2);
             }
         }
@@ -125,11 +125,14 @@ class SessionFactory extends BaseFactory
             $sortDir = 'asc';
         }
 
-
         if (!empty($options['fields'])) {
             foreach ($options['fields'] as $field) {
                 $sessionTbl->addField($field);
             }
+        }
+
+        if (!empty($options['limit'])) {
+            $db->setLimit($options['limit']);
         }
         if ($sortBy === 'registrationCount') {
             $regTbl->addOrderBy($count, $sortDir);
@@ -275,12 +278,12 @@ class SessionFactory extends BaseFactory
     public static function sameCost(Resource $session1, Resource $session2)
     {
         return $session1->registerCost == $session2->registerCost &&
-                ( ($session1->allowGuest && $session1->guestCost == $session2->guestCost) ||
-                (!$session1->allowGuest)
-                ) &&
-                ( ($session1->mealService && $session1->mealService == $session2->mealService ) ||
-                (!$session1->mealService)
-                );
+            ( ($session1->allowGuest && $session1->guestCost == $session2->guestCost) ||
+            (!$session1->allowGuest)
+            ) &&
+            ( ($session1->mealService && $session1->mealService == $session2->mealService ) ||
+            (!$session1->mealService)
+            );
     }
 
     /**

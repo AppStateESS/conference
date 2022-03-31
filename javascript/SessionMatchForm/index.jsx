@@ -16,6 +16,7 @@ class SessionMatchForm extends Component {
       message: null,
       sessionFound: false,
       session: null,
+      futureSessions: [],
     }
     this.messageRef = React.createRef()
     this.submit = this.submit.bind(this)
@@ -118,7 +119,6 @@ class SessionMatchForm extends Component {
 
   checkEnter(e) {
     if (e.which === 13) {
-      console.log('wtf')
       this.submit()
     }
   }

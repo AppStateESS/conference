@@ -40,6 +40,16 @@ class SettingsFactory
         return Settings::get('conference', 'defaultConference');
     }
 
+    public static function getFutureSessionSelection()
+    {
+        return Settings::get('conference', 'futureSessionSelection');
+    }
+
+    public static function setFutureSessionSelection(bool $futureSession)
+    {
+        return Settings::set('conference', 'futureSessionSelection', $futureSession);
+    }
+
     public static function setDefaultConference(int $conferenceId)
     {
         Settings::set('conference', 'defaultConference', $conferenceId);
@@ -80,7 +90,7 @@ class SettingsFactory
         $contact = self::getContact();
         if ($onlyNoReply || empty($contact['contactEmail'])) {
             $contact['email'] = 'noreply@' . \Canopy\Server::getSiteUrl(false,
-                            false, false);
+                    false, false);
         }
 
         if ($onlyNoReply || empty($contact['contactName'])) {

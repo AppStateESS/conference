@@ -38,7 +38,7 @@ class Settings extends SubController
     protected function listHtml()
     {
         return $this->view->scriptView('Settings',
-                        ['bannerApiSetting' => SettingsFactory::getBannerApi()]);
+                ['bannerApiSetting' => SettingsFactory::getBannerApi(), 'futureSessionSelection' => SettingsFactory::getFutureSessionSelection()]);
     }
 
     protected function contactJson()
@@ -65,6 +65,19 @@ class Settings extends SubController
     protected function isDisabledJson(Request $request)
     {
         return ['disabled' => SettingsFactory::getDisabled()];
+    }
+
+    protected function futureJson(Request $request)
+    {
+        return ['futureSessionSelection' => SettingsFactory::getFutureSessionSelection()];
+    }
+
+    protected function futurePost(Request $request)
+    {
+        $future = $request->pullPostBoolean('futureSessionSelection');
+        SettingsFactory::setFutureSessionSelection($future);
+
+        return ['success' => true];
     }
 
     protected function setDisabledPost(Request $request)

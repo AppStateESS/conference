@@ -54,23 +54,32 @@ class Student extends SubController
 
         try {
             $student = $this->factory->getBannerStudent($request->pullGetInteger('matchBannerId'),
-                    $request->pullGetString('bannerUsername'));
+                $request->pullGetString('bannerUsername'));
             $reply = \conference\Factory\SettingsFactory::getEmailAddressOnly();
             if (!$student) {
                 return ['message' => 'Student not found. Please check Banner user name and id number again.'];
             } else {
                 $sessionFactory = new SessionFactory;
                 $session = $sessionFactory->pullByEventDate($student->startDate,
-                        $conferenceId);
+                    $conferenceId);
+
+                $futureSelect = \conference\Factory\SettingsFactory::getFutureSessionSelection();
+                $futureSessions = (bool) $sessionFactory->listing(['canSignup' => true, 'todayOrLater' => true, 'conferenceId' => $conferenceId, 'activeOnly' => true, 'fields' => ['id'], 'limit' => 1]);
 
                 if (empty($session)) {
                     $message = 'Student found but we could not match their orientation date.';
+                    if ($futureSelect && $futureSessions) {
+                        $message .= ' You may signup for a future session instead.';
+                    }
                 } elseif ($session->signupEnd < time()) {
                     $message = 'Student found but their matching orientation session is not available.';
+                    if ($futureSelect && $futureSessions) {
+                        $message .= ' You may signup for a future session instead.';
+                    }
                 } else {
                     $sessionVars = $session->getStringVars();
                 }
-                return ['student' => $student->getStringVars(), 'session' => $sessionVars, 'message' => $message];
+                return ['student' => $student->getStringVars(), 'session' => $sessionVars, 'message' => $message, 'futureSessions' => $futureSessions];
             }
         } catch (\Exception $e) {
             if (CONFERENCE_SYSTEM_SETTINGS['friendlyErrors']) {
