@@ -2,7 +2,9 @@
 import React, {useState, useEffect} from 'react'
 import BigCheckbox from '@essappstate/canopy-react-bigcheckbox'
 
-const Disable = ({}) => {
+/* global $ */
+
+const Disable = () => {
   const [disabled, setDisabled] = useState(false)
   const [loaded, setLoaded] = useState(false)
   useEffect(() => {
