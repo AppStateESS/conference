@@ -118,7 +118,6 @@ class SessionMatchForm extends Component {
 
   checkEnter(e) {
     if (e.which === 13) {
-      console.log('wtf')
       this.submit()
     }
   }
