@@ -322,6 +322,13 @@ class ConferenceUpdate
                 $this->content[] = '------------------------';
                 $this->content[] = '- Fixed bug with admin payment screen.';
                 $this->content[] = '</pre>';
+
+            case $this->compare('1.6.2'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.6.2';
+                $this->content[] = '------------------------';
+                $this->content[] = '- Added guest removal for incomplete or free registrations.';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
