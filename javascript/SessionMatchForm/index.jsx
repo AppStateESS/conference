@@ -35,7 +35,7 @@ class SessionMatchForm extends Component {
 
   updateUsername(e) {
     let bannerUsername = e.target.value
-    if (bannerUsername.search(/^\w*$/) !== -1 && bannerUsername.length < 20) {
+    if (bannerUsername.search(/^\w*$/) !== -1 && bannerUsername.length < 50) {
       this.setState({bannerUsername})
     }
   }
