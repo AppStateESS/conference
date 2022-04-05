@@ -329,6 +329,12 @@ class ConferenceUpdate
                 $this->content[] = '------------------------';
                 $this->content[] = '- Added guest removal for incomplete or free registrations.';
                 $this->content[] = '</pre>';
+            case $this->compare('1.6.3'):
+                $this->content[] = '<pre>';
+                $this->content[] = '1.6.3';
+                $this->content[] = '------------------------';
+                $this->content[] = '- Increases username character limit to 50.';
+                $this->content[] = '</pre>';
         }
         return $this->content;
     }
