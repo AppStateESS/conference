@@ -45,9 +45,9 @@ class ReportView extends AbstractView
         $guestTable->addField('firstName', 'gfn');
         $guestTable->addField('lastName', 'gln');
         $cond1 = new \phpws2\Database\Conditional($db, $regTable->getField('visitorId'),
-                $visitorTable->getField('id'), '=');
+            $visitorTable->getField('id'), '=');
         $cond2 = new \phpws2\Database\Conditional($db, $regId,
-                $guestTable->getField('registrationId'), '=');
+            $guestTable->getField('registrationId'), '=');
         $db->joinResources($regTable, $visitorTable, $cond1, 'left');
         $db->joinResources($regTable, $guestTable, $cond2, 'left');
         $regTable->addFieldConditional('completed', 1);
@@ -71,9 +71,9 @@ class ReportView extends AbstractView
         $guestTable->addField('firstName', 'gfn');
         $guestTable->addField('lastName', 'gln');
         $cond1 = new \phpws2\Database\Conditional($db, $regTable->getField('visitorId'),
-                $visitorTable->getField('id'), '=');
+            $visitorTable->getField('id'), '=');
         $cond2 = new \phpws2\Database\Conditional($db, $regId,
-                $guestTable->getField('registrationId'), '=');
+            $guestTable->getField('registrationId'), '=');
         $db->joinResources($regTable, $visitorTable, $cond1, 'left');
         $db->joinResources($regTable, $guestTable, $cond2, 'left');
         $regTable->addFieldConditional('completed', 1);
@@ -102,18 +102,20 @@ class ReportView extends AbstractView
                 $sub[] = $row['vln'];
                 $sub[] = $vemail;
                 $sub[] = 'no';
-                $csvRow[$vemail] = '"' . implode('","', $sub) . '"';
+//                $csvRow[$vemail] = '"' . implode('","', $sub) . '"';
+                $csvRow[] = '"' . implode('","', $sub) . '"';
             }
-            if (!empty($gemail) && !in_array($gemail, $visitors)) {
+            if (!empty($gemail)) {
                 $sub = [];
                 $sub[] = $row['gfn'];
                 $sub[] = $row['gln'];
                 $sub[] = $gemail;
                 $sub[] = 'yes';
-                $csvRow[$gemail] = '"' . implode('","', $sub) . '"';
+                //$csvRow[$gemail] = '"' . implode('","', $sub) . '"';
+                $csvRow[] = '"' . implode('","', $sub) . '"';
             }
         }
-        \ksort($csvRow);
+        //\ksort($csvRow);
         $content = implode("\n", $csvRow);
         return $content;
     }
@@ -143,9 +145,9 @@ class ReportView extends AbstractView
 
         $regTable->addFieldConditional('sessionId', $session->id);
         $cond = $db->createConditional($refundTable->getField('registrationId'),
-                $regTable->getField('id'));
+            $regTable->getField('id'));
         $cond2 = $db->createConditional($regTable->getField('visitorId'),
-                $visitorTable->getField('id'));
+            $visitorTable->getField('id'));
         $db->joinResources($refundTable, $regTable, $cond, 'left');
         $db->joinResources($regTable, $visitorTable, $cond2, 'left');
         $db->setGroupBy($refundTable->getField('id'));
