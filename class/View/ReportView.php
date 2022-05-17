@@ -90,32 +90,46 @@ class ReportView extends AbstractView
 
         $csvRow = array();
         $csvRow[0] = '"firstName","lastName","email","is guest"';
+        $allVisitors = array();
         $visitors = array();
+        $guests = array();
+        // Need to make this list first in case a guest comes up in the
+        // list before a visitor.
+        foreach ($result as $row) {
+            $vemail = strtolower($row['vemail']);
+            if (!in_array($vemail, $allVisitors)) {
+                $allVisitors[] = strtolower($row['vemail']);
+            }
+        }
+
         foreach ($result as $row) {
             $row = str_replace('"', '', $row);
             $vemail = strtolower($row['vemail']);
             $gemail = strtolower($row['gemail']);
             if (!in_array($vemail, $visitors)) {
                 $sub = [];
-                $visitors[] = $vemail;
                 $sub[] = $row['vfn'];
                 $sub[] = $row['vln'];
                 $sub[] = $vemail;
                 $sub[] = 'no';
-//                $csvRow[$vemail] = '"' . implode('","', $sub) . '"';
                 $csvRow[] = '"' . implode('","', $sub) . '"';
             }
+            $visitors[] = $vemail;
+
             if (!empty($gemail)) {
                 $sub = [];
                 $sub[] = $row['gfn'];
                 $sub[] = $row['gln'];
-                $sub[] = $gemail;
+                if (in_array($gemail, $allVisitors) || in_array($gemail, $guests)) {
+                    $sub[] = '[repeat]';
+                } else {
+                    $sub[] = $gemail;
+                }
+                $guests[] = $gemail;
                 $sub[] = 'yes';
-                //$csvRow[$gemail] = '"' . implode('","', $sub) . '"';
                 $csvRow[] = '"' . implode('","', $sub) . '"';
             }
         }
-        //\ksort($csvRow);
         $content = implode("\n", $csvRow);
         return $content;
     }
