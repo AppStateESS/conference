@@ -41,6 +41,12 @@ class ReportView extends AbstractView
         $visitorTable->addField('email', 'vemail');
         $visitorTable->addField('firstName', 'vfn');
         $visitorTable->addField('lastName', 'vln');
+        $visitorTable->addField('alum', 'valum');
+        $visitorTable->addField('gradYear', 'vgrad');
+        $visitorTable->addField('hometown', 'vhometown');
+        $guestTable->addField('alum', 'galum');
+        $guestTable->addField('gradYear', 'ggrad');
+        $guestTable->addField('hometown', 'ghometown');
         $guestTable->addField('email', 'gemail');
         $guestTable->addField('firstName', 'gfn');
         $guestTable->addField('lastName', 'gln');
@@ -89,7 +95,7 @@ class ReportView extends AbstractView
         }
 
         $csvRow = array();
-        $csvRow[0] = '"firstName","lastName","email","is guest"';
+        $csvRow[0] = '"firstName","lastName","email","isAlum","gradYear","hometown","is guest"';
         $allVisitors = array();
         $visitors = array();
         $guests = array();
@@ -111,6 +117,9 @@ class ReportView extends AbstractView
                 $sub[] = $row['vfn'];
                 $sub[] = $row['vln'];
                 $sub[] = $vemail;
+                $sub[] = $row['valum'] ? 'Yes' : 'No';
+                $sub[] = $row['vgrad'] === '0' ? 'n/a' : $row['vgrad'];
+                $sub[] = $row['vhometown'] ? $row['vhometown'] : 'n/a';
                 $sub[] = 'no';
                 $csvRow[] = '"' . implode('","', $sub) . '"';
             }
@@ -125,11 +134,15 @@ class ReportView extends AbstractView
                 } else {
                     $sub[] = $gemail;
                 }
+                $sub[] = $row['galum'] ? 'Yes' : 'No';
+                $sub[] = $row['ggrad'] === '0' ? "n/a" : $row['ggrad'];
+                $sub[] = $row['ghometown'] ? $row['ghometown'] : 'n/a';
                 $guests[] = $gemail;
                 $sub[] = 'yes';
                 $csvRow[] = '"' . implode('","', $sub) . '"';
             }
         }
+
         $content = implode("\n", $csvRow);
         return $content;
     }
